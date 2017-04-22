@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.jeecmstheme.jautopost.entity">
+	<class name="CmsJautopostFiles" table="jc_jautopost_files">
+		<meta attribute="sync-DAO">false</meta>
+		<id name="id" type="integer" column="jautopost_files_id"><generator class="identity"/></id>
+		<property name="md5Str" column="md5_str" type="string" not-null="true" length="28"/>
+		<property name="path" column="path" type="string" not-null="false" length="2000"/>
+	</class>
+</hibernate-mapping>

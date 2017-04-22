@@ -1,0 +1,32 @@
+package com.jeecmstheme.jautopost;
+
+import java.io.IOException;
+
+/**
+ * Signals that a HTTP request resulted in a not OK HTTP response.
+ */
+public class HttpStatusException extends IOException {
+
+	private static final long serialVersionUID = 8762229468964699065L;
+	private int statusCode;
+    private String url;
+
+    public HttpStatusException(String message, int statusCode, String url) {
+        super(message);
+        this.statusCode = statusCode;
+        this.url = url;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ". Status=" + statusCode + ", URL=" + url;
+    }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.jeecmstheme.jautopost.entity">
+	<class name="CmsJautopostHistory" table="jc_jautopost_history">
+		<meta attribute="sync-DAO">false</meta>
+		<id name="id" type="integer" column="history_id"><generator class="identity"/></id>
+		<property name="channelUrl" column="channel_url" type="string" not-null="true" length="255"/>
+		<property name="contentUrl" column="content_url" type="string" not-null="true" length="255"/>
+		<property name="title" type="string" length="255"/>
+		<property name="description" type="string" length="20"/>
+		<many-to-one name="jautopost" column="jautopost_id" class="CmsJautopost"></many-to-one>
+		<many-to-one name="content" column="content_id" class="com.jeecms.cms.entity.main.Content"></many-to-one>
+	</class>
+</hibernate-mapping>
