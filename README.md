@@ -1,0 +1,2 @@
+# myAdmin
+jeecms admin theme
