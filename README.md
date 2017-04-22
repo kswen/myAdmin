@@ -1,6 +1,8 @@
 # myAdmin
 jeecms admin theme
 
+主题相关技术博客：http://www.jeecmstheme.com
+
 ###主要特点
 
 ![](http://www.jeecmstheme.com/content/images/2017/04/snipaste_squirrel_20170415_083056.png)
