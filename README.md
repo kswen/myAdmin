@@ -2,7 +2,9 @@
 jeecms admin theme
 
 ###主要特点
+
 ![](http://www.jeecmstheme.com/content/images/2017/04/snipaste_squirrel_20170415_083056.png)
+
 响应式框架Bootstrap
 
 * 非frame框架，页面自动刷新，响应及时，无须多余的刷新按钮才能完成同步
@@ -80,7 +82,9 @@ web2.0的时代貌似已经过去，响应式WEB的时代已经到来。myAdmin�
 ![](http://www.jeecmstheme.com/content/images/2017/04/IMG_20170422_122709-1.jpg)
 </td>
         <td>
+        
 ![](http://www.jeecmstheme.com/content/images/2017/04/mmqrcode1492835172458.png)
+
 </td>
     </tr>
 </table>
