@@ -1,0 +1,212 @@
+            <!-- BEGIN PAGE HEADER-->
+             <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-wrench"></i>
+								<a href="#"><@s.m "cmsConfig.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "cmsModel.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+                        	<#if isChannel>
+                            <i class="fa  fa-file-text-o"></i>
+                            <a class="ajaxify" href="item/v_list.do?isChannel=${isChannel?string("true","false")}&modelId=${modelId}">
+                                <@s.m "cmsModel.modelChannel"/>
+                            </a>
+                            <#else>
+                            <i class="fa fa-file"></i>
+                            <a class="ajaxify" href="item/v_list.do?isChannel=${isChannel?string("true","false")}&modelId=${modelId}">
+                                 <@s.m "cmsModel.modelContent"/>
+                            </a>
+                            </#if>
+                            <i class="fa fa-angle-right"></i>
+                            </li>
+							<li>
+								<a href="#">增加<#if isChannel><@s.m "cmsModel.modelChannel"/><#else><@s.m "cmsModel.modelContent"/></#if>字段</a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+		            Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.m "global.success"/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i> <#if isChannel><@s.m "cmsModel.modelChannel"/><#else><@s.m "cmsModel.modelContent"/></#if>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+										<!-- BEGIN FORM-->
+										<form id="jvForm" action="item/o_save.do" class="form-horizontal">
+											<div class="form-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.field"/></label>
+															<div class="col-md-9">
+																<input type="text" name="field" class="form-control required">
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.label"/></label>
+															<div class="col-md-9">
+																<input type="text" name="label" class="form-control required">
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.dataType"/></label>
+															<div class="col-md-9">
+																<@p.select class="form-control required" name="dataType" list={"1":"cmsModelItem.type1","2":"cmsModelItem.type2","3":"cmsModelItem.type3","4":"cmsModelItem.type4","5":"cmsModelItem.type5","6":"cmsModelItem.type6","7":"cmsModelItem.type7","8":"cmsModelItem.type8"}/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.priority"/></label>
+															<div class="col-md-9">
+																<@p.text name="priority" value="70" class="form-control required" maxlength="10"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.help"/></label>
+															<div class="col-md-9">
+																<@p.text name="help" class="form-control" maxlength="255"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.helpPosition"/></label>
+															<div class="col-md-9">
+																<@p.text name="helpPosition" class="form-control" maxlength="10"/>
+																<span class="help-block">
+																	 <@s.m "cmsModelItem.helpPosition.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.defValue"/></label>
+															<div class="col-md-9">
+																<@p.text name="defValue" class="form-control" maxlength="255"/>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.size"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="size" maxlength="10"/>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.optValue"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="optValue" size="70" maxlength="255"/>
+																<span class="help-block">
+																	 <@s.m "cmsModelItem.optValue.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.rows"/></label>
+															<div class="col-md-9">
+																<@p.text  class="form-control" name="rows" value="3" maxlength="3"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsModelItem.cols"/></label>
+															<div class="col-md-9">
+																<@p.text  class="form-control" name="cols" value="30" maxlength="3"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+											</div>
+											<input type="hidden" name="modelId" value="${modelId}"/>
+											<input type="hidden" name="channel" value="${isChannel?string("true","false")}"/>
+											<div class="form-actions fluid">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="col-md-offset-3 col-md-9">
+															<button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+															<button type="reset" class="btn default"><@s.m "global.reset"/></button>
+														</div>
+													</div>
+													<div class="col-md-6">
+													</div>
+												</div>
+											</div>
+										</form>
+										<!-- END FORM-->
+									</div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   FormValidation.handleValidationModelItem();
+});
+</script>

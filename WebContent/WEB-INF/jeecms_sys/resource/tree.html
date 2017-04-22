@@ -1,0 +1,44 @@
+<#if isRoot>
+[{
+    "text": "<@s.m "resource.root"/>",
+    "icon" : "fa fa-folder icon-state-warning"
+    <#if resList?size gt 0>,
+    "a_attr":{
+        "href":"resource/v_list.do",
+        "class":"ajaxify"
+    },
+    "state":{
+        "open":"true"
+    },    
+    "children": [
+    <#list resList as res>
+        {
+        "id": "${res.name}",
+        "text": "${res.filename}",
+        "icon" : "${res.directory?string('fa fa-folder icon-state-warning','fa fa-file icon-state-warning')}",
+         "a_attr":{
+            "href":"${res.directory?string("resource/v_list.do?root=${res.name?url}","resource/v_edit.do?root=${res.path?url}&name=${res.name?url}")}",
+            "class":"ajaxify"
+         },
+        "children": ${res.directory?string('true','false')}
+        }<#if res_has_next>,</#if>
+    </#list>
+    ]
+    </#if>
+}]
+<#else>
+    [
+    <#list resList as res>
+        {
+        "id": "${res.name}",
+        "text": "${res.filename}",
+        "icon" : "${res.directory?string('fa fa-folder icon-state-warning','fa fa-file icon-state-warning')}",
+        "a_attr":{
+            "href":"${res.directory?string("resource/v_list.do?root=${res.name?url}","resource/v_edit.do?root=${res.path?url}&name=${res.name?url}")}",
+            "class":"ajaxify"
+         },
+         "children":  ${res.directory?string('true','false')}
+        }<#if res_has_next>,</#if>
+    </#list>
+    ]
+</#if>

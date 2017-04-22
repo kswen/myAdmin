@@ -1,0 +1,768 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-wrench"></i>
+								<a href="#"><@s.m "cmsConfig.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a class="ajaxify" href="model/v_list.do"><@s.m "cmsModel.modelContent"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#">${model.name}</a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						<@cms_perm url="/item/v_add.do">
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "global.add"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+								 	<li><a href="item/v_add.do?modelId=${modelId}&isChannel=${isChannel?string('true','false')}" class="ajaxify"> <@s.m "global.add"/> </a></li>
+								</ul>
+							</div>
+						</div>
+						</@cms_perm>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+            <script>
+               Metronic.alert({
+                   place: "append", 
+                   type: "success",  
+                   message: '<@s.m "global.success"/>',  
+                   close: true, 
+                   reset: true, 
+                   focus: true, 
+                   closeInSeconds: 5, 
+                   icon: "check"
+               });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa  fa-puzzle-piece"></i>${model.name}模型字段<@s.m "global.list"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body flip-scroll">
+                             <form id="item_list_table_form" method="post">
+			                <input type="hidden" name="modelId" value="${modelId}"/>
+			                <input type="hidden" name="isChannel" value="${isChannel?string('true','false')}"/>
+			                <table class="table table-bordered table-striped table-condensed flip-content table-hover">
+			                <thead class="pn-lthead">
+			                <tr>
+			                    <th width="20"><input type='checkbox' onclick='checkAll("ids",this.checked)'/></th>
+			                    <th><@s.m "cmsModelItem.field"/></th>
+			                    <th><@s.m "cmsModelItem.dataType"/></th>
+			                    <th><@s.m "cmsModelItem.label"/></th>
+			                    <th><@s.m "cmsModelItem.priority"/></th>
+			                    <th><@s.m "cmsModelItem.single"/></th>
+			                    <th><@s.m "cmsModelItem.display"/></th>
+			                    <th><@s.m "global.operate"/></th>
+			                </tr>
+			                </thead>
+			                <tbody class="pn-ltbody">
+			                <#list list as item>
+			                <tr>
+			                    <td class="class4ids"><input type="checkbox" name="ids" value="${item.id}"/></td>
+			                    <td align="center">${item.field}</td>
+			                    <td align="center"><@s.m "cmsModelItem.type${item.dataType}"/></td>
+			                    <td align="center"><input type="text" name="label" value="${item.label}" class="form-control input-large"/></td>
+			                    <td align="center">
+			                        <input type="text" name="priority" value="${item.priority}"  class="form-control input-xsmall"/>
+			                        <input type="hidden" name="wids" value="${item.id}"/>
+			                    </td>
+			                    <td align="center">
+			                        <input type="checkbox" onclick="$('#s${item_index}').val(this.checked)"<#if item.single> checked="checked"</#if>/>
+			                        <input type="hidden" id="s${item_index}" name="single" value="${item.single?string('true','false')}"/>
+			                    </td>
+			                    <td align="center">
+			                        <input type="checkbox" onclick="$('#d${item_index}').val(this.checked)"<#if item.display> checked="checked"</#if>/>
+			                        <input type="hidden" id="d${item_index}" name="display" value="${item.display?string('true','false')}"/>
+			                    </td>
+			                    <td align="center">
+			                        <a href="item/v_edit.do?id=${item.id}" class="ajaxify btn default btn-xs green-stripe"><@s.m "global.edit"/></a> |
+			                        <a href="javascript:void(0)" class="btn default btn-xs red-stripe" onclick="deleteSingle('item/o_delete.do?ids=${item.id}&modelId=${modelId}&isChannel=${isChannel?string('true','false')}')"><@s.m "global.delete"/></a>
+			                    </td>
+			                </tr>
+			                </#list>
+			                
+			                <#assign i=1/>
+			                <tr id="sysDefModel" style="display:none;"><td colspan="8"><@s.m "cmsModelItem.sysDefModel"/>:</td></tr>
+			                <#if !fieldList?seq_contains('channelId')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >channelId</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type6"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.channelId"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="channelId"/>
+			                        <input  type="hidden" name="dataTypes" value="6"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('title')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >title</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.title"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="title"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('shortTitle')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >shortTitle</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.shortTitle"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="false"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="shortTitle"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('titleColor')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >titleColor</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type6"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.titleColor"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="false"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="titleColor"/>
+			                        <input  type="hidden" name="dataTypes" value="6"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('tagStr')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >tagStr</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.tagStr"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="tagStr"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('description')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >origin</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type4"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.description"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="description"/>
+			                        <input  type="hidden" name="dataTypes" value="4"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('author')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >author</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.author"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="false"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="author"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('origin')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >origin</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.origin"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="false"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="origin"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('viewGroupIds')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >viewGroupIds</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type7"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.viewGroupIds"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="viewGroupIds"/>
+			                        <input  type="hidden" name="dataTypes" value="7"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('topLevel')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >topLevel</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type6"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.topLevel"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="false"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="topLevel"/>
+			                        <input  type="hidden" name="dataTypes" value="6"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('releaseDate')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >releaseDate</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type5"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.releaseDate"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="false"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="releaseDate"/>
+			                        <input  type="hidden" name="dataTypes" value="5"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('typeId')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >typeId</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type6"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.typeId"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="false"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="typeId"/>
+			                        <input  type="hidden" name="dataTypes" value="6"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('tplContent')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >tplContent</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type6"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.tplContent"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="false"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="tplContent"/>
+			                        <input  type="hidden" name="dataTypes" value="6"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('typeImg')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >typeImg</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.typeImg"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="typeImg"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('titleImg')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >titleImg</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.titleImg"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="titleImg"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('contentImg')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >contentImg</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.contentImg"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="contentImg"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('attachments')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >attachments</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.attachments"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="attachments"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('media')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >media</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type1"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.media"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="media"/>
+			                        <input  type="hidden" name="dataTypes" value="1"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('txt')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >txt</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type4"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.txt"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="txt"/>
+			                        <input  type="hidden" name="dataTypes" value="4"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('txt1')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >txt1</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type4"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.txt1"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="txt1"/>
+			                        <input  type="hidden" name="dataTypes" value="4"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('txt2')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >txt2</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type4"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.txt2"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="txt2"/>
+			                        <input  type="hidden" name="dataTypes" value="4"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('txt3')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >txt3</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type4"/></td>
+			                    <td align="center"><input  type="text" name="labels" value="<@s.m "content.txt3"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="txt3"/>
+			                        <input  type="hidden" name="dataTypes" value="4"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('pictures')>
+			                <tr>
+			                    <td><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+			                    <td align="center" >pictures</td>
+			                    <td align="center" ><@s.m "cmsModelItem.type4"/></td>
+			                    <td align="center" ><input  type="text" name="labels" value="<@s.m "content.pictures"/>" class="form-control input-large"/></td>
+			                    <td align="center"><input  type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="singles${i}" name="singles" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+			                        <input  type="hidden" id="displays${i}" name="displays" value="true"/>
+			                    </td>
+			                    <td align="center">
+			                        <input  type="hidden" name="fields" value="pictures"/>
+			                        <input  type="hidden" name="dataTypes" value="4"/>
+			                    </td>
+			                </tr>
+			                <#assign i=i+1/>
+			                </#if>
+			                <#if !fieldList?seq_contains('docPath')>
+							<tr>
+								<td align="center"><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+								<td align="center" class="dis">docPath</td>
+								<td align="center" class="dis"><@s.m "cmsModelItem.type4"/></td>
+								<td align="center" class="dis"><input class="dis" type="text" name="labels" value="<@s.m "content.doc.docPath"/>" style="width:100px"/></td>
+								<td align="center"><input class="dis" type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+								<td align="center">
+									<input class="dis" type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+									<input class="dis" type="hidden" id="singles${i}" name="singles" value="true"/>
+								</td>
+								<td align="center">
+									<input class="dis" type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+									<input class="dis" type="hidden" id="displays${i}" name="displays" value="true"/>
+								</td>
+								<td align="center">
+									<input class="dis" type="hidden" name="fields" value="docPath"/>
+									<input class="dis" type="hidden" name="dataTypes" value="4"/>
+								</td>
+							</tr>
+							<#assign i=i+1/>
+							</#if>
+							<#if !fieldList?seq_contains('downNeed')>
+							<tr>
+								<td align="center"><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+								<td align="center" class="dis">downNeed</td>
+								<td align="center" class="dis"><@s.m "cmsModelItem.type2"/></td>
+								<td align="center" class="dis"><input class="dis" type="text" name="labels" value="<@s.m "content.doc.downNeed"/>" style="width:100px"/></td>
+								<td align="center"><input class="dis" type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+								<td align="center">
+									<input class="dis" type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+									<input class="dis" type="hidden" id="singles${i}" name="singles" value="true"/>
+								</td>
+								<td align="center">
+									<input class="dis" type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+									<input class="dis" type="hidden" id="displays${i}" name="displays" value="true"/>
+								</td>
+								<td align="center">
+									<input class="dis" type="hidden" name="fields" value="downNeed"/>
+									<input class="dis" type="hidden" name="dataTypes" value="2"/>
+								</td>
+							</tr>
+							<#assign i=i+1/>
+							</#if>
+							<#if !fieldList?seq_contains('isOpen')>
+							<tr>
+								<td align="center"><input type="checkbox" onclick="disInput(this);" checked="checked"/></td>
+								<td align="center" class="dis">isOpen</td>
+								<td align="center" class="dis"><@s.m "cmsModelItem.type7"/></td>
+								<td align="center"><input class="dis" type="text" name="labels" value="<@s.m "content.doc.isOpen"/>" style="width:100px"/></td>
+								<td align="center"><input class="dis" type="text" name="prioritys" value="10" class="form-control input-xsmall"/></td>
+								<td align="center">
+									<input class="dis" type="checkbox" checked="checked" onclick="$('#singles${i}').val(this.checked)"/>
+									<input class="dis" type="hidden" id="singles${i}" name="singles" value="true"/>
+								</td>
+								<td align="center">
+									<input class="dis" type="checkbox" checked="checked" onclick="$('#displays${i}').val(this.checked)"/>
+									<input class="dis" type="hidden" id="displays${i}" name="displays" value="true"/>
+								</td>
+								<td align="center">
+									<input class="dis" type="hidden" name="fields" value="isOpen"/>
+									<input class="dis" type="hidden" name="dataTypes" value="7"/>
+								</td>
+							</tr>
+							<#assign i=i+1/>
+							</#if>
+			                </tbody>
+			                </table>
+			                
+			                <div style="margin-top:15px;">
+			                <#if i gt 1>
+			                    <input class="btn green" type="button" value="<@s.m "cmsModelItem.savaList"/>" onclick="optSave();"/>
+			                &nbsp;<script type="text/javascript">$('#sysDefModel').show();</script>
+			                </#if>
+			                <input type="button" value="<@s.m "global.delete"/>" onclick="optDelete();" class="btn red"/>
+			                &nbsp; <input class="btn green-meadow" type="button" value="<@s.m "cmsModelItem.saveContent"/>" onclick="optSaveOrder();"/>
+			                </div>
+			                
+			                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   Metronic.initAjax();
+});
+var checkedAll = false;
+function checkAll(name, checked) {
+	if(checkedAll){
+	    $("input[name=" + name + "]:checkbox").each(function() {
+	        $(this).removeAttr("checked");
+	        $(".class4ids .checker span").removeAttr("class");
+	    });
+	    checkedAll = false;
+	}else{
+      $("input[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+	}
+}
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        }); 
+        return;
+    }
+    if(confirm("<@s.m 'global.confirm.delete'/>")) {
+    	submitForm("item/o_delete.do",$("#item_list_table_form"));
+    }else{
+    	return;
+    }
+}
+function optSave() {
+	submitForm("item/o_save_list.do",$("#item_list_table_form"));
+}
+function optSaveOrder() {
+	submitForm("item/o_priority.do",$("#item_list_table_form"));
+}
+
+function disInput(o) {
+	if(o.checked) {
+		$(o).parent().parent().find('.dis').each(function(){$(this).removeAttr('disabled');});
+	} else {	
+		$(o).parent().parent().find('.dis').each(function(){$(this).attr('disabled','disabled');});
+	}
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+</script>            

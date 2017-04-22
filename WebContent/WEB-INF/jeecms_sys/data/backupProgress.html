@@ -1,0 +1,55 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-cloud-download"></i>
+								<a href="#" > <@s.m 'cmsData.function'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#" ><@s.m "cms.function.db"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "db.tables"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+						<div class="panel-heading">
+							<h3 class="panel-title">正在备份表</h3>
+						</div>
+						<div class="panel-body" id="progressContainer"></div>
+					</div>
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+var interCall;
+function createProgress() {
+	$.post(""+$("#dbTypeVal").val()+"/data/o_backup_progress.do",{},function(data){
+		if(data.tablename!=""){
+			$("#progressContainer").html(data.tablename);
+		}else{
+			$("#progressContainer").html("<span class='label label-success'>备份完成!</span>");
+			window.clearInterval(interCall);
+		}
+	},"json");
+}
+$(function() {
+	createProgress();
+});
+interCall=window.setInterval("createProgress()",1000);
+</script>

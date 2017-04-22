@@ -1,0 +1,144 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-chemistry"></i>
+								<a href="#"><@s.m "cmsStatic.function"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#">  <@s.m "cmsStatic.index"/> </a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "cmsStatic.index"/> 
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="static/o_index.do" id="form_static_index" class="form-horizontal">
+                                         <div class="portlet-body form">&nbsp;</div>
+                                            <div class="form-actions fluid">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-offset-5 col-md-8">
+                                                            <button type="submit" class="btn green-meadow btn-lg"><@s.m "cmsStatic.indexStatic"/> </button>
+                                                            <button type="reset" class="btn btn-danger btn-lg"  onclick="deleteIndex();"><@s.m "cmsStatic.indexRemove"/></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {
+   Metronic.initAjax();
+   var form1 = $('#form_static_index');
+   form1.validate({
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block', // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
+        ignore: "",
+        submitHandler: function (form) {
+            var url = $(form).attr("action"); 
+            var postData = $(form).serialize();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: url,
+                data: postData,
+                beforeSend: function(){
+                    Metronic.startPageLoading();
+                },
+                success: function(data){
+                    if(data.success){
+                        Metronic.alert({
+                            place: "append", 
+                            type: "success",  
+                            message: '<@s.m "global.success"/> ',  
+                            close: true, 
+                            reset: true, 
+                            focus: true, 
+                            closeInSeconds: 5, 
+                            icon: "check"
+                        });
+                    }else{
+                        Metronic.alert({
+                            place: "append", 
+                            type: "success",  
+                            message: data.msg,  
+                            close: true, 
+                            reset: true, 
+                            focus: true, 
+                            closeInSeconds: 5, 
+                            icon: "warning"
+                        });
+                    }
+                },
+                complete : function (){
+                    Metronic.stopPageLoading();
+                }
+            });
+            return false; 
+        }
+    });
+});
+function deleteIndex() {
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "static/o_index_remove.do",
+        beforeSend: function(){
+            Metronic.startPageLoading();
+        },
+        success: function(data){
+            if(data.success){
+                Metronic.alert({
+                    place: "append", 
+                    type: "success",  
+                    message: '<@s.m "global.success"/>',  
+                    close: true, 
+                    reset: true, 
+                    focus: true, 
+                    closeInSeconds: 5, 
+                    icon: "check"
+                });
+            }else{
+                Metronic.alert({
+                    place: "append", 
+                    type: "danger",  
+                    message: '<@s.m "cmsStatic.fileNotExist"/>',  
+                    close: true, 
+                    reset: true, 
+                    focus: true, 
+                    closeInSeconds: 5, 
+                    icon: "warning"
+                });
+            }
+        },
+        complete : function (){
+            Metronic.stopPageLoading();
+        }
+    });
+    return false; 
+}
+</script>

@@ -1,0 +1,243 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-notebook"></i>
+								<a href="#"> 信息<@s.m "cms.function.maintain"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "contentCycle.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+            <script>
+               Metronic.alert({
+                   place: "append", 
+                   type: "success",  
+                   message: '<@s.mt code=message text=message/>',  
+                   close: true, 
+                   reset: true, 
+                   focus: true, 
+                   closeInSeconds: 5, 
+                   icon: "check"
+               });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="well">
+            <div class="row">
+                <div class="col-md-12">
+                        <form action="content_cycle/v_list.do" method="post" id="content_cycle_query_form">
+                       <div class="col-md-12">
+                                <div class="form-group">
+                                <label class="radio-inline"><@s.m "content.title"/>:</label> <input type="text" name="queryTitle" value="${queryTitle!}" class="form-control input-large radio-inline"/>
+								<label class="radio-inline"><@s.m "content.user"/>:</label> <input type="text" name="queryInputUsername" value="${queryInputUsername!}" class="form-control input-medium radio-inline"/>
+								<@p.select class="form-control input-medium radio-inline" name="queryOrderBy" value=queryOrderBy list={"0":"content.orderBy.0","1":"content.orderBy.1","2":"content.orderBy.2","3":"content.orderBy.3","4":"content.orderBy.4","5":"content.orderBy.5","6":"content.orderBy.6","7":"content.orderBy.7","8":"content.orderBy.8","9":"content.orderBy.9","10":"content.orderBy.10","11":"content.orderBy.11","12":"content.orderBy.12","13":"content.orderBy.13","14":"content.orderBy.14","15":"content.orderBy.15","16":"content.orderBy.16","17":"content.orderBy.17","18":"content.orderBy.18","19":"content.orderBy.19","20":"content.orderBy.20","21":"content.orderBy.21"}/>
+								<input type="hidden" name="cid" value="${cid!}"/>
+                                <input class="btn red" type="button" onclick="optRecycle();" value="<@s.m "global.query"/>"/>
+                                </div>
+                        </div>
+                        </form>
+                 </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa  fa-list"></i><@s.m "global.list"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body  flip-scroll">
+                            <div class="table-responsive">
+                            <form id="tableForm" method="post">
+							<input type="hidden" name="pageNo" value="${pageNo!}"/>
+							<input type="hidden" name="cid" value="${cid!}"/>
+							<#list .data_model?keys as pkey>
+								<#if pkey?starts_with('query')><input type="hidden" name="${pkey}" value="${(.data_model[pkey])!?string}"/></#if><#t/>
+							</#list>
+							
+							<@p.table class="table table-bordered table-striped table-condensed flip-content table-hover" value=pagination listAction="content_cycle/v_list.do" value=pagination;content,i,has_next><#rt/>
+								<@p.column title="<input type='checkbox' onclick='checkAll(\"ids\",this.checked)'/>" width="20">
+                                    <label class="class4ids"><input type='checkbox' name='ids' value='${content.id}'/></label><#t/>
+								</@p.column><#t/>
+								<@p.column title="ID">${content.id}</@p.column><#t/>
+								<@p.column code="content.title">
+									<#if content.topLevel gt 0><span style="color:red">[<@s.m "content.topLevel.short"/>${content.topLevel}]</span></#if>
+									<#if content.recommend><span style="color:red">[<@s.m "content.recommend.short"/>]</span></#if>
+									<strong>[${content.channel.name}]</strong>
+									<a href="${content.url}" target="_blank"><@text_cut s=content.title?html len=25 append="..."/></a>
+									<#if content.checkOption??>
+									<br/><span style="color:red">${content.checkOption}</span>
+									</#if>
+								</@p.column><#t/>
+								<@p.column code="content.type" align="center">${content.type.name}</@p.column><#t/>
+								<@p.column code="content.user" align="center">${content.user.username}</@p.column><#t/>
+								<@p.column code="content.views" align="right">${content.views}</@p.column><#t/>
+								<#if queryOrderBy??>
+									<#switch queryOrderBy>
+									<#case 6>
+										<@p.column code="content.viewsDay" align="right">${content.viewsDay}</@p.column><#t/>
+										<#break>
+									<#case 7>
+										<@p.column code="content.viewsWeek" align="right">${content.contentCount.viewsWeek}</@p.column><#t/>
+										<#break>
+									<#case 8>
+										<@p.column code="content.viewsMonth" align="right">${content.contentCount.viewsMonth}</@p.column><#t/>
+										<#break>
+									<#case 10>
+										<@p.column code="content.commentsDay" align="right">${content.commentsDay}</@p.column><#t/>
+										<#break>
+									<#case 11>
+										<@p.column code="content.commentsWeek" align="right">${content.contentCount.commentsWeek}</@p.column><#t/>
+										<#break>
+									<#case 12>
+										<@p.column code="content.commentsMonth" align="right">${content.contentCount.commentsMonth}</@p.column><#t/>
+										<#break>
+									<#case 13>
+										<@p.column code="content.comments" align="right">${content.contentCount.comments}</@p.column><#t/>
+										<#break>			
+									<#case 14>
+										<@p.column code="content.downloadsDay" align="right">${content.downloadsDay}</@p.column><#t/>
+										<#break>
+									<#case 15>
+										<@p.column code="content.downloadsWeek" align="right">${content.contentCount.downloadsWeek}</@p.column><#t/>
+										<#break>
+									<#case 16>
+										<@p.column code="content.downloadsMonth" align="right">${content.contentCount.downloadsMonth}</@p.column><#t/>
+										<#break>
+									<#case 17>
+										<@p.column code="content.downloads" align="right">${content.contentCount.downloads}</@p.column><#t/>
+										<#break>			
+									<#case 18>
+										<@p.column code="content.upsDay" align="right">${content.upsDay}</@p.column><#t/>
+										<#break>
+									<#case 19>
+										<@p.column code="content.upsWeek" align="right">${content.contentCount.upsWeek}</@p.column><#t/>
+										<#break>
+									<#case 20>
+										<@p.column code="content.upsMonth" align="right">${content.contentCount.upsMonth}</@p.column><#t/>
+										<#break>
+									<#case 21>
+										<@p.column code="content.ups" align="right">${content.contentCount.ups}</@p.column><#t/>
+										<#break>
+									<#default>
+									</#switch>
+								</#if>
+								<@p.column code="content.releaseDate" align="center">${content.releaseDate?string('yyyy-MM-dd')}</@p.column><#t/>
+								<@p.column code="content.status" align="center">
+									<@s.m "content.status."+content.status/>
+									<#if content.status==1> ${content.checkStep}<#if content.rejected> <span style="color:red"><@s.m "content.status.rejected"/></span></#if></#if>
+								</@p.column><#t/>
+								<@p.column code="global.operate" align="center">
+									<#assign params>&cid=${cid!}&pageNo=${pageNo!}&queryTitle=${queryTitle!?url}&queryInputUsername=${queryInputUsername!?url}&queryOrderBy=${queryOrderBy!}</#assign>
+									<a href="content_cycle/o_recycle.do?ids=${content.id}${params}" class="ajaxify btn default btn-xs green-stripe"><@s.m "contentCycle.recycle"/></a> | <#rt/>
+									<a href="javascript:void(0)" onclick="deleteSingle('content_cycle/o_delete.do?ids=${content.id}${params}')" class="btn default btn-xs red-stripe"><@s.m "global.delete"/></a><#t/>
+								</@p.column><#t/>
+							</@p.table>
+							<div style="margin-top:15px;">
+								<input class="btn btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/>
+								<input class="btn green-meadow" type="button" value="<@s.m "contentCycle.recycle"/>" onclick="optRecycleB();"/>
+							</div>
+							</form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+function getTableForm() {
+    return document.getElementById('tableForm');
+}
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        });
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    var f = getTableForm();
+    var url ="content_cycle/o_delete.do";
+    submitForm(url, f);
+}
+function optRecycle() {
+    var f = $("#content_cycle_query_form");
+    var url = f.attr("action"); 
+    submitForm(url, f);
+}
+function optRecycleB() {
+    var f = $("#tableForm");
+    var url = "content_cycle/o_recycle.do"; 
+    submitForm(url, f);
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $("input[name=" + name + "]:checkbox").each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("input[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+function getContentIds(){
+    var ids=new Array();
+    $("input[name='ids']").each(function() {
+        if($(this).attr("checked")){
+            ids.push($(this).val());
+            }
+    });
+    return ids;
+}
+</script>

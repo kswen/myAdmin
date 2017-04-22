@@ -1,0 +1,187 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.data"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-note"></i>
+								<a href="#"><@s.m 'cms.function.contentstatic'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> 
+									<@s.m "statistic.function.content"/>
+                                </a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+<script>
+Statistic = {};
+Statistic.date = new Date();
+Statistic.MonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];  
+Statistic.CurrYear = function(){
+    return this.date.getFullYear().toString();  
+};  
+Statistic.CurrMonth = function(){
+    return this.date.getMonth();  
+};  
+Statistic.CurrDay = function(){
+    return this.date.getDate();  
+};  
+Statistic.InitYearSelect = function(){
+    var years = this.CurrYear();
+    for (var i = years - 10; i <= years; i++) {  
+        $("#year").get(0).options.add(new Option(i, i));  
+    }   
+}
+Statistic.InitMonthSelect = function(){
+    for (var i = 1; i < 13; i++) {  
+        $("#month").get(0).options.add(new Option(i, i));  
+    }  
+};
+
+Statistic.InitData = function(){
+    $("#year").val(<#if year??>${year}<#else>this.CurrYear()</#if>);
+    $("#month").val(<#if month??>${month}<#else>this.CurrMonth()+1</#if>);
+    FlushDay();
+    $("#day").val(<#if day??>${day}<#else>this.CurrDay()</#if>);
+}
+
+function FlushDay(){
+    var year = $("#year");  
+    var month = $("#month");  
+    var day = $("#day");  
+    var mn = month.val();  
+    var ye = year.val();  
+    var n = Statistic.MonthDays[mn - 1];  
+    day.empty();  
+    if (ye % 4 == 0 && mn==2) {  
+            n++;  
+    }  
+    for (var i = 1; i < n + 1; i++) {  
+        day.get(0).options.add(new Option(i, i));  
+    }  
+}
+
+function init(){
+    $("#year").change(FlushDay);
+    $("#month").change(FlushDay); 
+    Statistic.InitYearSelect();
+    Statistic.InitMonthSelect();
+    chgModel($("input[name='queryModel']:checked").val()); 
+    Statistic.InitData();
+}
+
+function chgModel(queryModel){
+    if(queryModel=="year"){
+        FlushDay();
+        $("#month").attr("disabled","1");
+        $("#day").attr("disabled","1");
+    }
+    if(queryModel=="month"){
+        FlushDay();
+        $("#month").removeAttr("disabled");
+        $("#day").attr("disabled","1");
+    }
+    if(queryModel=="week"){
+        $("#month").removeAttr("disabled");
+        $("#day").removeAttr("disabled");
+    }
+    if(queryModel=="day"){
+        $("#month").removeAttr("disabled");
+        $("#day").removeAttr("disabled");
+    }
+}
+
+jQuery(document).ready(function() {    
+       init();
+       FormValidation.handleValidationStatisticContent();
+       Metronic.initAjax();
+    });
+</script>
+		<div class="well">
+        <div class="row">
+                <div class="col-md-12">
+                <form id="form_statistic_content" action="statistic/content/v_list.do" method="post" novalidate="novalidate">
+		                        <div class="form-group">
+			                        <div class="radio-list">
+	                                <select id="year" name="year" class="form-control input-small radio-inline" ></select><@s.m "statistic.year"/>
+	                                <select id="month" name="month"  class="form-control input-xsmall radio-inline" ></select><@s.m "statistic.month"/>
+	                                <select id="day" name="day"  class="form-control input-xsmall radio-inline" ></select><@s.m "statistic.date"/>
+	                                <label class="radio-inline"><input type="radio" name="queryModel" value="year" <#if statisticModel=='year'>checked='checked'</#if> onclick='chgModel(this.value);'/><@s.m 'statistic.report.year'/></label>
+	                                <label class="radio-inline"><input type="radio" name="queryModel" value="month" <#if statisticModel=='month'>checked='checked'</#if> onclick='chgModel(this.value);'/><@s.m 'statistic.report.month'/> </label>
+	                                <label class="radio-inline"><input type="radio" name="queryModel" value="week" <#if statisticModel=='week'>checked='checked'</#if> onclick='chgModel(this.value);'/><@s.m 'statistic.report.week'/> </label>
+	                                <label class="radio-inline"><input type="radio" name="queryModel" value="day" <#if statisticModel=='day'>checked='checked'</#if> onclick='chgModel(this.value);'/><@s.m 'statistic.report.day'/> </label>
+			                        </div>
+		                        </div>
+		                        <div class="form-group">
+			                        <label class="radio-inline"><@s.m "content.user"/>: </label> 
+			                        <div class="radio-inline input-small"><input type="text" name="queryInputUsername" value="${queryInputUsername!}" class="form-control input-small"/></div>
+			                        <label class="radio-inline"><@s.m "statistic.channel"/>:</label>
+			                        <div class="radio-inline input-small">
+		                            <select id="channelId" name="channelId" class="form-control">
+									    <option value="" <#if !channelId??>selected="selected"</#if>><@s.m "global.pleaseSelect"/></option>
+									    <#if channelList?size gt 0>
+									    <#assign origDeep=channelList[0].deep+1/>
+									    <#list channelList as c>
+								        <#if c.hasContent || c.child?size gt 0>
+								        <option <#if channelId??&&c.id==channelId>selected="selected"</#if> value="${c.id}"><#if c.deep gte origDeep><#list origDeep..c.deep as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+							             </#if>
+								         </#list>
+								         </#if>
+								    </select>
+								    </div>
+								    <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> <@s.m "global.query"/></button>
+							    </div>
+                       </form>
+                 </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa fa-users"></i><@s.m "statistic.content.totalContents"/>：${total} 
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body flip-scroll">
+                            <div class="table-responsive">
+                                <@p.table  class="table table-hover" value=list;cmsStatistic,i,has_next><#rt/>
+                                <#switch statisticModel>
+                                    <#case "year">
+                                        <@p.column code="statistic.month2">${cmsStatistic.description}<@s.m "statistic.month"/></@p.column><#t/>
+                                    <#break>
+                                    <#case "month">
+                                        <@p.column code="statistic.date2">${cmsStatistic.description}<@s.m "statistic.date"/></@p.column><#t/>
+                                    <#break>
+                                    <#case "week">
+                                        <@p.column code="statistic.week"><@s.m "statistic.week."+cmsStatistic.description/></@p.column><#t/>
+                                    <#break>
+                                    <#case "day">
+                                        <@p.column code="statistic.hour">${cmsStatistic.description}</@p.column><#t/>
+                                    <#default>
+                                    <#break>
+                                </#switch>
+                                    <@p.column code="statistic.member.registers">${cmsStatistic.count}</@p.column><#t/>
+                                     <@p.column code="statistic.percent"><img src="${base}/assets/global/img/vbar.gif" width="${cmsStatistic.barWidth}" height="18px" border="0"/>${cmsStatistic.percent}</@p.column><#t/>
+                                </@p.table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->

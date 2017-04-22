@@ -1,0 +1,148 @@
+            <!-- BEGIN PAGE HEADER-->
+            			<h3 class="page-title">
+	                     <@s.m "cms.function.content"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-eyeglasses"></i>
+								<a href="topic/v_list.do" class="ajaxify"><@s.m "cmsTopic.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						<@cms_perm url="/topic/v_add.do">
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "global.add"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+								 	<li><a href="topic/v_add.do" class="ajaxify"> <@s.m "global.add"/> </a></li>
+								</ul>
+							</div>
+						</div>
+						</@cms_perm>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.list"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body flip-scroll">
+                                        <!-- BEGIN FORM-->
+	                                    <form id="tableForm" method="post">
+										<input type="hidden" name="pageNo" value="${pageNo!}"/>
+										<@p.table class="table table-striped table-bordered table-hover dataTable" listAction="topic/v_list.do" value=pagination;cmsTopic,i,has_next><#rt/>
+											<@p.column title="<input type='checkbox' onclick='checkAll(\"ids\",this.checked)'/>" width="20">
+	                                                <input type='checkbox' name='ids' value='${cmsTopic.id}'/><#t/>
+											</@p.column><#t/>
+											<@p.column title="ID">${cmsTopic.id}</@p.column><#t/>
+											<@p.column code="cmsTopic.name">
+												${cmsTopic.name} <#if cmsTopic.shortName??>[${cmsTopic.shortName}]</#if>
+											</@p.column><#t/>
+											<@p.column code="cmsTopic.channel">
+												<#if cmsTopic.channel??>
+													<#list cmsTopic.channel.nodeList as c>${c.name}<#if c_has_next> > </#if></#list><#t/>
+												</#if>
+											</@p.column><#t/>
+											<@p.column code="cmsTopic.priority" align="center">
+												<input type="text" name="priority" value="${cmsTopic.priority}" class="form-control input-small"/>
+												<input type="hidden" name="wids" value="${cmsTopic.id}"/>
+											</@p.column><#t/>
+											<@p.column code="cmsTopic.recommend" align="center"><#if cmsTopic.recommend><@s.m "global.true"/><#else><@s.m "global.false"/></#if></@p.column><#t/>
+											<@p.column code="global.operate" align="center">
+												<a href="topic/v_edit.do?id=${cmsTopic.id}&pageNo=${pageNo!}" class="ajaxify btn default btn-xs blue-stripe"><@s.m "global.edit"/></a> | <#rt/>
+												<a href="javascript:void(0)" onclick="deleteSingle('topic/o_delete.do?ids=${cmsTopic.id}&pageNo=${pageNo!}')" class="btn default btn-xs red-stripe"><@s.m "global.delete"/></a><#t/>
+											</@p.column><#t/>
+										</@p.table>
+										<div  style="margin-top:15px;">
+											<input class="btn btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/>
+										&nbsp; <input class="btn green-meadow" type="button" value="<@s.m "global.saveOrder"/>" onclick="optPriority();"/>
+										</div>
+										</form>    
+                                        <!-- END FORM-->
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+	Metronic.initAjax();
+});
+var checkedAll = false;
+function checkAll(name, checked) {
+	if(checkedAll){
+	    $("input[type=checkbox][name=" + name + "]").each(function() {
+	        $(this).removeAttr("checked");
+	        $(".checker span").removeAttr("class");
+	    });
+	    checkedAll = false;
+	}else{
+      $("input[type=checkbox][name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+	}
+}
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        }); 
+        return;
+    }
+    if(confirm("<@s.m 'global.confirm.delete'/>")) {
+    	submitForm("topic/o_delete.do",$("#tableForm"));
+    }else{
+    	return;
+    }
+}
+function optPriority() {
+    submitForm("topic/o_priority.do",$("#tableForm"));
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+</script>

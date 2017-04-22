@@ -1,0 +1,86 @@
+
+
+/* IE 8 Styles */
+
+
+.ie8 #page{
+	width:1020px;
+}
+
+.ie8 #site_head{
+	background: #3D4C54;
+} 
+
+.ie8 .navbar .nav {
+	float: right;
+}
+
+.ie8 .navbar .nav li a {
+	padding-left: 7px !important;
+	padding-right: 7px !important;
+	font-size:12px;
+}
+
+.ie8 #intr,
+.ie8 .brnews{
+	overflow: hidden;
+}
+
+.ie8 .simply-scroll-container {
+	position: absolute !important;
+}
+
+
+.ie8 .simply-scroll-clip {
+    position: relative !important;
+	padding-top:0;
+	padding-bottom:0;
+	overflow:hidden !important;
+}	
+
+.ie8 .brnews ul{
+	width: 570px !important;
+	position: absolute !important;
+	top: 0;
+	left: 117px;
+}
+
+.ie8 .flex-direction-nav .flex-next {right: 5px; }
+
+.ie8 .flex-direction-nav .flex-prev {left: 5px;}
+
+.ie8 #slider .entry{
+	background: #3d4c54;
+	display: none;
+}
+
+.ie8 #slider .entry{
+	display: block;
+	padding: 5px;
+}
+
+.ie8 #slider .entry p{
+	display: none;
+}
+
+.ie8 .flex-control-thumbs .flex-active {
+	background:#53626b url('../images/thumb-active-ie8.png') top center no-repeat;
+}
+
+.ie8 #home-top ul li{
+	margin-right:40px !important;
+}
+
+/* IE 9 Styles */
+
+.ie9 .container, .ie9 .navbar-static-top .container, .ie9 .navbar-fixed-top .container, .ie9 .navbar-fixed-bottom .container {width:1170px !important;}
+
+.ie9 .simply-scroll .simply-scroll-clip {float:left !important;max-width:700px !important;}
+
+.ie9 #slide-right ul li {margin: 12px 12px 13px !important;}
+
+.ie9 .flex-direction-nav .flex-next {right:5px !important;} 
+
+.ie9 .flex-direction-nav .flex-prev {left:5px !important;}
+
+.ie9 .video-box ul li:last-child {margin-right:0 !important;}

@@ -1,0 +1,164 @@
+ <#assign keys=totalMap?keys/>
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.data"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-graph"></i>
+								<a href="#"><@s.m 'cms.function.flow'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "cmsAccess.area"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+		<div class="well">
+        <div class="row">
+                 <div class="form-group">
+					<div class="col-md-12">
+								<form id="tableForm" action="flow/area/v_list.do" method="post" style="padding-top:5px;">
+								<label class="radio-inline"><@s.m "statistic.function.year"/>:</label>
+                                <input class="form-control form-control-inline input-small year-picker radio-inline"  name="year"  size="4"  type="text" value="${year!}">
+								<label class="radio-inline"><@s.m "statistic.function.days"/>:</label>
+                                <input class="form-control form-control-inline input-medium date-picker radio-inline"  name="begin" data-date-format="yyyy-mm-dd" size="16"  type="text" value="${begin!?string('yyyy-MM-dd')}">
+                                <input class="form-control form-control-inline input-medium date-picker radio-inline"  name="end" data-date-format="yyyy-mm-dd" size="16"  type="text" value="${end!?string('yyyy-MM-dd')}">
+								<input id="flag" name="flag" type="hidden" value="1"/>
+								<input id="type" name="type" type="hidden" value="${type!}"/>
+								<input class="btn blue-steel" type="button" onclick="statisticYear()" value="<@s.m 'statistic.function.year'/>"/>
+								<input class="btn blue-madison" type="button" onclick="statisticDays()" value="<@s.m 'statistic.function.days'/>"/>
+								<input class="btn bg-green-jungle" type="button" onclick="statisticDay()" value="<@s.m 'statistic.function.day'/>"/>
+								</form>
+						</div>
+					</div>
+         </div>
+         </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-graph"></i><@s.m "cmsAccess.area"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                        	<div class="table-responsive">
+                        				<div style=" text-align: center; ">
+                        				<#if target==0>pv<#elseif target==1>ip<#else><@s.m "statistic.target.visitors"/></#if>
+										<#if flag==1>
+										<@s.m "statistic.function.days"/>
+										<#elseif flag==2>
+										<@s.m "statistic.function.year"/>
+										<#else>
+										<@s.m "statistic.function.day"/>
+										</#if>
+										</div>
+                             			<#if keys?size  gt 0>
+			 							<div id="left_container" style=" float: left; width: 50%; ">
+										</div>
+										<div id="right_container" style=" float: right; width: 50%; ">
+											<#if areaCountMap?keys?size  gt 0>
+											<table class="table">
+											<tr><th>地区</th><th>pv</th><th>ip</th><th>访客</th><th>访问时长</th></tr>
+											<#list areaCountMap?keys as area>
+											<tr>
+											<td>${area}</td>
+											<#list areaCountMap["${area}"] as c>
+												<#if c_index<4>
+												<td>${c!?string("0")}</td>
+												</#if>
+											</#list>
+											</tr>
+											</#list>
+											</table>
+											<#else>
+											<@s.m "statistic.noresult"/>
+											</#if>
+										</div>
+										<#else>
+											<@s.m "statistic.noresult"/>
+										</#if>
+							 </div>			
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script class="code" type="text/javascript">
+jQuery(document).ready(function() {    
+Metronic.initAjax(); 
+ComponentsPickers.handleYearPickers();
+ComponentsPickers.handleDatePickers();
+$('#left_container').highcharts({
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false
+    },
+    credits: {
+		href: 'http://www.jeecmstheme.com',
+		text: 'jeecms主题站'
+   },
+    title: {
+        text: null
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+            	  enabled: true,
+                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                  style: {
+                      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                  }
+            },
+            showInLegend: true
+        }
+    },
+    legend: {
+        verticalAlign: 'top',
+        borderWidth: 0
+    },
+    series: [{
+        type: 'pie',
+        name: '占比',
+        data: [
+			<#list keys as s>
+			  ['${s}',   ${totalMap["${s}"]}]
+			<#if s_has_next>,</#if>
+			</#list>
+        ]
+    }]
+	});
+});
+function statisticYear(){
+	$("#flag").val(2);
+	submitFormMsg($("#tableForm"));
+}
+function statisticDays(){
+	$("#flag").val(1);
+	submitFormMsg($("#tableForm"));
+}
+function statisticDay(){
+	$("#flag").val(0);
+	submitFormMsg($("#tableForm"));
+}
+</script>

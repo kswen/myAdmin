@@ -1,0 +1,151 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                          信息<@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-notebook"></i>
+								<a href="#"> 信息<@s.m "cms.function.maintain"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="scoreitem/v_list.do?groupId=${groupId!}" class="ajaxify"><@s.m "cmsScoreItem.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						<@cms_perm url="/scoreitem/v_add.do">
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "global.add"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+								 	<li><a href="scoreitem/v_add.do?groupId=${groupId!}" class="ajaxify"> <@s.m "global.add"/> </a></li>
+								</ul>
+							</div>
+						</div>
+						</@cms_perm>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+            <script>
+               Metronic.alert({
+                   place: "append", 
+                   type: "success",  
+                   message: '<@s.mt code=message text=message/>',  
+                   close: true, 
+                   reset: true, 
+                   focus: true, 
+                   closeInSeconds: 5, 
+                   icon: "check"
+               });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa  fa-list"></i><@s.m "global.list"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body  flip-scroll">
+                            <div class="table-responsive">
+                            <form id="tableForm" method="post">
+							<input type="hidden" name="pageNo" value="${pageNo!}"/>
+							<input type="hidden" name="groupId" value="${groupId!}"/>
+							<@p.table class="table table-bordered table-striped table-condensed flip-content table-hover" listAction="scoreitem/v_list.do" value=pagination;cmsScoreItem,i,has_next><#rt/>
+								<@p.column title="<input type='checkbox' onclick='checkAll(\"ids\",this.checked)'/>" width="20">
+									<label class="class4ids"><input type='checkbox' name='ids' value='${cmsScoreItem.id}'/></label><#t/>
+								</@p.column><#t/>
+								<@p.column title="ID">${cmsScoreItem.id}</@p.column><#t/>
+								<@p.column code="cmsScoreGroup.name">${cmsScoreItem.group.name}</@p.column><#t/>
+								<@p.column code="cmsScoreItem.name">${cmsScoreItem.name}</@p.column><#t/>
+								<@p.column code="cmsScoreItem.score">${cmsScoreItem.score}</@p.column><#t/>
+								<@p.column code="cmsScoreItem.priority">${cmsScoreItem.priority}</@p.column><#t/>
+								<@p.column code="cmsScoreItem.imagePath">${cmsScoreItem.imagePath}</@p.column><#t/>
+								<@p.column code="global.operate" align="center">
+									<a href="scoreitem/v_edit.do?id=${cmsScoreItem.id}&groupId=${groupId!}&pageNo=${pageNo!}" class="ajaxify btn default btn-xs green-stripe"><@s.m "global.edit"/></a> | <#rt/>
+									<a href="javascript:void(0)" onclick="deleteSingle('scoreitem/o_delete.do?ids=${cmsScoreItem.id}&groupId=${groupId!}&pageNo=${pageNo!}')" class="btn default btn-xs red-stripe"><@s.m "global.delete"/></a><#t/>
+								</@p.column><#t/>
+							</@p.table>
+							<div>
+							<input class="btn btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/>
+							</div>
+							</form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+function getTableForm() {
+    return document.getElementById('tableForm');
+}
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        });
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    var f = getTableForm();
+    var url ="scoreitem/o_delete.do";
+    submitForm(url, f);
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $("input[name=" + name + "]:checkbox").each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("input[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+</script>

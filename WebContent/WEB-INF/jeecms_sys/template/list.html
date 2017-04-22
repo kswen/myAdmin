@@ -1,0 +1,341 @@
+            <!-- BEGIN PAGE HEADER-->
+             <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-magic-wand"></i>
+								<a href="template/v_list.do" class="ajaxify"><@s.m "template.function"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						</div>
+						<!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+            <script>
+               Metronic.alert({
+                   place: "append", 
+                   type: "success",  
+                   message: '<@s.mt code=message text=message/>',  
+                   close: true, 
+                   reset: true, 
+                   focus: true, 
+                   closeInSeconds: 5, 
+                   icon: "check"
+               });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                        <div class="modal fade" id="file_list_container" tabindex="-1" role="basic" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                            <h4 class="modal-title">待上传文件列表</h4>
+                                        </div>
+                                        <div id="container"></div>
+                                        <div class="modal-body" id="filelist">
+                                            <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+                                            <p>你的浏览器太古老了，不支持 Flash, Silverlight 和 HTML5.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn green-meadow" id="uploadfiles">上传文件</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                             <div class="col-md-12 well">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <span class="form-control-static"><@s.m "resource.currentDir"/>: ${root}</span>
+                                    <@cms_perm url="/template/o_swfupload.do">
+                                    <a data-toggle="modal" href="#file_list_container" id="pickfiles" class="btn btn-sm green-meadow"><i class="fa fa-folder-open-o"></i>上传文件...</a>
+                                    </@cms_perm>
+                                    </div>
+                                </div>
+                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                    <@cms_perm url="/template/o_create_dir.do">
+                                     <span class="form-control-static"><@s.m "template.addDir"/>: </span><input type="text" name="dirName" id="dirName" class="form-control input-small radio-inline" onkeypress="if(event.keyCode==13){$('#dirButton').click();return false;}"/>
+                                        <button type="button" class="btn btn-sm purple" id="dirButton" onclick="createDir()"><i class="fa fa-folder-o"></i> <@s.m "template.createDir"/></button>
+                                    </td>
+                                    </@cms_perm>
+                                    </div>
+                                </div>   
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <@cms_perm url="/template/v_add.do">
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="createFile()"><i class="fa  fa-file-text-o"></i> <@s.m "template.addTpl"/></button>
+                                    </@cms_perm>
+                                    </div>
+                                </div>
+                    </div>    
+                 </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa  fa-list"></i><@s.m "global.list"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div id="sd" style="display:none;position:absolute;height:300px;width:300px"></div>
+                        <div class="portlet-body  flip-scroll">
+                            <div class="table-responsive">
+                            <form id="tableForm" method="post">
+							<input type="hidden" name="root" value="${root}"/>
+							<@p.table class="table table-bordered table-striped table-condensed flip-content table-hover"  value=list;template,i,has_next><#rt/>
+							    <@p.column title="<input type='checkbox' onclick='checkAll(\"names\",this.checked)'/>" width="20">
+                                  <label class="class4ids"><input type='checkbox' name='names' value='${template.name}'/></label><#t/>
+							    </@p.column><#t/>
+							    <@p.column title=" " width="20" align="center"><img src="${base}/res/common/img/file/${template.directory?string('folder','html')}.gif"/></@p.column><#t/>
+							    <@p.column code="template.filename">${template.filename}</@p.column><#t/>
+							    <@p.column code="template.size" align="right">${template.size} KB</@p.column><#t/>
+							    <@p.column code="template.lastModified" align="center">${template.lastModifiedDate?string('yyyy-MM-dd HH:mm:ss')}</@p.column><#t/>
+							    <@p.column code="global.operate" align="center">
+							        <@cms_perm url="/template/v_rename.do">
+							        <a href="template/v_rename.do?root=${root?url}&name=${template.name?url}" class="ajaxify btn default btn-xs yellow-stripe"><@s.m "template.rename"/></a> | <#rt/>
+							        </@cms_perm>
+							        <@cms_perm url="/template/v_edit.do">
+							        <#if !template.directory>
+                                    <a href="template/v_edit.do?root=${root?url}&name=${template.name?url}" class="ajaxify btn default btn-xs blue-stripe"><@s.m "global.edit"/></a>
+                                     | <#rt/>
+                                     </#if>
+							        </@cms_perm>
+							        <@cms_perm url="/template/o_delete_single.do">
+							        <a href="javascript:void(0)" onclick="deleteTheSingle('template/o_delete_single.do?root=${root?url}&name=${template.name?url}')" class="btn default btn-xs red-stripe"><@s.m "global.delete"/></a><#t/>
+							        </@cms_perm>
+							    </@p.column><#t/>
+							</@p.table>
+								<div  style="margin-top:15px;">
+							    <@cms_perm url="/template/o_delete.do">
+							    <input type="button" value="<@s.m "global.delete"/>" onclick="optDelete();" class="btn btn-danger"/>
+							    </@cms_perm>
+							</div>
+							</form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   Metronic.initAjax();
+        var uploader = new plupload.Uploader({
+            runtimes : 'html5,flash,silverlight,html4',
+            browse_button : 'pickfiles', // you can pass in id...
+            container: document.getElementById('container'), // ... or DOM Element itself
+            multipart_params:{"root" : "${root}"},
+            url: "template/o_swfupload.do",
+            flash_swf_url : '${base}/assets/plugins/plupload/js/Moxie.swf',
+            silverlight_xap_url : '${base}/assets/plugins/plupload/js/Moxie.xap',
+            chunk_size : '1mb',
+            rename : true,
+            dragdrop: true,
+            sortable: true,
+            filters : {
+                max_file_size : '1000mb',
+                mime_types: [
+                    {title : "HTML files", extensions : "html,htm"}
+                ]
+            },
+
+            init: {
+                PostInit: function() {
+                    document.getElementById('filelist').innerHTML = '';
+                    document.getElementById('uploadfiles').onclick = function() {
+                        uploader.start();
+                        return false;
+                    };
+                },
+
+                FilesAdded: function(up, files) {
+                    plupload.each(files, function(file) {
+                        document.getElementById('filelist').innerHTML += '<div class="alert alert-success" id="' + file.id + '">'  + file.name +' ('+plupload.formatSize(file.size) +') <b></b></div>';
+                    });
+                },
+
+                UploadProgress: function(up, file) {
+                    document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span class="label label-success">' + file.percent + "%</span>";
+                },
+
+                Error: function(up, err) {
+                    document.getElementById('filelist').innerHTML += "\nError #" + err.code + ": " + err.message;
+                },
+                UploadComplete: function(up, files) {
+                    sendR("template/v_list.do?root=${root}");
+                    $(".modal-backdrop").remove();
+                }
+            }
+        });
+
+        uploader.init();
+});
+function getTableForm() {
+    return document.getElementById('tableForm');
+}
+function optDelete() {
+    if(checkedCount('names')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        });
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    var f = getTableForm();
+    var url ="template/o_delete.do";
+    submitForm(url, f);
+}
+function createDir() {
+    var v = $('#dirName').val();
+    if(v=="") {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '请输入目录名称',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        });
+        return;
+    }
+    sendR("template/o_create_dir.do?root=${root}&dirName="+v);
+}
+function createFile() {
+    var url = "template/v_add.do?root=${root}"; 
+    sendGet(url);
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $("input[type=checkbox][name=" + name + "]").each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("input[type=checkbox][name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+function submitForm(url, form){
+    var postData = $(form).serialize();
+	Metronic.startPageLoading();
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: postData,
+           success: function(data)
+           {
+               var pageContentBody = $('.page-content .page-content-body');
+               pageContentBody.html(data);
+               UITree.ajaxLeftTemplateTree();
+               $("#left_template_tree").jstree("refresh");
+               Metronic.stopPageLoading();
+           },
+		  error: function(XMLHttpRequest, textStatus, errorThrown) { 
+				var pageContentBody = $('.page-content .page-content-body');
+				pageContentBody.html(XMLHttpRequest.responseText);
+				Metronic.stopPageLoading();
+	          }
+         });
+}
+var max=300;
+function showImage(a) {
+    var img = $("<img src='"+ a.href +"' style='border:1px solid #ccc;'/>");
+    var imgDiv = $("#sd").append(img);  
+    imgDiv.show();
+    
+    var width = img.attr("width");
+    var height = img.attr("height");
+    if(width>=height&&width>max) {
+        height = height*max/width;
+        width = max;
+    } else if(height>=width||height>max) {
+        width = width*max/height;
+        height = max;
+    }
+    var offset = $(a).offset();
+    imgDiv.css("left",offset.left+$(a).outerWidth()+3); 
+    var buttom = $(window).height()+$(document).scrollTop()-max-offset.top;
+    if(buttom<0) {
+        imgDiv.css("top",offset.top+buttom-200);
+    } else {
+        imgDiv.css("top",offset.top-200);
+    }
+    img.width(width);
+    img.height(height);
+}
+function hideImage(a) {
+    $("#sd").empty().hide();
+}
+function deleteTheSingle(url){
+	 if(confirm('确定删除？')){
+		 	Metronic.startPageLoading();
+		    $.ajax({
+		        type: "POST",
+		        url: url,
+		        success: function(data)
+		        {
+		            var pageContentBody = $('.page-content .page-content-body');
+		            pageContentBody.html(data);
+		            reloaddiyMenu(url);
+		            Metronic.stopPageLoading();
+		            UITree.ajaxLeftTemplateTree();
+		            $("#left_template_tree").jstree("refresh");
+		        },
+				error: function(XMLHttpRequest, textStatus, errorThrown) { 
+					var pageContentBody = $('.page-content .page-content-body');
+					pageContentBody.html(XMLHttpRequest.responseText);
+					Metronic.stopPageLoading();
+		        }
+		      });
+	    }else{
+	        return false; 
+	    }
+}
+</script>

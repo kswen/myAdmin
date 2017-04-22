@@ -1,0 +1,48 @@
+<#if isRoot>
+[{
+    "text": "<@s.m "channel.root"/>",
+    "icon" : "fa fa-folder icon-state-warning"
+    <#if list?size gt 0>,
+    "a_attr":{
+        "href":"content/v_list.do",
+        "class":"ajaxify"
+    },
+    "state":{
+        "open":"true"
+    },
+    "children": [
+    <#list list as channel>
+    <#if channel.hasContent || channel.child?size gt 0>
+        {
+        "id": "${channel.id}",
+        "text": "${channel.name}",
+        "icon" : <#if channel.child?size gt 0>"fa fa-folder icon-state-warning"<#else>"fa fa-file icon-state-warning"</#if>,
+         "a_attr":{
+            "href":"content/v_list.do?cid=${channel.id}",
+            "class":"ajaxify"
+         },
+        "children": <#if channel.child?size gt 0>true<#else>false</#if>
+        }<#if channel_has_next>,</#if>
+    </#if>    
+    </#list>
+    ]
+    </#if>
+}]
+<#else>
+    [
+    <#list list as channel>
+    <#if channel.hasContent || channel.child?size gt 0>
+        {
+        "id": "${channel.id}",
+        "text": "${channel.name}",
+        "icon" : <#if channel.child?size gt 0>"fa fa-folder icon-state-warning"<#else>"fa fa-file icon-state-warning"</#if>,
+        "a_attr":{
+           "href":"content/v_list.do?cid=${channel.id}",
+            "class":"ajaxify"
+         },
+         "children": <#if channel.child?size gt 0>true<#else>false</#if>
+        }<#if channel_has_next>,</#if>
+    </#if>    
+    </#list>
+    ]
+</#if>

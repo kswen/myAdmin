@@ -1,0 +1,132 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.user"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-user"></i>
+								<a href="#" >用户管理</a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="role/v_list.do" class="ajaxify"> <@s.m "cmsRole.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#" > <@s.m "cmsRole.member.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i> <@s.m "cmsRole.member.function"/><@s.m "global.list"/> <span class="label label-danger"><@s.m "cmsRole.member.delete.help"/></span>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body flip-scroll">
+                                        <!-- BEGIN FORM-->
+                                            <form id="tableForm" method="post">
+											<@p.table class="table table-bordered table-striped table-condensed flip-content" listAction='role/v_list_members.do' value=pagination;cmsUser,i,has_next><#rt/>
+											    <@p.column title="<input type='checkbox' onclick='checkAll(\"userIds\",this.checked)'/>" width="20">
+											        <label class="class4ids"><input type='checkbox' name='userIds' value='${cmsUser.id}'/><#t/></label>
+											   </@p.column><#t/>
+												<@p.column title="ID">${cmsUser.id}</@p.column><#t/>
+												<@p.column code="cmsUser.username">
+													<div title="<#list cmsUser.userSites as us>${us.site.domain} (${us.site.name})<#if us_has_next>\n</#if></#list>">${cmsUser.username}<#if cmsUser.realname??> (${cmsUser.realname})</#if></div>
+												</@p.column><#t/>
+												<@p.column code="cmsUser.role"><#list cmsUser.roles as r><div style="float:left;padding-right:3px">${r.name}</div></#list><div style="clear:both"></div></@p.column><#t/>
+												<@p.column code="cmsUser.rank" align="center">${cmsUser.rank}</@p.column><#t/>
+												<@p.column code="cmsUser.lastLogin" align="center">${cmsUser.lastLoginTime?string('yyyy-MM-dd HH:mm:ss')}<br/>${cmsUser.lastLoginIp}</@p.column><#t/>
+												<@p.column code="cmsUser.loginCountForList" align="right">${cmsUser.loginCount}</@p.column><#t/>
+												<@p.column code="cmsUser.disabled" align="center"><#if cmsUser.disabled><span style="color:red"><@s.m "global.true"/></span><#else><@s.m "global.false"/></#if></@p.column><#t/>
+												<@p.column code="global.operate" align="center">
+													<a href="javascript:void(0)" onclick="deleteSingle('role/o_delete_member.do?roleId=${roleId!}&userIds=${cmsUser.id}&pageNo=${pageNo!}')" class="btn btn-xs red-stripe"><@s.m "cmsRole.member.delete"/></a><#t/>
+												</@p.column><#t/>
+											</@p.table>
+											<input type="hidden" value="${roleId!}" name="roleId"/>
+											<div style="margin-top:15px;"><input class="btn btn-danger" type="button" value="<@s.m "cmsRole.member.delete"/>" onclick="optDelete();"/></div>
+											</form>
+                                        <!-- END FORM-->
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+	Metronic.initAjax();
+});
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $('input[name=' + name + ']:checkbox').each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+function optDelete() {
+    if(checkedCount('userIds')<=0) {
+    	Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        }); 
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    var f = $("#tableForm");
+    submitForm("role/o_delete_member.do",f)
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+</script>

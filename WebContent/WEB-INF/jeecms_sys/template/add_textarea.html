@@ -1,0 +1,312 @@
+<script src="${base}/r/cms/front.js" type="text/javascript"></script>
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-magic-wand"></i>
+								<a href="template/v_list.do" class="ajaxify"><@s.m "template.function"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.add"/></a>
+							</li>
+						</ul>
+						</div>
+						<!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.add"/>
+                                        </div>
+                                        <div class="tools">
+											<a href="#" class="collapse" data-original-title="" title="">
+											</a>
+											<a href="#" class="fullscreen" data-original-title="" title="">
+											</a>
+											<a href="#" class="remove" data-original-title="" title="">
+											</a>
+										</div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="template/o_save.do" id="jvForm"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-1 control-label"><@s.m "template.filename"/></label>
+                                                    <div class="col-md-3">
+                                                         <@p.text name="filename" class="form-control input-small radio-inline" maxlength="100" id="filename"/><span class="label bg-grey">.html</span>
+                                                    </div>
+                                                    <label class="col-md-1 control-label">编辑器</label>
+                                                    <div class="col-md-3">
+                                                         <select onchange="changeTheme(this.value)" class="form-control input-medium" size="1" id="myadmin_ace_theme_option"> 
+                                                         <optgroup label="Bright">
+	                                                         <option value="ace/theme/chrome">Chrome</option>
+	                                                         <option value="ace/theme/clouds">Clouds</option>
+	                                                         <option value="ace/theme/crimson_editor">Crimson Editor</option>
+	                                                         <option value="ace/theme/dawn">Dawn</option>
+	                                                         <option value="ace/theme/dreamweaver">Dreamweaver</option>
+	                                                         <option value="ace/theme/eclipse">Eclipse</option>
+	                                                         <option value="ace/theme/github">GitHub</option>
+	                                                         <option value="ace/theme/solarized_light">Solarized Light</option>
+	                                                         <option value="ace/theme/textmate">TextMate</option>
+	                                                         <option value="ace/theme/tomorrow">Tomorrow</option>
+	                                                         <option value="ace/theme/xcode">XCode</option>
+	                                                         <option value="ace/theme/kuroir">Kuroir</option>
+	                                                         <option value="ace/theme/katzenmilch">KatzenMilch</option>
+                                                         </optgroup>
+                                                         <optgroup label="Dark">
+	                                                         <option value="ace/theme/ambiance">Ambiance</option>
+	                                                         <option value="ace/theme/chaos">Chaos</option>
+	                                                         <option value="ace/theme/clouds_midnight">Clouds Midnight</option>
+	                                                         <option value="ace/theme/cobalt">Cobalt</option>
+	                                                         <option value="ace/theme/idle_fingers">idle Fingers</option>
+	                                                         <option value="ace/theme/kr_theme">krTheme</option>
+	                                                         <option value="ace/theme/merbivore">Merbivore</option>
+	                                                         <option value="ace/theme/merbivore_soft">Merbivore Soft</option>
+	                                                         <option value="ace/theme/mono_industrial">Mono Industrial</option>
+	                                                         <option value="ace/theme/monokai">Monokai</option>
+	                                                         <option value="ace/theme/pastel_on_dark">Pastel on dark</option>
+	                                                         <option value="ace/theme/solarized_dark">Solarized Dark</option>
+	                                                         <option value="ace/theme/terminal">Terminal</option>
+	                                                         <option value="ace/theme/tomorrow_night">Tomorrow Night</option>
+	                                                         <option value="ace/theme/tomorrow_night_blue">Tomorrow Night Blue</option>
+	                                                         <option value="ace/theme/tomorrow_night_bright">Tomorrow Night Bright</option>
+	                                                         <option value="ace/theme/tomorrow_night_eighties">Tomorrow Night 80s</option>
+	                                                         <option value="ace/theme/twilight">Twilight</option>
+	                                                         <option value="ace/theme/vibrant_ink">Vibrant Ink</option>
+                                                         </optgroup>
+                                                         </select>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                    <a href="#directiveDialog" class="btn bg-green-jungle" data-toggle="modal"><i class="fa fa-file-code-o"></i> 预定义标签</a>
+                                                    <a href="#tempDialog" class="btn bg-green-seagreen" data-toggle="modal" ><i class="fa fa-file-code-o"></i> <@s.m 'directive.directive.temp'/></a>
+                                                    </div>
+                                                </div>
+                                               <span  style="display:none;" >
+                                               <textarea  name="source" id="tsource" maxlength="1232896"></textarea>
+                                               </span>
+                                                <div class="form-group">
+                                                    <label class="col-md-1 control-label">内容</label>
+                                                     <style type="text/css" media="screen">
+                                                    #source_editor { 
+                                                        position: absolute;
+                                                        top:  1px;
+                                                        right: 5px;
+                                                        bottom: 0px;
+                                                        left: 5px;
+                                                        height:100%;
+                                                        min-height:500px;
+                                                    }
+                                                    </style>
+                                                    <script>
+                                                    var editor = ace.edit("source_editor");
+                                                    var aceTheme = store.get('myadmin_ace_theme_option');
+                                                    if(aceTheme!==undefined){
+                                                    	editor.setTheme(aceTheme);
+                                                    }else{
+                                                    	editor.setTheme("ace/theme/chrome");
+                                                    }
+                                                    editor.getSession().setMode("ace/mode/html");
+                                                    </script>
+                                                    <div class="col-md-11" style="height:100%; min-height:750px;margin-bottom: 2px;">
+                                                          <div id="source_editor"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="root" value="${root}"/>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="button" class="btn green-meadow" onclick="addFile();"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                    <!-- directiveDialog start -->
+                                     <div id="directiveDialog" class="modal fade" tabindex="-1" aria-hidden="true">
+									 <div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+												<h4 class="modal-title"><@s.m 'directive.directives'/></h4>
+											</div>
+											<div class="modal-body">
+												<div class="scroller" style="height:345px" data-always-visible="1" data-rail-visible1="1">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+																<p class="text-danger"> <@s.m  "directive.directives.help"/></p>
+																<div class="form-group">
+																	<label class="col-md-3 control-label"><@s.m "directive.directives"/></label>
+																	<div class="col-md-9">
+																		<select name="tpl" id="selectTpl" onchange="selectTpl()" class="form-control input-medium radio-inline">
+																		<#list directives as d>
+																		<option value="${d.id}">${d.name!}</option>
+																		</#list>
+																		</select>
+																	</div> 
+																</div>
+																<div class="form-group">
+																	<label class="col-md-3 control-label"><@s.m "directive.description"/></label>
+																	<div class="col-md-9">
+																		<div  id="selectDecri">
+																			<p class="form-control-static">
+																			<#if directives?size gt 0>${directives[0].description!}</#if>
+																			</p>
+																		</div>
+																	</div>
+																</div>
+																<div class="form-group">
+																	<label class="col-md-3 control-label"><@s.m "directive.code"/></label>
+																	<div class="col-md-9">
+																		<textarea  id="selectCode" class="form-control" rows="10"><#if directives?size gt 0>${directives[0].code!}</#if></textarea>
+																		<#list directives as d>
+																		<textarea style="display: none;" class="form-control" id="t_${d.id}">${d.code!}</textarea>
+																		<textarea style="display: none;" class="form-control" id="d_${d.id}">${d.description!}</textarea>
+																		</#list>
+																	</div>
+																</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" data-dismiss="modal" class="btn green-meadow" id="choosePreDefinedDirective"><@s.m code='directive.code.insert'/></button>
+											</div>
+											</div>
+										</div>
+									 </div>
+									 <!-- directiveDialog end -->
+                                    <!-- tempDirectiveDialog start -->
+                                     <div id="tempDialog" class="modal fade" tabindex="-1" aria-hidden="true">
+									 <div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+												<h4 class="modal-title"><@s.m 'directive.directives'/></h4>
+											</div>
+											<div class="modal-body">
+												<div class="scroller" style="height:520px" data-always-visible="1" data-rail-visible1="1">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+																<p class="text-danger"> <@s.m  "directive.directives.help"/></p>
+																 <@p.form tableClass="table table-hover table-striped table-bordered vtable" id="tempForm" action="directive/v_getcode.do" labelWidth="12">
+																<@p.td required="true" label='directive.module'>
+																<@p.select class="form-control input-small" onchange="selectModule()" list={"channel":"directive.channel","content":"directive.content","comment":"directive.comment","topic":"directive.topic","vote":"directive.vote","guestbook":"directive.guestbook","advertise":"directive.advertise","link":"directive.link","tag":"directive.tag"} name="module" id="module" colspan="2" width="100"/>
+																</@p.td>
+																<@p.tr/>
+																<@p.td colspan="2" label='directive.module.rule'>
+																<div id="operator"></div>
+																</@p.td><@p.tr/>
+																</@p.form>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" data-dismiss="modal" class="btn green-meadow" id="chooseTempDirective"><@s.m code='directive.code.insert'/></button>
+											</div>
+											</div>
+										</div>
+									 </div>
+									 <!-- tempDirectiveDialog end -->
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+$(function() {
+	 var aceTheme = store.get('myadmin_ace_theme_option');
+     if(aceTheme!==undefined){
+    	 $("#myadmin_ace_theme_option").val(aceTheme);
+     }
+	$("#operator").load("directive/module.do?module=channel");
+	$('#choosePreDefinedDirective').click(function(){
+		var directive=$("#selectCode").val();
+		insert(directive);
+	});
+	$('#chooseTempDirective').click(function(){
+	    $.ajax({
+		    	url: 'directive/v_getcode.do',
+		        type: 'POST',
+		        dataType: 'json',
+		        data: $("#tempForm").serialize(),
+		        success:  function (data) {
+					insert(data.code);
+		        }
+	     });
+	});
+});
+function changeTheme(value){
+	editor.setTheme(value);
+	store.set('myadmin_ace_theme_option', value);
+}
+function addFile(){
+    $("#tsource").val(editor.getValue());
+     var fileName = $("#filename").val();
+    if(fileName=="") {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '请输入文件名称',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        });
+        return;
+    }
+    submitTheForm("#jvForm");
+}
+function submitTheForm(form){
+    var url = $(form).attr("action"); 
+    var postData = $(form).serialize();
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: postData,
+           success: function(data)
+           {
+               var pageContentBody = $('.page-content .page-content-body');
+               pageContentBody.html(data);
+               UITree.ajaxLeftTemplateTree();
+               $("#left_template_tree").jstree("refresh");
+           },
+			  error: function(XMLHttpRequest, textStatus, errorThrown) { 
+					var pageContentBody = $('.page-content .page-content-body');
+					pageContentBody.html(XMLHttpRequest.responseText);
+		          }
+         });
+}
+function designDialog(url){
+	var html=$("#source").val();
+	var result=window.showModalDialog(url,html,"dialogHeight:800px;dialogWidth:1000px;center:yes;resizable: yes;");
+	if(result!=null){
+		$("#source").val(result);
+	}
+}
+function selectTpl(){
+	var id=$('#selectTpl').val();
+	$("#selectDecri").html($("#d_"+id).val());
+	$("#selectCode").val($("#t_"+id).val());
+}
+//insert into begin place if did not find curson position properly
+function insert(str){
+	editor.insert(str);
+}
+function selectModule(){
+	var module=$("#module").val();
+	$("#operator").load("directive/module.do?module="+module);
+}
+</script>

@@ -1,0 +1,210 @@
+	            <!-- BEGIN PAGE HEADER-->
+	                    <h3 class="page-title">
+	                    <@s.m "cms.function.data"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-rocket"></i>
+								<a href="#"><@s.m 'cms.content.rank'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> 
+									<#if orderBy??>
+									<#switch orderBy>
+									<#case 6>
+										<@s.m "content.orderBy.6"/>
+										<#break>
+									<#case 7>
+										<@s.m "content.orderBy.7"/>
+										<#break>
+									<#case 8>
+										<@s.m "content.orderBy.8"/>
+										<#break>
+									<#case 9>
+										<@s.m "content.orderBy.9"/>
+										<#break>
+									<#case 10>
+										<@s.m "content.orderBy.10"/>
+										<#break>
+									<#case 11>
+										<@s.m "content.orderBy.11"/>
+										<#break>
+									<#case 12>
+										<@s.m "content.orderBy.12"/>
+										<#break>
+									<#case 13>
+										<@s.m "content.orderBy.13"/>
+										<#break>			
+									<#case 14>
+										<@s.m "content.orderBy.14"/>
+										<#break>
+									<#case 15>
+										<@s.m "content.orderBy.15"/>
+										<#break>
+									<#case 16>
+										<@s.m "content.orderBy.16"/>
+										<#break>
+									<#case 17>
+										<@s.m "content.orderBy.17"/>
+										<#break>			
+									<#case 18>
+										<@s.m "content.orderBy.18"/>
+										<#break>
+									<#case 19>
+										<@s.m "content.orderBy.19"/>
+										<#break>
+									<#case 20>
+										<@s.m "content.orderBy.20"/>
+										<#break>
+									<#case 21>
+										<@s.m "content.orderBy.21"/>
+										<#break>
+									<#default>	
+									</#switch>
+								</#if>
+                                </a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+            <script>
+               Metronic.alert({
+                   place: "append", 
+                   type: "success",  
+                   message: '<@s.mt code=message text=message/>',  
+                   close: true, 
+                   reset: true, 
+                   focus: true, 
+                   closeInSeconds: 5, 
+                   icon: "check"
+               });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+							<div class="caption">
+								<i class="fa  fa-list"></i>内容列表信息
+							</div>
+							<div class="tools">
+								<a href="#" class="collapse" data-original-title="" title="">
+								</a>
+								<a href="#" class="fullscreen" data-original-title="" title="">
+								</a>
+								<a href="#" class="remove" data-original-title="" title="">
+								</a>
+							</div>
+						</div>
+                        <div style="display:none;">
+                        <form id="batchForm">
+                        </form>
+                        </div>
+                        <div class="portlet-body  flip-scroll">
+                            <div class="table-responsive">
+                            <form id="tableForm" method="post">
+							<input type="hidden" name="pageNo" value="${pageNo!}"/>
+							<input type="hidden" name="orderBy" value="${orderBy!}"/>
+							<#list .data_model?keys as pkey>
+								<#if pkey?starts_with('query')><input type="hidden" name="${pkey}" value="${(.data_model[pkey])!?string}"/></#if><#t/>
+							</#list>
+							<input type="hidden" name="rejectStep"/>
+							<input type="hidden" name="rejectOpinion"/>
+							<@cms_content_page count='${pageSize!}' titLen='12' orderBy='${orderBy!}' channelOption='1' >
+							<@p.table class="table table-bordered table-striped table-condensed flip-content table-hover" listAction="content/rank_list.do" value=tag_pagination;content,i,has_next><#rt/>
+								<@p.column title="ID" align="center">${content.id}</@p.column><#t/>
+								<@p.column code="content.title">
+									<#if content.model.id gt 0&&content.model.id lt 10><img src="${base}/res/common/img/theme/model-${content.model.id}.gif"/>
+									<#else><img src="${base}/res/common/img/theme/model-0.gif"/>
+									</#if>
+									<#if content.topLevel gt 0><span style="color:red">[<@s.m "content.topLevel.short"/>${content.topLevel}]</span></#if>
+									<#if content.recommend><span style="color:red">[<@s.m "content.recommend.short"/>]</span></#if>
+									<strong>[${content.channel.name}]</strong>
+									<a href="${content.url}" target="_blank"><@text_cut s=content.title?html len=25 append="..."/></a>
+									<#if content.checkOpinion??>
+									<br/><span style="color:red">${content.checkOpinion}</span>
+									</#if>
+								</@p.column><#t/>
+								<@p.column code="content.type" align="center">${content.type.name}</@p.column><#t/>
+								<@p.column code="content.user" align="center">${content.user.username}</@p.column><#t/>
+								<@p.column code="content.views" align="center">${content.views}</@p.column><#t/>
+								<#if orderBy??>
+									<#switch orderBy>
+									<#case "6">
+										<@p.column code="content.viewsDay" align="center">${content.viewsDay}</@p.column><#t/>
+										<#break>
+									<#case "7">
+										<@p.column code="content.viewsWeek" align="center">${content.contentCount.viewsWeek}</@p.column><#t/>
+										<#break>
+									<#case "8">
+										<@p.column code="content.viewsMonth" align="center">${content.contentCount.viewsMonth}</@p.column><#t/>
+										<#break>
+									<#case "10">
+										<@p.column code="content.commentsDay" align="center">${content.commentsDay}</@p.column><#t/>
+										<#break>
+									<#case "11">
+										<@p.column code="content.commentsWeek" align="center">${content.contentCount.commentsWeek}</@p.column><#t/>
+										<#break>
+									<#case "12">
+										<@p.column code="content.commentsMonth" align="center">${content.contentCount.commentsMonth}</@p.column><#t/>
+										<#break>
+									<#case "13">
+										<@p.column code="content.comments" align="center">${content.contentCount.comments}</@p.column><#t/>
+										<#break>			
+									<#case "14">
+										<@p.column code="content.downloadsDay" align="center">${content.downloadsDay}</@p.column><#t/>
+										<#break>
+									<#case "15">
+										<@p.column code="content.downloadsWeek" align="center">${content.contentCount.downloadsWeek}</@p.column><#t/>
+										<#break>
+									<#case "16">
+										<@p.column code="content.downloadsMonth" align="center">${content.contentCount.downloadsMonth}</@p.column><#t/>
+										<#break>
+									<#case "17">
+										<@p.column code="content.downloads" align="center">${content.contentCount.downloads}</@p.column><#t/>
+										<#break>			
+									<#case "18">
+										<@p.column code="content.upsDay" align="center">${content.upsDay}</@p.column><#t/>
+										<#break>
+									<#case "19">
+										<@p.column code="content.upsWeek" align="center">${content.contentCount.upsWeek}</@p.column><#t/>
+										<#break>
+									<#case "20">
+										<@p.column code="content.upsMonth" align="center">${content.contentCount.upsMonth}</@p.column><#t/>
+										<#break>
+									<#case "21">
+										<@p.column code="content.ups" align="center">${content.contentCount.ups}</@p.column><#t/>
+										<#break>
+									<#default>	
+									</#switch>
+								</#if>
+								<@p.column code="content.releaseDate" align="center">${content.releaseDate?string('yyyy-MM-dd')}</@p.column><#t/>
+								<@p.column code="content.status" align="center">
+									<div id="status_${content.id}"><span class="label label-success"><@s.m "content.status."+content.status/></span></div>
+									<#if content.status==1> 
+										${content.checkStep}
+										<#if content.rejected> <span class="label label-danger"><@s.m "content.status.rejected"/></span></#if>
+									</#if>
+								</@p.column><#t/>
+							</@p.table>
+							</@cms_content_page>
+							</form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+	Metronic.initAjax();
+});
+</script>

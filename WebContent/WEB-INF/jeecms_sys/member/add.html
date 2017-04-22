@@ -1,0 +1,96 @@
+            <!-- BEGIN PAGE HEADER-->
+                        <h3 class="page-title">
+	                    <@s.m "cms.function.user"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-user"></i>
+								<a href="#" >用户管理</a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="member/v_list.do" class="ajaxify"><@s.m "cmsMember.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.add"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.add"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                    <div class="form-body"> 
+                                        <!-- BEGIN FORM-->
+                                        <@p.form id="form_member"  tableClass="table table-hover table-striped table-bordered vtable" action="member/o_save.do" labelWidth="15">
+										<@p.text width="50" colspan="1" label="cmsUser.username" name="username"  class="form-control" />
+										<@p.text width="50" colspan="1" label="cmsUser.email" name="email" size="30" class="form-control" /><@p.tr/>
+										<@p.password width="50" colspan="1" label="cmsUser.password" id="password" name="password" maxlength="100"  class="form-control" />
+										<@p.password width="50" colspan="1" label="cmsUser.pwdAgain"  class="form-control"  equalTo="#password"/><@p.tr/>
+										<@p.select colspan="1" width="50" label="cmsUser.group" name="groupId" list=groupList listKey="id" listValue="name"  class="form-control" />
+										<@p.text width="50" colspan="1" label="content.doc.grain" name="grain" value="0" required="true"  class="form-control digits"/><@p.tr/>
+										<@p.text width="50" colspan="1" label="cmsUser.realname" name="realname"  class="form-control" />
+										<@p.radio width="50" colspan="1" label="cmsUser.gender" name="gender" list={"true":"cmsUser.male","false":"cmsUser.female","":"cmsUser.secrecy"}/><@p.tr/>
+										<@p.text width="50" colspan="1" label="cmsUser.birthday" name="birthday"  class="form-control form-control form-control-inline input-medium date-picker radio-inline" />
+										<@p.text width="50" colspan="1" label="cmsUser.comefrom" name="comefrom" class="form-control"/><@p.tr/>
+										<@p.text width="50" colspan="1" label="cmsUser.qq" name="qq" class="form-control"/>
+										<@p.text width="50" colspan="1" label="cmsUser.msn" name="msn" class="form-control"/><@p.tr/>
+										<@p.text width="50" colspan="1" label="cmsUser.phone" name="phone" class="form-control"/>
+										<@p.text width="50" colspan="1" label="cmsUser.mobile" name="mobile" class="form-control"/><@p.tr/>
+										<@p.text  width="50" colspan="1" label="cmsUser.comefrom" name="comefrom" class="form-control"/> 
+										<@p.textarea  width="50" colspan="1" label="cmsUser.intro" name="intro" maxlength="255" cols="50" class="form-control"/><@p.tr/>
+										<#list registerItems as item>
+										<#if item_has_next>
+										<@p.selfDefineRegisterWidget name="attr_${item.field}" value=item.defValue size="${item.size!}" width="50" colspan="1" list="${item.optValue!}" help=item.help helpPosition="${item.helpPosition!2}" rows="${item.rows!}" cols="${item.cols!}" label=item.label required=item.required type="${item.dataType}"/>
+										<#if item_index%2==1><@p.tr/></#if>
+										<#else>
+										<@p.selfDefineRegisterWidget name="attr_${item.field}" value=item.defValue size="${item.size!}" width="100" colspan="2" list="${item.optValue!}" help=item.help helpPosition="${item.helpPosition!2}" rows="${item.rows!}" cols="${item.cols!}" label=item.label required=item.required type="${item.dataType}"/>
+										<@p.tr/>
+										</#if>
+										</#list>
+										<@p.td colspan="2">
+										 <@p.submit code="global.submit" class="btn green-meadow"/>
+                                          &nbsp;&nbsp;&nbsp;&nbsp;
+                                         <@p.reset code="global.reset" class="btn default"/>
+										</@p.td>
+										</@p.form>
+                                        <!-- END FORM-->
+                                        </div>
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   Metronic.initAjax();
+   FormValidation.handleValidationMember();
+});
+</script>

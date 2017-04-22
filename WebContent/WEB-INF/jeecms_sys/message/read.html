@@ -1,0 +1,111 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    用户
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-envelope"></i>
+								<a href="#"><@s.m "cmsMessage.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "cmsMessage.sendMessage"/></a>
+							</li>
+						</ul>
+						<@cms_perm url="/message/v_add.do">
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "cmsMessage.sendMessage"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+								 	<li><a href="message/v_add.do" class="ajaxify"> <@s.m "cmsMessage.sendMessage"/> </a></li>
+								</ul>
+							</div>
+						</div>
+						</@cms_perm>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "cmsMessage.sendMessage"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                            <form id="tableForm" method="post"  action="message/v_send.do" class="form-horizontal form-bordered form-label-stripped">
+											<div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsMessage.sendUser"/></label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static">
+                                                         ${message.msgSendUser.username!}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsMessage.sendTime"/></label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static">
+                                                        <#if message.sendTime??>${message.sendTime?string('yyyy-MM-dd HH:mm:ss')}</#if>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsMessage.title"/></label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static">
+                                                          ${message.titleHtml!}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group last">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsMessage.content"/></label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static">
+                                                          ${message.contentHtml!}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+											<div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                     <input name="box" type="hidden" value="${box!}" id="box"/>
+	                                                 <input name="id" type="hidden" value="${message.id!}"/>
+	                                                 <input name="msg" type="hidden" value="${message.titleHtml!}<@s.m 'cmsMessage.trashSuccess'/>"/>
+	                                                 <#if box??>
+	                                                    <#if box==3>
+	                                                        <button type="button" onclick="emptySingle('${message.id!}')" class="btn   btn-warning"><i class="fa fa-trash-o"></i><@s.m 'cmsMessage.trash'/></button>
+	                                                    <#elseif box==2>
+	                                                        <button type="button" onclick="toSend('${message.id!}')" class="btn  btn-success"><i class="fa fa-rocket"></i><@s.m 'cmsMessage.send'/></button>
+	                                                    <#elseif box==0>
+	                                                        <button type="button" onclick="reply('${message.id!}')" class="btn btn-info"><i class="fa fa-mail-reply"></i><@s.m 'cmsMessage.reply'/></button>
+	                                                    </#if>
+	                                                </#if>
+	                                                        <button type="button" onclick="forward()" class="btn btn-primary"><i class="fa fa-mail-forward"></i><@s.m 'cmsMessage.forward'/></button>
+	                                                <#if box!=3>
+	                                                        <button type="button" onclick="trash('${message.id!}')" class="btn btn-danger "><i class="fa fa-times"></i><@s.m 'global.delete'/></button>
+	                                                 </#if>
+                                                </div>
+                                            </div>
+											</form>
+                                        <!-- END FORM-->
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+</script>

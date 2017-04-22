@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--
+当程序猿实属不易，当老程序猿更不容易，谢谢您的理解与支持，请勿二次销售模板
+主题名称: myAdminv6
+主题地址: http://www.jeecmstheme.com/2016/02/2042.html#rid
+主题描述: myAdmin主题（付费） 技术支持 
+官方站点: http://www.jeecmstheme.com
+版本: 1.3.2
+技术支持: QQ251904080/229811221（仅限付费用户）
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+<title>JEECMS | Administrator Login - Login Form</title>
+<#include "/jeecms_sys/head.html"/>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="login">
+<!-- BEGIN LOGO -->
+<div class="logo">
+	<a href="index.html">
+	<img src="${base}/assets/admin/layout/img/logo-big.png" alt=""/>
+	</a>
+</div>
+<!-- END LOGO -->
+<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+<div class="menu-toggler sidebar-toggler">
+</div>
+<!-- END SIDEBAR TOGGLER BUTTON -->
+<!-- BEGIN LOGIN -->
+<div class="content">
+    <!-- BEGIN LOGIN FORM -->
+    <form class="login-form" action="login.do" method="post">
+    <#if returnUrl??><input type="hidden" name="returnUrl" value="${returnUrl}"/></#if>
+    <#if processUrl??><input type="hidden" name="processUrl" value="${processUrl}"/></#if>
+        <h3 class="form-title">管理员登录</h3>
+         <#if error??>
+        <div class="alert alert-danger display-show">
+            <button class="close" data-close="alert"></button>
+			<#if error=="org.apache.shiro.authc.IncorrectCredentialsException">
+			<span><@s.m "error.invalidPassword"/></span>
+			<#elseif error=="org.apache.shiro.authc.UnknownAccountException">
+			<span><@s.m "error.usernameNotExist"/></span>
+			<#elseif error=="com.jeecms.common.security.CaptchaErrorException">
+			<span><@s.m "error.invalidCaptcha"/></span>
+			<#elseif error=="com.jeecms.common.security.DisabledException">
+			<span><@s.m "error.userDisabled"/></span>
+			</#if>
+        </div>
+        </#if>
+        <#if message??>
+		<div class="alert alert-danger display-show">
+            <button class="close" data-close="alert"></button>
+            <span>
+            <@s.mt code=message text=message/>
+            </span>
+        </div>
+		</#if>
+        <div class="form-group">
+            <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+            <label class="control-label visible-ie8 visible-ie9"><@s.m "login.username"/></label>
+            <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder='<@s.m "login.username"/>' name="username"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9"><@s.m "login.password"/></label>
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder='<@s.m "login.password"/>' name="password"/>
+            </div>
+        </div>     
+        <#if errorRemaining?? && errorRemaining<=0> 
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9"><@s.m "login.captcha"/></label>
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder='<@s.m "login.captcha"/>' name="captcha"/>
+            </div>
+        </div>
+        </#if>
+        <div class="form-actions">
+            <label class="checkbox">
+            <input type="checkbox" name="remember" value="1"/> 记住 </label>
+            <button type="submit" class="btn blue pull-right">
+            登录 <i class="m-icon-swapright m-icon-white"></i>
+            </button>
+        </div>
+        <#if (errorTimes??&&errorTimes<=0)||(errorRemaining?? && errorRemaining<=0)>
+        <div class="login-options">
+            <h4><@s.m "login.captcha"/></h4>
+            <ul class="social-icons">
+                <li>
+                <a href="javascript:;">
+                <img src="${base}/captcha.svl" border="0" onclick="this.src='${base}/captcha.svl?d='+new Date()*100"/>
+                 </a>
+                </li>
+            </ul>
+        </div>
+        </#if>
+        <div class="forget-password">
+            <h4>忘记密码了 ?</h4>
+            <p>
+                别担心，点击
+                <a href="javascript:;" id="forget-password">
+                     这儿
+                </a>
+                找回您的密码.
+            </p>
+        </div>
+        <div class="create-account">
+        </div>
+    </form>
+    <!-- END LOGIN FORM -->
+    <!-- BEGIN FORGOT PASSWORD FORM -->
+    <form class="forget-form" action="/member/forgot_password.jspx" method="post">
+        <h3>忘记密码找回 ?</h3>
+        <p>
+             请输入您的电子邮件地址，重设密码.
+        </p>
+        <div class="form-group">
+            <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名" name="username"/>
+            </div>
+        </div>  
+        <div class="form-group">   
+            <div class="input-icon">
+                <i class="fa fa-envelope"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="邮件地址" name="email"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9"><@s.m "login.captcha"/></label>
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder='<@s.m "login.captcha"/>' name="captcha"/>
+            </div>
+        </div>
+        <div class="login-options">
+            <h4><@s.m "login.captcha"/></h4>
+            <ul class="social-icons">
+                <li>
+                <a href="javascript:;">
+                <img src="${base}/captcha.svl" border="0" onclick="this.src='${base}/captcha.svl?d='+new Date()*100" style="float: left;"/>
+                 </a>
+                </li>
+            </ul>
+        </div>
+        <div class="form-actions">
+            <button type="button" id="back-btn" class="btn">
+            <i class="m-icon-swapleft"></i> 返回 </button>
+            <button type="submit" class="btn blue pull-right">
+            提交 <i class="m-icon-swapright m-icon-white"></i>
+            </button>
+        </div>
+    </form>
+    <!-- END FORGOT PASSWORD FORM -->
+</div>
+<!-- END LOGIN -->
+<!-- BEGIN COPYRIGHT -->
+<div class="copyright">
+	   2015 &copy; JEECMS主题站.
+</div>
+<!-- END COPYRIGHT -->
+<!-- BEGIN JAVASCRIPTS-->
+<#include "/jeecms_sys/footwoindexjs.html"/>
+<script type="text/javascript">
+//baaa67449f5749a534bb7b2cc39c20bc
+jQuery(document).ready(function() {     
+  Metronic.init(); 
+  Layout.init(); 
+  CusLyt.init();
+  Login.init();
+       // init background slide images
+       $.backstretch([
+        "${base}/assets/admin/pages/media/bg/1.jpg",
+        "${base}/assets/admin/pages/media/bg/2.jpg",
+        "${base}/assets/admin/pages/media/bg/3.jpg",
+        "${base}/assets/admin/pages/media/bg/4.jpg",
+        "${base}/assets/admin/pages/media/bg/4.jpg",
+        "${base}/assets/admin/pages/media/bg/a.jpg",
+        "${base}/assets/admin/pages/media/bg/b.jpg",
+        "${base}/assets/admin/pages/media/bg/c.jpg",
+        "${base}/assets/admin/pages/media/bg/d.jpg",
+        "${base}/assets/admin/pages/media/bg/e.jpg",
+        "${base}/assets/admin/pages/media/bg/f.jpg",
+        "${base}/assets/admin/pages/media/bg/g.jpg",
+        "${base}/assets/admin/pages/media/bg/h.jpg",
+        "${base}/assets/admin/pages/media/bg/i.jpg",
+        "${base}/assets/admin/pages/media/bg/j.jpg",
+        ], {
+          fade: 1000,
+          duration: 1000
+    }
+    );
+});
+</script>
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

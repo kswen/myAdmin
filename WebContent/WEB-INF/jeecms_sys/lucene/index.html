@@ -1,0 +1,172 @@
+            <!-- BEGIN PAGE HEADER-->
+            			<h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-notebook"></i>
+								<a href="#">信息<@s.m "cms.function.maintain"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "cmsLucene.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "cmsLucene.createIndex"/> </a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-madison">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "cmsLucene.createIndex"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="lucene/o_create.do" id="form_lucene_generate" class="form-horizontal">
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label"><@s.m "cmsLucene.channelId"/></label>
+                                                            <div class="col-md-7">
+                                                                <div class="radio-list">
+                                                                    <@p.select class="form-control" name="channelId"  id="channelId" list=channelList listKey="id" listValue="name" listDeep="deep" headerKey="" headerValue="cmsStatic.allChannel"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label"><@s.m "cmsLucene.max"/></label>
+                                                            <div class="col-md-7">
+                                                                <div class="radio-list">
+                                                                    <@p.text id="max" name="max" value="1000" class="form-control"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label"><@s.m "cmsLucene.startDate"/></label>
+                                                            <div class="col-md-7">
+                                                                <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+                                                                    <input type="text" name="startDate"  id="startDate" class="form-control">
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label"><@s.m "cmsLucene.endDate"/></label>
+                                                            <div class="col-md-7">
+                                                                <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+                                                                    <input type="text" name="endDate"  id="endDate" class="form-control">
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                            </div>
+                                            <input type="hidden" id="siteId" name="siteId" value="${site.id}"/>
+										    <input type="hidden" id="startId" name="startId"/>
+										    <input type="hidden" id="stop" value=""/>
+                                            <div class="form-actions fluid">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-offset-1 col-md-11">
+                                                            <button type="button" id="submitButton" class="btn green-meadow"><@s.m "cmsLucene.createIndex"/> </button>
+                                                            <button class="btn blue disabled" type="button" id="cancelButton"  onclick="$('#stop').val('1')"><@s.m "global.cancel"/></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   Metronic.initAjax();
+   $("#submitButton").click( function () { 
+	   $("#submitButton").addClass("disabled");
+       $("#cancelButton").removeClass("disabled");
+       $("#stop").val("");     
+       luceneSubmit();
+	});
+});
+function luceneSubmit() {
+	   var form1 = $('#form_lucene_generate');
+        var url = $(form1).attr("action"); 
+        var postData = $(form1).serialize();
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data: postData,
+            beforeSend: function(){
+                Metronic.startPageLoading();
+            },
+            success: function(data){
+                if(data.success){
+                	if(data.lastId && $("#stop").val()=="") {
+                        $("#startId").val(data.lastId);
+                        luceneSubmit();
+                    } else {
+                        $("#startId").val("");
+                        Metronic.alert({
+                            place: "append", 
+                            type: "success",  
+                            message: '<@s.m "global.success"/>  ',  
+                            close: true, 
+                            reset: true, 
+                            focus: true, 
+                            closeInSeconds: 5, 
+                            icon: "check"
+                        });
+                        $("#submitButton").removeClass("disabled");
+                        $("#cancelButton").addClass("disabled");
+                        $("#stop").val("");
+                    }
+                }else{
+                    Metronic.alert({
+                        place: "append", 
+                        type: "danger",  
+                        message: data.msg,  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "warning"
+                    });
+                    $("#submitButton").removeClass("disabled");
+                       $("#cancelButton").addClass("disabled");
+                    $("#stop").val("");
+                }
+            },
+            complete : function (){
+                Metronic.stopPageLoading();
+            }
+        });
+        return false; 
+}
+</script>

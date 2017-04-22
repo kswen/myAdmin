@@ -1,0 +1,285 @@
+            <!-- BEGIN PAGE HEADER-->
+              <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-wrench"></i>
+								<a href="#"><@s.m "cmsConfig.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a class="ajaxify" href="site/v_list.do"> <@s.m "cmsSite.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.add"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+		            Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.m "global.success"/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.add"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+										<!-- BEGIN FORM-->
+										<#assign localeDefault><@s.m "cmsSite.locale.default"/></#assign>
+										<#assign domainExist><@s.m "cmsSite.error.domainExist"/></#assign>
+										<form action="site/o_save.do" id="form_config_site" class="form-horizontal">
+											<div class="form-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.name"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control required" name="name"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.shortName"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="shortName"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.domain"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="domain"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.path"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="path"/>
+																<span class="help-block">
+																	 <@s.m "cmsSite.path.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.domainAlias"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control"  name="domainAlias" />
+																<span class="help-block">
+                                                                     <@s.m "cmsSite.domainAlias.help"/>
+                                                                </span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.domainRedirect"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="domainRedirect"/>
+																<span class="help-block">
+                                                                     <@s.m "cmsSite.domainRedirect.help"/>
+                                                                </span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.relativePath"/></label>
+															<div class="col-md-9">
+															<div class="radio-list">
+																<@p.radio class="form-control radio-inine" name="relativePath" value="false" list={"true":"global.true","false":"global.false"}/>
+																<span class="help-block">
+																	 <@s.m "cmsSite.relativePath.help"/>
+																</span>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.protocol"/></label>
+															<div class="col-md-9">
+																<@p.select class="form-control" name="protocol" value="http://" list=["http://","https://"] />
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.dynamicSuffix"/></label>
+															<div class="col-md-9">
+																<@p.select class="form-control"name="dynamicSuffix" list=[".jhtml",".htm"]/>
+																<span class="help-block">
+																	 <@s.m "cmsSite.dynamicSuffix.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.staticSuffix"/></label>
+															<div class="col-md-9">
+																<@p.select class="form-control" name="staticSuffix"  list=[".html",".shtml"] />
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.staticDir"/></label>
+															<div class="col-md-9">
+																<@p.text name="staticDir" class="form-control input-medium  radio-inline"/>
+																<input type="checkbox" class="form-control radio-inline" onclick="$('#indexToRoot').val(this.checked)"/><input type="hidden" id="indexToRoot" name="indexToRoot" value="false"/><@s.m "cmsSite.indexToRoot"/>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.staticIndex"/></label>
+															<div class="col-md-9">
+															<div class="radio-list">
+																<@p.radio class="form-control" name="staticIndex" value="false" list={"true":"global.true","false":"global.false"}/>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.localeAdmin"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="localeAdmin" value=localeDefault/>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.localeFront"/></label>
+															<div class="col-md-9">
+																<@p.text name="localeFront" class="form-control"  value=localeDefault/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.ftp.upload"/></label>
+															<div class="col-md-9">
+																<@p.select name="uploadFtpId" list=ftpList listKey="id" listValue="name" headerKey="" headerValue="global.none" class="form-control"  />
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.resycleOn"/></label>
+															<div class="col-md-9">
+															<div class="radio-list">
+																<@p.radio class="form-control"  name="resycleOn" value="true" list={"true":"global.true","false":"global.false"} />
+																</div>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.finalStep"/></label>
+															<div class="col-md-9">
+																<@p.text  class="form-control"  name="finalStep" value="2" />
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsSite.afterCheck"/></label>
+															<div class="col-md-9">
+																<@p.select class="form-control"  name="afterCheck" value="2" list={"1":"cmsSite.afterCheck.1","2":"cmsSite.afterCheck.2","3":"cmsSite.afterCheck.3"}/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+											</div>
+											<div class="form-actions fluid">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="col-md-offset-3 col-md-9">
+															<button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+															<button type="reset" class="btn default"><@s.m "global.reset"/></button>
+														</div>
+													</div>
+													<div class="col-md-6">
+													</div>
+												</div>
+											</div>
+										</form>
+										<!-- END FORM-->
+									</div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   Metronic.initAjax();
+   FormValidation.handleValidationSite();
+});
+</script>

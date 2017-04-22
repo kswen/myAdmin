@@ -1,0 +1,338 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.user"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-user"></i>
+								<a href="#" >用户管理</a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="group/v_list.do" class="ajaxify"><@s.m "cmsGroup.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.edit"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.edit"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="group/o_update.do" class="form-horizontal" id="jvForm" >
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsGroup.name"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.text name="name" value=cmsGroup.name class="required form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsGroup.priority"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.text name="priority" value=cmsGroup.priority class="required form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsGroup.allowPerDay"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.text name="allowPerDay" value=cmsGroup.allowPerDay id="allowPerDay" class="required form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsGroup.allowMaxFile"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.text name="allowMaxFile" value=cmsGroup.allowMaxFile class="required form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsGroup.allowSuffix"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.text name="allowSuffix" value=cmsGroup.allowSuffix class="required form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsGroup.needCheck"/></label>
+                                                            <div class="col-md-9">
+                                                                <div class="radio-list">
+                                                                <@p.radio  name="needCheck" value=cmsGroup.needCheck list={"true":"global.true","false":"global.false"}/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsGroup.needCaptcha"/></label>
+                                                            <div class="col-md-9">
+                                                                <div class="radio-list">
+                                                                <@p.radio name="needCaptcha" value=cmsGroup.needCaptcha list={"true":"global.true","false":"global.false"}/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "channel.viewGroupIds"/></label>
+                                                            <div class="col-md-9">
+                                                                <#list siteList as site>
+                                                                <div style="float:left;padding-right:3px">
+                                                                <label>${site.shortName}</label>
+                                                                <a role="button" class="data-modal${site_index} btn btn-sm blue" data-toggle="modal"> <@s.m "cmsUser.channels"/> <i class="fa fa-search"></i></a>
+                                                                <span id="channelIdsContainer${site_index}"></span>
+                                                                <div id="modal_chl${site_index}" class="modal fade" tabindex="-1" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                                                <h4 class="modal-title"><@s.m "cmsUser.channels"/></h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="scroller" style="height:345px" data-always-visible="1" data-rail-visible1="1">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12 form-horizontal">
+                                                                                            <div class="form-group"> 
+                                                                                            <label class="col-md-12 control-label"><input type="checkbox" onclick="allChannels(this.checked,${site_index})"/><@s.m "cmsUser.channels.allChannel"/></label>
+                                                                                            <div class="col-md-12"> 
+                                                                                            <select id="channels${site_index}" multiple="multiple" size="15" style="width:100%;"></select>
+                                                                                            </div> 
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" data-dismiss="modal" class="btn green" id="chooseChl${site_index}">OK</button>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </#list>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "channel.contriGroupIds"/></label>
+                                                            <div class="col-md-9">
+                                                                <#list siteList as site>
+                                                                <div style="float:left;padding-right:3px">
+                                                                <label>${site.shortName}</label>
+                                                                <a role="button" class="data-modalContri${site_index} btn btn-sm blue" data-toggle="modal"> <@s.m "cmsUser.channels"/> <i class="fa fa-search"></i></a>
+                                                                <span id="channelIdsContainerContri${site_index}"></span>
+                                                                <div id="modal_chlContri${site_index}" class="modal fade" tabindex="-1" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                                                <h4 class="modal-title"><@s.m "cmsUser.channels"/></h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="scroller" style="height:345px" data-always-visible="1" data-rail-visible1="1">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12 form-horizontal">
+                                                                                            <div class="form-group"> 
+                                                                                            <label class="col-md-12 control-label"><input type="checkbox" onclick="allChannelsContri(this.checked,${site_index})"/><@s.m "cmsUser.channels.allChannel"/></label>
+                                                                                            <div class="col-md-12"> 
+                                                                                            <select id="channelsContri${site_index}" multiple="multiple" size="15" style="width:100%;"></select>
+                                                                                            </div> 
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" data-dismiss="modal" class="btn green" id="chooseChlContri${site_index}">OK</button>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </#list>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                            </div>
+                                            <@p.hidden name="id" value=cmsGroup.id/>
+                                            <div class="form-actions fluid">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="col-md-offset-3 col-md-9">
+                                                            <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                            <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+       FormValidation.handleValidationGroup();
+    });
+
+$(function() {
+    <#list siteList as site>
+    var channels_opened_${site_index} = false;    
+    $('#chooseChl${site_index}').click(function(){
+        //将列表框中已选中的项复制到隐藏表单中
+        var s="";
+        $("#channels${site_index}").children().each(function(){
+            if($(this).attr("selected")) {
+                s += "<input type='hidden' name='viewGroupIds' value='" +$(this).val()+ "'/>";
+            }
+        });
+        $("#channelIdsContainer${site_index}").empty().append(s);
+    });
+    
+    $('.data-modal${site_index}').click(function(){
+        if(!channels_opened_${site_index}) {
+            $.ajax({
+                type: "POST",
+                url: "group/v_channels_edit.do?siteId=${site.id}&groupId=${cmsGroup.id}&type=1",
+                success: function(data)
+                {
+                    if(data){
+                         $(data.responseText).appendTo("#channels${site_index}");
+                    }
+                    $("#modal_chl${site_index}").modal();
+                },
+                error:function(data, exception)
+                {
+                    if(data){
+                        $(data.responseText).appendTo("#channels${site_index}");
+                    }
+                    $("#modal_chl${site_index}").modal();
+                }
+            });
+            channels_opened_${site_index} = true;
+        }else{
+            $("#modal_chl${site_index}").modal();
+        }
+      });
+    
+    var channels_contri_opened_${site_index} = false;    
+    $('#chooseChlContri${site_index}').click(function(){
+        //将列表框中已选中的项复制到隐藏表单中
+        var s="";
+        $("#channelsContri${site_index}").children().each(function(){
+            if($(this).attr("selected")) {
+                s += "<input type='hidden' name='contriGroupIds' value='" +$(this).val()+ "'/>";
+            }
+        });
+        $("#channelIdsContainerContri${site_index}").empty().append(s);
+    });
+    
+    $('.data-modalContri${site_index}').click(function(){
+        if(!channels_contri_opened_${site_index}) {
+            $.ajax({
+                type: "POST",
+                url: "group/v_channels_edit.do?siteId=${site.id}&groupId=${cmsGroup.id}&type=0",
+                success: function(data)
+                {
+                    if(data){
+                         $(data.responseText).appendTo("#channelsContri${site_index}");
+                    }
+                    $("#modal_chlContri${site_index}").modal();
+                },
+                error:function(data, exception)
+                {
+                    if(data){
+                        $(data.responseText).appendTo("#channelsContri${site_index}");
+                    }
+                    $("#modal_chlContri${site_index}").modal();
+                }
+            });
+            channels_contri_opened_${site_index} = true;
+        }else{
+            $("#modal_chlContri${site_index}").modal();
+        }
+      });
+    </#list>
+}); 
+function allChannels(chk,i) {
+    if(chk) {
+        $("#channels"+i).children().each(function(){$(this).attr("selected","selected")});
+    }else{
+        $("#channels"+i).children().each(function(){$(this).attr("selected","")});
+    } 
+}
+function allChannelsContri(chk,i) {
+    if(chk) {
+        $("#channelsContri"+i).children().each(function(){$(this).attr("selected","selected")});
+    }else{
+        $("#channelsContri"+i).children().each(function(){$(this).attr("selected","")});
+    } 
+}
+</script>

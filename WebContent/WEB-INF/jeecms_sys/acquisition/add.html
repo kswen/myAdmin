@@ -1,0 +1,519 @@
+            <!-- BEGIN PAGE HEADER-->
+                       <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-docs"></i>
+								<a href="#"><@s.m "cmsAcquisition.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="acquisition/v_list.do" class="ajaxify"><@s.m "cmsAcquisition.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.add"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-madison">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.add"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="acquisition/o_save.do" class="form-horizontal" id="jvForm" >
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.name"/></label>
+                                                            <div class="col-md-10">
+                                                                <@p.text name="name" required="true" class="form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.info"/></label>
+                                                            <div class="col-md-10">
+                                                                <@s.m "cmsAcquisition.type"/>: <@p.select list=typeList name="typeId" listKey="id" listValue="name" class="form-control input-small radio-inline"/> 
+                                                                <@s.m "cmsAcquisition.channel"/>: 
+                                                                <select name="channelId" class="form-control input-medium radio-inline">
+																<#if !channel??>
+																    <option value="" class="sel-disabled"><@s.m "global.pleaseSelect"/></option>
+																</#if>
+																<#if channelList?size gt 0>
+																<#assign origDeep=channelList[0].deep+1/>
+																<#list channelList as c>
+																    <#if c.hasContent || c.child?size gt 0>
+																    <option value="${c.id}"<#if c.child?size gt 0> class="sel-disabled"</#if>><#if c.deep gte origDeep><#list origDeep..c.deep as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+																    </#if>
+																</#list>
+																</#if>
+																</select> 
+                                                                <span class="help-span">
+                                                                     <@s.m "cmsAcquisition.channel.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.pageEncoding"/></label>
+                                                            <div class="col-md-10">
+                                                                <@p.text class="form-control input-medium radio-inline" name="pageEncoding" value="GBK" required="true"/>
+                                                                <span class="help-span">
+                                                                     <@s.m "cmsAcquisition.pageEncoding.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.pauseTime"/></label>
+                                                            <div class="col-md-10">
+                                                                <@p.text class="form-control input-medium radio-inline" name="pauseTime" value="500"/>
+                                                                <span class="help-span">
+                                                                     <@s.m "cmsAcquisition.pauseTime.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.imgAcqu"/></label>
+                                                            <div class="col-md-10">
+                                                                <div class="radio-list">
+                                                                    <@p.radio class="form-control input-medium radio-inline" name="imgAcqu" value="false" list={"true":"global.true","false":"global.false"}/>
+	                                                                <span class="radio-inline help-span">
+	                                                                     <@s.m "cmsAcquisition.imgAcqu.help"/>
+	                                                                </span>
+                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.releaseTimeFormat"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" class="form-control input-medium radio-inline"  name="releaseTimeFormat" value="yyyy-MM-dd HH:mm:ss"/>
+                                                                <span class="help-span">
+                                                                     <@s.m "cmsAcquisition.releaseTimeFormat.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.planList"/></label>
+                                                            <div class="col-md-10">
+                                                                <@p.textarea name="planList" rows="5" cols="70" class="form-control"/>
+                                                                <span class="help-span">
+                                                                     <@s.m "cmsAcquisition.planList.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.dynamicAddr"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="dynamicAddr" class="form-control input-large radio-inline"/> <span class="help-span"><@s.m "cmsAcquisition.dynamicAddr.help"/></span>
+                                                                <@s.m "cmsAcquisition.dynamicPage"/> <@s.m "cmsAcquisition.from"/> <input type="text" name="dynamicStart" value="2" class="form-control input-xsmall radio-inline"/> &nbsp; <@s.m "cmsAcquisition.to"/>: <input type="text" name="dynamicEnd" value="10"  class="form-control input-xsmall radio-inline"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.contentLink.prefix"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="contentPrefix" class="form-control"/> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.imgLink.prefix"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="imgPrefix" class="form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.linkset"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="linksetStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.linkset"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="linksetEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.link"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="linkStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.link"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="linkEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.title"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="titleStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.title"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="titleEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.keywords"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="keywordsStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.keywords"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="keywordsEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.description"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="descriptionStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.description"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="descriptionEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.content"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="contentStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.content"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="contentEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.view"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="viewStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.view"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="viewEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.viewLink"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="viewIdStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.viewLink"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="viewIdEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.author"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="authorStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.author"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="authorEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.origin"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="originStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.origin"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="originEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.releaseTime"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.start"/></span>
+                                                                    <textarea name="releaseTimeStart" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsAcquisition.releaseTime"/></label>
+                                                            <div class="col-md-10">
+                                                                    <span class="label label-info"><@s.m "cmsAcquisition.end"/></span>  
+                                                                    <textarea name="releaseTimeEnd" rows="4"  class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                            </div>
+                                            <div class="form-actions fluid">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="col-md-offset-3 col-md-10">
+                                                            <button type="submit" class="btn green"><@s.m "global.submit"/></button>
+                                                            <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+$.validator.methods.leafChannel = function(value, element, param) {
+    var i = element.selectedIndex;
+    return $(element.options[i]).attr("class")!="sel-disabled";
+};
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+    $("#jvForm").validate({
+    	errorElement: 'span', 
+        errorClass: 'help-block', 
+        focusInvalid: false, 
+        ignore: "",
+        rules: {
+            channelId: {
+                required: true,
+                leafChannel: true
+            },
+            name: {
+                required: true
+            },
+        },
+        messages:{
+            channelId: {
+            	required:"请选择栏目",
+                leafChannel: "<@s.m "cmsAcquisition.error.notLeafChannel"/>"
+            },
+            name:"请输入采集名称"
+        },
+        invalidHandler: function (event, validator) { //display error alert on form submit              
+            Metronic.alert({
+                place: "append", 
+                type: "danger",  
+                message: '下面的信息填写有误，请仔细检查',  
+                close: true, 
+                reset: true, 
+                focus: true, 
+                closeInSeconds: 5, 
+                icon: "warning"
+            });
+        },
+        highlight: function (element) { 
+            $(element).closest('.form-group').addClass('has-error'); 
+        },
+        unhighlight: function (element) { 
+            $(element).closest('.form-group').removeClass('has-error'); 
+        },
+        success: function (label) {
+            label.closest('.form-group').removeClass('has-error'); 
+        },
+        submitHandler: function (form) {
+        	submitForm($(form).attr("action"), form);
+            return false; 
+        }  
+    });
+});
+
+</script>

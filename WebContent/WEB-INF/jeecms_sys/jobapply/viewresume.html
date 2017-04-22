@@ -1,0 +1,281 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-bubbles"></i>
+								<a href="#"><@s.m 'cmsInteractive.function'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="jobapply/v_list.do" class="ajaxify"><@s.m "cmsJobApply.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "cmsJobApply.view"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+            <script>
+               Metronic.alert({
+                   place: "append", 
+                   type: "success",  
+                   message: '<@s.mt code=message text=message/>',  
+                   close: true, 
+                   reset: true, 
+                   focus: true, 
+                   closeInSeconds: 5, 
+                   icon: "check"
+               });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa  "></i><@s.m "cmsJobApply.view"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="#" class="form-horizontal">
+                                            <div class="form-body">
+                                                <h2 class="margin-bottom-20"> <@s.m "cmsResume.name"/> - ${resume.resumeName!}</h2>
+                                                <h3 class="form-section"><@s.m "cmsResume.base"/></h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.realname"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.user.realname!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.gender"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static"><#if resume.user.gender??><#if resume.user.gender><@s.m "cmsUser.male"/><#else><@s.m "cmsUser.female"/></#if><#else><@s.m "cmsUser.secrecy"/></#if></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.comefrom"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.user.comefrom!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.birthday"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static"><#if resume.user.birthday??>${resume.user.birthday!?string("yyyy-MM-dd")}</#if></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.mobile"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.user.mobile!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.phone"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.user.phone!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <h3 class="form-section"><@s.m "cmsResume.target"/></h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.nature"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.targetWorknature!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.workplace"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.targetWorkplace!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.category"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.targetCategory!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.salary"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.targetSalary!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <h3 class="form-section"><@s.m "cmsResume.edu"/></h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.eduSchool"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.eduSchool!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.eduGraduation"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static"><#if resume.eduGraduation??>${resume.eduGraduation!?string("yyyy-MM-dd")}</#if></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.eduBack"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.eduBack!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.eduDiscipline"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.eduDiscipline!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <h3 class="form-section"><@s.m "cmsResume.experience"/></h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.recentCompany"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.recentCompany!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.jobName"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.jobName!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.jobStart"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static"><#if resume.jobStart??>${resume.jobStart!?string("yyyy-MM-dd")}</#if></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.jobDescription"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.jobDescription!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsResume.selfEvaluationt"/>:</label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">${resume.selfEvaluationt!}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                            </div>
+                                            <div class="form-actions fluid">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="col-md-offset-3 col-md-9">
+                                                            <button type="button" class="btn green-meadow" onclick="sendR('jobapply/v_list.do')"><@s.m "global.backToList"/></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->

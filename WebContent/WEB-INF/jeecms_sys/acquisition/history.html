@@ -1,0 +1,148 @@
+            <!-- BEGIN PAGE HEADER-->
+                       <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-docs"></i>
+								<a href="#"><@s.m "cmsAcquisition.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+					<li>
+						<a href="acquisition/v_list.do" class="ajaxify"><@s.m "cmsAcquisition.function"/></a>
+						<i class="fa fa-angle-right"></i>
+					</li>
+					<li>
+						<a href="#"> <@s.m "cmsAcquisitionHistory.function"/></a>
+					</li>
+					</ul>
+				</div>
+			 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i> <@s.m "cmsAcquisitionHistory.function"/><@s.m "global.list"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body flip-scroll">
+                                        <!-- BEGIN FORM-->
+                                            <form id="tableForm" method="post">
+											<input type="hidden" name="pageNo" value="${pageNo!}"/>
+											<@p.table class="table table-bordered table-striped table-condensed flip-content"  value=pagination listAction="acquisition/v_history.do";history,i,has_next><#rt/>
+											    <@p.column title="<input type='checkbox' onclick='checkAll(\"ids\",this.checked)'/>">
+											        <label class="class4ids"><input type='checkbox' name='ids' value='${history.id}'/></label><#t/>
+											    </@p.column><#t/>
+											    <@p.column title="ID">${history.id}</@p.column><#t/>
+											    <@p.column code="cmsAcquisitionHistory.title"><#if history.title??>${history.title}<#else><@s.m "cmsAcquisitionHistory.ruleError"/></#if></@p.column><#t/>
+											    <@p.column code="cmsAcquisitionHistory.name">${history.acquisition.name}</@p.column><#t/>
+											    <@p.column code="cmsAcquisitionHistory.channel">${history.acquisition.channel.name}</@p.column><#t/>
+											    <@p.column code="cmsAcquisitionHistory.contentType">${history.acquisition.type.name}</@p.column><#t/>
+											    <@p.column code="cmsAcquisitionHistory.url"><a href="${history.channelUrl!}" target="_blank" title="${history.channelUrl!}"><@s.m "cmsAcquisitionHistory.clickToBrowse"/></a></@p.column><#t/>
+											    <@p.column code="cmsAcquisitionHistory.contentUrl"><a href="${history.contentUrl!}" target="_blank" title="${history.contentUrl!}"><@s.m "cmsAcquisitionHistory.clickToBrowse"/></a></@p.column><#t/>
+											    <@p.column code="cmsAcquisitionHistory.status"><#if history.description=="SUCCESS"><span style="color:green"><@s.m "cmsAcquisitionHistory.success"/></span><#else><span style="color:red"><@s.m "cmsAcquisitionHistory.failure"/></span></#if></@p.column><#t/>
+											    <@p.column code="cmsAcquisitionHistory.description">
+											    <#switch history.description>
+											        <#case "SUCCESS">
+											             <@s.m "cmsAcquisitionHistory.success"/>
+											        <#break>
+											        <#case "TITLESTARTNOTFOUND">
+											            <@s.m "cmsAcquisitionHistory.errorCause.titleStartNotFound"/>
+											        <#break>
+											        <#case "TITLEENDNOTFOUND">
+											            <@s.m "cmsAcquisitionHistory.errorCause.titleEndNotFound"/>
+											        <#break>
+											        <#case "CONTENTSTARTNOTFOUND">
+											            <@s.m "cmsAcquisitionHistory.errorCause.contentStartNotFound"/>
+											        <#break>
+											        <#case "CONTENTENDNOTFOUND">
+											            <@s.m "cmsAcquisitionHistory.errorCause.contentEndNotFound"/>
+											        <#break>
+											        <#default>
+											            <@s.m "cmsAcquisitionHistory.errorCause.unknow"/>
+											    </#switch>
+											    </@p.column><#t/>
+											    <@p.column code="global.operate" align="center">
+											        <a href="javascript:void(0)" class="btn default btn-xs red-stripe" onclick="deleteSingle('acquisition/o_delete_history.do?ids=${history.id}&pageNo=${pageNo!}')"><@s.m "global.delete"/></a><#t/>
+											    </@p.column><#t/>
+											</@p.table>
+											<div style="margin-top:15px;"><input  class="btn btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/></div>
+											</form>
+                                        <!-- END FORM-->
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $('input[name=' + name + ']:checkbox').each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        }); 
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    var f = $("#tableForm");
+    submitForm("acquisition/o_delete_history.do",f)
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+</script>

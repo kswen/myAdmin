@@ -1,0 +1,177 @@
+            <!-- BEGIN PAGE HEADER-->
+            			<h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+						<li>
+								<i class="icon-notebook"></i>
+								<a href="#">信息<@s.m "cms.function.maintain"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<i class="icon-notebook"></i>
+								<a href="friendlink/v_list.do" class="ajaxify"><@s.m "cmsFriendlink.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						<@cms_perm url="/friendlink/v_add.do">
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "global.add"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+								 	<li><a href="friendlink/v_add.do" class="ajaxify"> <@s.m "global.add"/> </a></li>
+								</ul>
+							</div>
+						</div>
+						</@cms_perm>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+            <script>
+               Metronic.alert({
+                   place: "append", 
+                   type: "success",  
+                   message: '<@s.mt code=message text=message/>',  
+                   close: true, 
+                   reset: true, 
+                   focus: true, 
+                   closeInSeconds: 5, 
+                   icon: "check"
+               });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="well">
+            <div class="row">
+                <div class="col-md-12">
+                        <form action="friendlink/v_list.do" method="post" id="jvForm">
+                       <div class="col-md-12">
+                              <div class="form-group">
+                              <label class="radio-inline"><@s.m "cmsFriendlink.category"/>:</label>
+                              <@p.select name="queryCtgId" value=queryCtgId list=ctgList listKey="id" class="form-control radio-inline input-medium" listValue="name" headerKey="" headerValue="cmsFriendlink.allCategory"/>
+                              <input class="btn green" type="button" onclick="optQuery();" value="<@s.m "global.query"/>"/>
+                              </div>
+                        </div>
+                        </form>
+                 </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa  "></i><@s.m "global.list"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body  flip-scroll">
+                            <div class="table-responsive">
+							<form id="tableForm" method="post" action="friendlink/o_priority.do">
+							<@p.table class="table table-bordered table-striped table-condensed flip-content table-hover" value=list;cmsFriendlink,i,has_next><#rt/>
+								<@p.column title="<input type='checkbox' onclick='checkAll(\"ids\",this.checked)'/>" width="20">
+							        <label class="class4ids"><input type='checkbox' name='ids' value='${cmsFriendlink.id}'/><#t/></label>
+								</@p.column><#t/>
+								<@p.column title="ID">${cmsFriendlink.id}<input type="hidden" name="wids" value="${cmsFriendlink.id}"/></@p.column><#t/>
+								<@p.column code="cmsFriendlink.name">${cmsFriendlink.name}</@p.column><#t/>
+								<@p.column code="cmsFriendlink.logo" align="center"><#if cmsFriendlink.logo??><img src="${cmsFriendlink.logo}"/><#else><@s.m "cmsFriendlink.error.noLogo"/></#if></@p.column><#t/>
+								<@p.column code="cmsFriendlink.views" align="right">${cmsFriendlink.views}</@p.column><#t/>
+								<@p.column code="cmsFriendlink.priority" align="center"><input type="text" name="priority" value="${cmsFriendlink.priority}" style="width:70px"/></@p.column><#t/>
+								<@p.column code="cmsFriendlink.enabled" align="center"><#if cmsFriendlink.enabled><@s.m "global.true"/><#else><span style="color:red"><@s.m "global.false"/></span></#if></@p.column><#t/>
+								<@p.column code="global.operate" align="center">
+									<a href="friendlink/v_edit.do?id=${cmsFriendlink.id}&pageNo=${pageNo!}" class="ajaxify btn default btn-xs blue-stripe"><@s.m "global.edit"/></a> | <#rt/>
+									<a href="javascript:void(0)" onclick="deleteSingle('friendlink/o_delete.do?ids=${cmsFriendlink.id}&pageNo=${pageNo!}')" class="btn default btn-xs red-stripe"><@s.m "global.delete"/></a><#t/>
+								</@p.column><#t/>
+							</@p.table>
+							<div  style="margin-top:15px;">
+							<input type="hidden" name="queryCtgId" value="${queryCtgId!}"/>
+								<input class="btn btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/>
+							    <input class="btn green-meadow" type="button" value="<@s.m "global.saveOrder"/>" onclick="optPriority();"/>
+							</div>
+							</form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+function getTableForm() {
+    return document.getElementById('tableForm');
+}
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        });
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    var f = getTableForm();
+    var url ="friendlink/o_delete.do";
+    submitForm(url, f);
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $("input[name=" + name + "]:checkbox").each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("input[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+function optQuery() {
+    var f = $("#jvForm");
+    var url = f.attr("action"); 
+    submitForm(url, f);
+}
+function optPriority() {
+    var f = $("#tableForm");
+    var url = f.attr("action"); 
+    submitForm(url, f);
+}
+</script>

@@ -1,0 +1,44 @@
+<#if isRoot>
+[{
+    "text": "<@s.m "template.root"/>",
+    "icon" : "fa fa-folder icon-state-warning"
+    <#if tplList?size gt 0>,
+    "a_attr":{
+        "href":"template/v_list.do",
+        "class":"ajaxify"
+    },
+    "state":{
+        "open":"true"
+    },    
+    "children": [
+    <#list tplList as tpl>
+        {
+        "id": "${tpl.name}",
+        "text": "${tpl.filename}",
+        "icon" : "${tpl.directory?string('fa fa-folder icon-state-warning','fa fa-file icon-state-warning')}",
+         "a_attr":{
+            "href":"${tpl.directory?string("template/v_list.do?root=${tpl.name?url}","template/v_edit.do?root=${tpl.path?url}&name=${tpl.name?url}")}",
+            "class":"ajaxify"
+         },
+        "children": ${tpl.directory?string('true','false')}
+        }<#if tpl_has_next>,</#if>
+    </#list>
+    ]
+    </#if>
+}]
+<#else>
+    [
+    <#list tplList as tpl>
+        {
+        "id": "${tpl.name}",
+        "text": "${tpl.filename}",
+        "icon" : "${tpl.directory?string('fa fa-folder icon-state-warning','fa fa-file icon-state-warning')}",
+        "a_attr":{
+            "href":"${tpl.directory?string("template/v_list.do?root=${tpl.name?url}","template/v_edit.do?root=${tpl.path?url}&name=${tpl.name?url}")}",
+            "class":"ajaxify"
+         },
+         "children":  ${tpl.directory?string('true','false')}
+        }<#if tpl_has_next>,</#if>
+    </#list>
+    ]
+</#if>

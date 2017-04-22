@@ -1,0 +1,65 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-cloud-download"></i>
+								<a href="#" > <@s.m 'cmsData.function'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="data/v_list.do"  class="ajaxify add_db_type"><@s.m "cms.function.db"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "db.fieldslist"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa  fa-list"></i><@s.m "db.fieldslist"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body  flip-scroll">
+                            <div class="table-responsive">
+							<@p.table class="table table-bordered table-striped table-condensed flip-content table-hover" value=list;field,i,has_next><#rt/>
+								<@p.column code="db.fieldname">${field.name}</@p.column><#t/>
+								<@p.column code="db.fieldtype">${field.fieldType!}</@p.column><#t/>
+								<@p.column code="db.fieldproperty">${field.fieldProperty!}</@p.column><#t/>
+								<@p.column code="db.fielddefault">${field.fieldDefault!}</@p.column><#t/>
+								<@p.column code="db.fieldextra">${field.extra!}</@p.column><#t/>
+							</@p.table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+    var dbVal =  $('#dbTypeVal').val();
+    $(".add_db_type").each(function(i){
+ 	   var url =  dbVal + "/" + $(this).attr("href");
+ 	   $(this).attr("href",""+url+"");
+ 	 });
+});
+</script>

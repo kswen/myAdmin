@@ -1,0 +1,652 @@
+<style>
+.dblock{
+	padding-top: 50px;
+}
+.note-b{
+	border-color: #F59DA1;
+}
+.note-l{
+	border-color: #E8CD78;
+}
+.note-c{
+	border-color: #A7C6DF;
+}
+.note-r{
+	border-color: #70BBC3;
+}
+.note-b h3{
+	font-weight: bold;
+}
+.note-l h3{
+	font-weight: bold;
+}
+.note-c h3{
+	font-weight: bold;
+}
+.note-r h3{
+	font-weight: bold;
+}
+</style>          
+            <!-- BEGIN PAGE HEADER-->
+                       <h3 class="page-title">
+	                     <@s.m "cms.function.expand"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-puzzle"></i>
+								<a href="#"><@s.m "plug.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="jautopost/v_list.do" class="ajaxify"><@s.m "cms.jautopost.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.edit"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.edit"/>
+                                        </div>
+                                        <div class="tools">
+											<a href="#" class="collapse" data-original-title="" title="">
+											</a>
+											<a href="#" class="fullscreen" data-original-title="" title="">
+											</a>
+											<a href="#" class="remove" data-original-title="" title="">
+											</a>
+										</div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="jautopost/o_update.do" class="form-horizontal" id="jvForm" >
+                                            <div class="form-body">
+                                            <div class="note note-b">
+                                            <h3 class="form-section text-danger"><@s.m "cmsJautopost.set.basic"/></h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.name"/></label>
+                                                            <div class="col-md-10">
+                                                                <@p.text name="name" value=cmsJautopost.name class="form-control required"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.info"/></label>
+                                                            <div class="col-md-10">
+                                                                <@s.m "cmsJautopost.type"/>: <@p.select list=typeList name="typeId" value=cmsJautopost.type.id listKey="id" listValue="name" class="form-control input-small radio-inline"/> 
+                                                                <@s.m "cmsJautopost.channel"/>: 
+                                                                <select name="channelId" class="form-control input-medium radio-inline">
+																<#if !channel??>
+																    <option value="" class="sel-disabled"><@s.m "global.pleaseSelect"/></option>
+																</#if>
+																<#if channelList?size gt 0>
+                                                                <#assign origDeep=channelList[0].deep+1/>
+                                                                <#list channelList as c>
+                                                                    <#if c.hasContent || c.child?size gt 0>
+                                                                    <option value="${c.id}"<#if c.id==cmsJautopost.channel.id> selected="selected"</#if><#if c.child?size gt 0> class="sel-disabled"</#if>><#if c.deep gte origDeep><#list origDeep..c.deep as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+                                                                    </#if>
+                                                                </#list>
+                                                                </#if>
+                                                                </select> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.pageEncoding"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="input" class="form-control input-medium radio-inline required"  id="pageAutoEncoding" value="${cmsJautopost.pageEncoding!}" name="pageEncoding" <#if cmsJautopost.autoCharset??><#if cmsJautopost.autoCharset = "Y"> disabled </#if></#if>/>
+                                                                <label>
+            															<input type="checkbox" name="autoCharset"  value="Y" id="autoEncoding" <#if cmsJautopost.autoCharset??><#if cmsJautopost.autoCharset = "Y"> checked </#if></#if>/><@s.m "cmsJautopost.label.auto.encoding"/>
+            													</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.pauseTime"/></label>
+                                                            <div class="col-md-10">
+                                                                <@p.text class="form-control required input-medium radio-inline" name="pauseTime" value=cmsJautopost.pauseTime/>
+                                                                <span class="help-span">
+                                                                     <@s.m "cmsJautopost.pauseTime.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.imgAcqu"/></label>
+                                                            <div class="col-md-10">
+                                                                <div class="radio-list">
+                                                                    <@p.radio class="form-control input-medium radio-inline" value=cmsJautopost.imgAcqu name="imgAcqu" list={"true":"global.true","false":"global.false"}/>
+	                                                               <span class="help-block"><@s.m "cmsJautopost.img.cloud.save"/>:</span>
+	                                                               <#if cmsJautopost.jautopostCfg??>
+	                                                               <@p.select list=jautopostCfgList name="jautopostCfgId" headerKey="" value=cmsJautopost.jautopostCfg.id headerValue="----请选择----" listKey="id" listValue="name" class="form-control radio-inline"/> 
+	                                                               <#else>
+	                                                               <@p.select list=jautopostCfgList name="jautopostCfgId" headerKey="" headerValue="----请选择----" listKey="id" listValue="name" class="form-control radio-inline"/> 
+	                                                               </#if>
+                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.releaseTimeFormat"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" class="form-control input-medium radio-inline"  name="releaseTimeFormat" value="${cmsJautopost.releaseTimeFormat!}"/>
+                                                                <span class="help-span">
+                                                                     <@s.m "cmsJautopost.releaseTimeFormat.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.content.link.remove"/></label>
+                                                            <div class="col-md-10">
+                                                                <div class="checkbox-list">
+                                                                 	<label class="checkbox-inline">
+            															<select class="form-control input-small radio-inline"  name="removeContentLink">
+            															<option value="N" <#if cmsJautopost.removeContentLink = "N"> selected </#if>>否</option>
+            															<option value="Y" <#if cmsJautopost.removeContentLink = "Y"> selected </#if>>是</option>
+            															</select>
+            														</label>
+                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.content.img.src"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" class="form-control input-medium"  name="imgSrc"  value="${cmsJautopost.imgSrc!}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+							                    </div>
+							                    <div class="note note-l">
+                                                <h3 class="form-section text-warning"><@s.m "cmsJautopost.set.article.list"/></h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.planList"/></label>
+                                                            <div class="col-md-10">
+                                                                <@p.textarea name="planList" value=cmsJautopost.planList rows="5" cols="70" class="form-control"/>
+                                                                <span class="help-span">
+                                                                     <@s.m "cmsJautopost.planList.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.dynamicAddr"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="dynamicAddr" class="form-control" value="${cmsJautopost.dynamicAddr!}"/> <span class="help-span"><@s.m "cmsJautopost.dynamicAddr.help"/></span>
+                                                                <@s.m "cmsJautopost.dynamicPage"/> <@s.m "cmsJautopost.from"/> <input type="text" name="dynamicStart" value="${cmsJautopost.dynamicStart!}" class="form-control input-xsmall radio-inline"/> &nbsp; 
+                                                                <@s.m "cmsJautopost.to"/>: <input type="text" name="dynamicEnd" value="${cmsJautopost.dynamicEnd!}"  class="form-control input-xsmall radio-inline"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.article.list"/></label>
+                                                            <div class="col-md-10">
+                                                            	 <div class="radio-list">
+                                                                 <label class="radio-inline"><input type="radio" name="listSelector" id="url_selector" value="URL" <#if cmsJautopost.listSelector = "URL"> checked </#if>/><@s.m "cmsJautopost.label.article.list.url"/></label>
+                                                                 <label class="radio-inline"><input type="radio" name="listSelector" id="css_selector"  value="CSS" <#if cmsJautopost.listSelector = "CSS"> checked </#if>/><@s.m "cmsJautopost.label.article.list.css"/></label>
+                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group" id="byURL">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.link.list.url"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="listByURL" class="form-control" value="${cmsJautopost.listByURL!}"/>
+                                                                <span class="help-span">
+                                                            	<@s.m "cmsJautopost.label.article.list"/>，<@s.m "cmsJautopost.label.example"/>http://www.jeecmstheme.com/2015/01/1737.html<br/>
+                                                            	<@s.m "cmsJautopost.label.article.reg"/>http://www.jeecmstheme.com/((19|20)\\d\\d)/(0?[1-9]|1[012])/(\\d+)\\.(html$)
+                                                           		 </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group" id="byCSS">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.link.list.css"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="listByCSS" class="form-control" value="${cmsJautopost.listByCSS!}"/>
+                                                                <span class="help-span">
+                                                            	<@s.m "cmsJautopost.label.jeecmstheme"/><br/>
+                                                            	<@s.m "cmsJautopost.label.css.selector"/>：h2 a
+                                                           		 </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                </div>
+                                                <div class="note note-c">
+                                                <h3 class="form-section text-info"><@s.m "cmsJautopost.set.content"/></h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.content.page"/></label>
+                                                            <div class="col-md-10">
+                                                                 <div class="radio-list">
+                                                                 <label class="radio-inline"><input type="checkbox" name="isPagination" value="YES" <#if (cmsJautopost.isPagination??&&cmsJautopost.isPagination="YES")>checked<#else></#if>/></label>
+                                                                  <div>
+                                                                  <@s.m "cmsJautopost.label.content.page.css"/><input type="text" name="pageCssSelector" class="form-control" value="${cmsJautopost.pageCssSelector!}"/>
+                                                                  <@s.m "cmsJautopost.label.content.page.publish"/><input type="checkbox" name="publishWithPage" value="YES" <#if (cmsJautopost.publishWithPage??&&cmsJautopost.publishWithPage="YES")>checked<#else></#if>/>
+                                                                  </div>
+                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.content.title"/></label>
+                                                            <div class="col-md-10">
+                                                                 <div class="radio-list">
+                                                                 <label class="radio-inline"><input type="radio" name="titleSelector" id="title_tag_selector" value="TITLE_TAG" <#if cmsJautopost.titleSelector = "TITLE_TAG"> checked </#if>/><@s.m "cmsJautopost.label.content.title.tag"/></label>
+                                                                 <label class="radio-inline"><input type="radio" name="titleSelector" id="title_css_selector"  value="TITLE_CSS" <#if cmsJautopost.titleSelector = "TITLE_CSS"> checked </#if>/><@s.m "cmsJautopost.label.content.title.css"/></label>
+                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group" id="titlebyURL">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.start"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="titleByTagBegin" class="form-control" value="${cmsJautopost.titleByTagBegin?html}"/>
+                                                                <span class="help-span">
+                                                            	 <@s.m "cmsJautopost.label.html.begin"/>,<@s.m "cmsJautopost.label.example"/>&lt;h1&gt;
+                                                           		 </span>
+                                                            </div>
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.end"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="titleByTagEnd" class="form-control" value="${cmsJautopost.titleByTagEnd?html}"/>
+                                                                <span class="help-span">
+                                                            	 <@s.m "cmsJautopost.label.html.end"/>,<@s.m "cmsJautopost.label.example"/>&lt;/h1&gt;
+                                                           		 </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group" id="titlebyCSS">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.css.selector"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="titleByCSS" class="form-control" value="${cmsJautopost.titleByCSS!}"/>
+                                                                <span class="help-span">
+                                                            	<@s.m "cmsJautopost.label.css.selector"/>：<@s.m "cmsJautopost.label.example"/>.article-title a
+                                                           		 </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.content"/></label>
+                                                            <div class="col-md-10">
+                                                                 <div class="radio-list">
+                                                                 <label class="radio-inline"><input type="radio" name="contentSelector" id="content_tag_selector" value="CONTENT_TAG" <#if cmsJautopost.contentSelector = "CONTENT_TAG"> checked </#if>/><@s.m "cmsJautopost.label.article.list.str"/></label>
+                                                                 <label class="radio-inline"><input type="radio" name="contentSelector" id="content_css_selector"  value="CONTENT_CSS" <#if cmsJautopost.contentSelector = "CONTENT_CSS"> checked </#if>/><@s.m "cmsJautopost.label.article.list.css"/></label>
+                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                            <div class="form-group" id="contentbyURL">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.start"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="contentByTagBegin" class="form-control" value="<#if cmsJautopost.contentByTagBegin??>${cmsJautopost.contentByTagBegin?html}</#if>"/>
+                                                                <span class="help-span">
+                                                            	 <@s.m "cmsJautopost.label.html.begin"/>,<@s.m "cmsJautopost.label.example"/> &lt;article class="article-content"&gt;
+                                                           		 </span>
+                                                            </div>
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.end"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="contentByTagEnd" class="form-control" value="<#if cmsJautopost.contentByTagEnd??>${cmsJautopost.contentByTagEnd?html}</#if>"/>
+                                                                <span class="help-span">
+                                                            	 <@s.m "cmsJautopost.label.html.end"/>,<@s.m "cmsJautopost.label.example"/>&lt;/article&gt;
+                                                           		 </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group" id="contentbyCSS">
+                                                            <label class="control-label col-md-2"><@s.m "cmsJautopost.label.css.selector"/></label>
+                                                            <div class="col-md-10">
+                                                                <input type="text" name="contentByCSS" class="form-control" value="${cmsJautopost.contentByCSS!}"/>
+                                                                <span class="help-span">
+                                                            	<@s.m "cmsJautopost.label.css.selector"/>：<@s.m "cmsJautopost.label.example"/>.article-content
+                                                           		 </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                </div>
+                                                <div class="note note-r">
+                                                <h3 class="form-section text-success"><@s.m "cmsJautopost.label.content.filter"/></h3>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group input_fields_wrap_css">
+                                                        		<div class="col-md-12">
+                                                        			<button class="add_field_button_css btn blue-hoki "><@s.m "cmsJautopost.label.add.css"/></button>
+                                                        		</div>
+                                                    	</div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                 <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group input_fields_wrap">
+                                                        		<div class="col-md-12">
+                                                        			<button class="add_field_button btn blue-madison "><@s.m "cmsJautopost.label.add.str"/></button>
+                                                        		</div>
+                                                    	</div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                            </div>
+                                            </div>
+                                            <@p.hidden name="id" value=cmsJautopost.id/>
+                                            <input type="hidden" name="removeContentByTagBegin" id="removeContentByTagBegin" value='<#if cmsJautopost.removeContentByTagBegin??>${cmsJautopost.removeContentByTagBegin?html}</#if>'/>
+                                            <input type="hidden" name="removeContentByTagEnd" id="removeContentByTagEnd" value='<#if cmsJautopost.removeContentByTagEnd??>${cmsJautopost.removeContentByTagEnd?html}</#if>'/>
+                                            <input type="hidden" name="removeContentByCSS" id="removeContentByCSS" value='${cmsJautopost.removeContentByCSS!}'/>
+                                            <div class="form-actions fluid">
+                                                <div class="row">
+                                                    <div class="col-md-offset-5">
+                                                            <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                            <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+$.validator.methods.leafChannel = function(value, element, param) {
+    var i = element.selectedIndex;
+    return $(element.options[i]).attr("class")!="sel-disabled";
+};
+jQuery(document).ready(function() {    
+	 var x = 0; 
+	 var y = 0; 
+    var max_fields        = 100;
+    var wrapper          = $(".input_fields_wrap");
+    var add_button      = $(".add_field_button"); 
+    var wrapper_css     = $(".input_fields_wrap_css");
+    var add_button_css = $(".add_field_button_css"); 
+    Metronic.initAjax();
+    <#if cmsJautopost.listSelector = "CSS">
+		$("#byURL").hide();
+		$("#byCSS").show();
+    </#if>
+    <#if cmsJautopost.listSelector = "URL">
+		$("#byCSS").hide();
+		$("#byURL").show();
+    </#if>
+    <#if cmsJautopost.titleSelector = "TITLE_CSS"> 
+		$("#titlebyURL").hide();
+	    $("#titlebyCSS").show();
+    </#if>
+    <#if cmsJautopost.titleSelector = "TITLE_TAG"> 
+		$("#titlebyURL").show();
+	    $("#titlebyCSS").hide();
+    </#if>
+    <#if cmsJautopost.contentSelector = "CONTENT_TAG"> 
+	    $("#contentbyURL").show(); 
+	    $("#contentbyCSS").hide();
+    </#if>
+    <#if cmsJautopost.contentSelector = "CONTENT_CSS"> 
+	    $("#contentbyURL").hide(); 
+	    $("#contentbyCSS").show();
+    </#if>
+    
+    var rcontentByBeginTag = '${cmsJautopost.removeContentByTagBegin?html}';
+    var rcontentByEndTag = '${cmsJautopost.removeContentByTagEnd?html}';
+    var rcontentByCSS = '${cmsJautopost.removeContentByCSS?html}';
+    var contentByBeginTag;
+    var contentByEndTag;
+    var contentByCSS;
+    
+    if(rcontentByBeginTag.length>0){
+    	contentByBeginTag = rcontentByBeginTag.split("︾");
+        contentByEndTag = rcontentByEndTag.split("︾");
+        x = contentByBeginTag.length;
+        for(var i = 0; i < contentByBeginTag.length; i++) {
+			var s = contentByBeginTag[i];
+		    var e = contentByEndTag[i];
+		    if(""!=s&&""!=e){
+		    	$(wrapper).append('<div class="dblock"> <div class="col-md-5"> <label class="control-label col-md-2"><@s.m "cmsJautopost.label.start"/></label> <div class="col-md-10"> <input type="text" name="removeContentByTagBegin_'+i+ '" value="'+s+ '" class="form-control remove_content_by_tag_begin"/> </div> </div> <div class="col-md-5"> <label class="control-label col-md-2"><@s.m "cmsJautopost.label.end"/></label> <div class="col-md-10"> <input type="text" name="removeContentByTagEnd__'+x+ '" value="'+e+ '"  class="form-control remove_content_by_tag_end"/> </div> </div> <div class="col-md-2"> <button class="remove_field btn  red-flamingo"><@s.m "global.delete"/></button> </div> </div>'); 
+		    }
+		}
+    }
+    if(rcontentByCSS.length>0){
+    	ccontentByCSS = rcontentByCSS.split("︾");
+        y = ccontentByCSS.length;
+        for(var i = 0; i < ccontentByCSS.length; i++) {
+			var s = ccontentByCSS[i];
+			 if(""!=s){
+        		$(wrapper_css).append('<div class="dblock"> <div class="col-md-10"> <label class="control-label col-md-1">CSS</label> <div class="col-md-11"> <input type="text" name="removeContentByCSS_'+y+ '" value="'+s+ '" class="form-control remove_content_by_CSS"/></div> </div> <div class="col-md-2"> <button class="remove_field btn  red-flamingo"><@s.m "global.delete"/></button> </div> </div>'); 
+			 }
+		}
+    }
+    $("#css_selector").click(function(){
+    	$("#byURL").attr("checked", false);
+    	$("#byURL").hide();
+    	$("#byCSS").attr("checked", "checked"); 
+    	$("#byCSS").show();
+    });
+    $("#url_selector").click(function(){
+    	$("#byCSS").attr("checked", false);
+    	$("#byCSS").hide();
+    	$("#byURL").attr("checked", "checked"); 
+    	$("#byURL").show();
+    });
+    $("#title_css_selector").click(function(){
+    	$("#titlebyURL").attr("checked", false);
+    	$("#titlebyURL").hide();
+    	$("#titlebyCSS").attr("checked", "checked"); 
+    	$("#titlebyCSS").show();
+    });
+    $("#title_tag_selector").click(function(){
+    	$("#titlebyCSS").attr("checked", false);
+    	$("#titlebyCSS").hide();
+    	$("#titlebyURL").attr("checked", "checked"); 
+    	$("#titlebyURL").show();
+    });
+    $("#content_css_selector").click(function(){
+    	$("#contentbyURL").attr("checked", false);
+    	$("#contentbyURL").hide();
+    	$("#contentbyCSS").attr("checked", "checked"); 
+    	$("#contentbyCSS").show();
+    });
+    $("#content_tag_selector").click(function(){
+    	$("#contentbyCSS").attr("checked", false);
+    	$("#contentbyCSS").hide();
+    	$("#contentbyURL").attr("checked", "checked"); 
+    	$("#contentbyURL").show();
+    });
+    
+    $("#jvForm").validate({
+    	errorElement: 'span', 
+        errorClass: 'help-block', 
+        focusInvalid: false, 
+        ignore: "",
+        rules: {
+            channelId: {
+                required: true,
+                leafChannel: true
+            },
+            name: {
+                required: true
+            },
+        },
+        messages:{
+            channelId: {
+            	required:"请选择栏目",
+                leafChannel: "<@s.m "cmsJautopost.error.notLeafChannel"/>"
+            },
+            name:"请输入采集名称"
+        },
+        invalidHandler: function (event, validator) { //display error alert on form submit              
+            Metronic.alert({
+                place: "append", 
+                type: "danger",  
+                message: '下面的信息填写有误，请仔细检查',  
+                close: true, 
+                reset: true, 
+                focus: true, 
+                closeInSeconds: 5, 
+                icon: "warning"
+            });
+        },
+        highlight: function (element) { 
+            $(element).closest('.form-group').addClass('has-error'); 
+        },
+        unhighlight: function (element) { 
+            $(element).closest('.form-group').removeClass('has-error'); 
+        },
+        success: function (label) {
+            label.closest('.form-group').removeClass('has-error'); 
+        },
+        submitHandler: function (form) {
+        	constructFilter();
+        	submitForm($(form).attr("action"), form);
+            return false; 
+        }  
+    });
+    
+    $(add_button).click(function(e){ 
+        e.preventDefault();
+        if(x < max_fields){ 
+            x++; 
+            $(wrapper).append('<div class="dblock"> <div class="col-md-5"> <label class="control-label col-md-2"><@s.m "cmsJautopost.label.start"/></label> <div class="col-md-10"> <input type="text" name="removeContentByTagBegin_'+x+ '" class="form-control remove_content_by_tag_begin"/> </div> </div> <div class="col-md-5"> <label class="control-label col-md-2"><@s.m "cmsJautopost.label.end"/></label> <div class="col-md-10"> <input type="text" name="removeContentByTagEnd__'+x+ '" class="form-control remove_content_by_tag_end"/> </div> </div> <div class="col-md-2"> <button class="remove_field btn  red-flamingo"><@s.m "global.delete"/></button> </div> </div>'); 
+        }
+    });
+    
+    $(wrapper).on("click",".remove_field", function(e){ 
+        e.preventDefault(); 
+        $(this).parent().parent('div').remove(); x--;
+    })
+    
+    $(add_button_css).click(function(e){ 
+        e.preventDefault();
+        if(x < max_fields){ 
+            y++; 
+            $(wrapper_css).append('<div class="dblock"> <div class="col-md-10"> <label class="control-label col-md-1">CSS</label> <div class="col-md-11"> <input type="text" name="removeContentByCSS_'+y+ '" class="form-control remove_content_by_CSS"/></div> </div> <div class="col-md-2"> <button class="remove_field btn  red-flamingo"><@s.m "global.delete"/></button> </div> </div>'); 
+        }
+    });
+    
+    $(wrapper_css).on("click",".remove_field", function(e){ 
+        e.preventDefault(); 
+        $(this).parent().parent('div').remove(); y--;
+    })
+    
+    $("#autoEncoding").click(function(){
+      	 if($("#pageAutoEncoding").attr("disabled")){
+           	$("#pageAutoEncoding").removeAttr("disabled");
+           }else{
+           	$("#pageAutoEncoding").attr("disabled","disabled");
+           }
+     });
+});
+
+function constructFilter(){
+	var removeContentByTagBegin="";
+	var removeContentByTagEnd="";
+	var removeContentByCSS="";
+	var beginTotal = $(".input_fields_wrap .remove_content_by_tag_begin");
+	var endTotal = $(".input_fields_wrap .remove_content_by_tag_end");
+	var cssTotal = $(".input_fields_wrap_css .remove_content_by_CSS");
+	beginTotal.each(function(index) {
+		if (index === beginTotal.length - 1) {
+			removeContentByTagBegin += $(this).val();
+	    }else{
+	    	removeContentByTagBegin += $(this).val()+"︾";
+	    }
+	});
+    endTotal.each(function(index) {
+		if (index === endTotal.length - 1) {
+			removeContentByTagEnd += $(this).val();
+	    }else{
+	        removeContentByTagEnd += $(this).val()+"︾";
+	    }
+	});
+	cssTotal.each(function(index) {
+		if (index === cssTotal.length - 1) {
+			removeContentByCSS += $(this).val();
+	    }else{
+	    	removeContentByCSS += $(this).val()+"︾";
+	    }
+	});
+	$("#removeContentByTagBegin").val(removeContentByTagBegin);
+	$("#removeContentByTagEnd").val(removeContentByTagEnd);
+	$("#removeContentByCSS").val(removeContentByCSS);
+}
+</script>

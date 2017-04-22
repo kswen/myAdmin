@@ -1,0 +1,266 @@
+<script src="${base}/r/cms/front.js" type="text/javascript"></script>
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-social-dropbox"></i>
+								<a href="#"><@s.m "cmsConfig.function"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="directive/v_list.do" class="ajaxify"><@s.m "directive.function"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						<@cms_perm url="/directive/v_add.do">
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "global.add"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+								 	<li><a href="directive/v_add.do" class="ajaxify"> <@s.m "global.add"/></a></li>
+								</ul>
+							</div>
+						</div>
+						</@cms_perm>
+						</div>
+						<!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.list"/>
+                                        </div>
+                                        <div class="tools">
+											<a href="#" class="collapse" data-original-title="" title="">
+											</a>
+											<a href="#" class="fullscreen" data-original-title="" title="">
+											</a>
+											<a href="#" class="remove" data-original-title="" title="">
+											</a>
+										</div>
+                                    </div>
+                                    <div class="portlet-body flip-scroll">
+                                        <!-- BEGIN FORM-->
+                                         <form id="tableForm" method="post">
+										<input type="hidden" name="pageNo" value="${pageNo!}"/>
+										<@p.table class="table table-bordered table-striped table-condensed flip-content" listAction="directive/v_list.do"  value=pagination;tpl,i,has_next><#rt/>
+											<@p.column title="<input type='checkbox'  onclick='checkAll(\"ids\",this.checked)'/>">
+												<label class="class4ids"><input type='checkbox' name='ids' value='${tpl.id}' /></label><#t/>
+											</@p.column><#t/>
+											<@p.column code="directive.name" align="center">${tpl.name}</@p.column><#t/>
+											<@p.column code="directive.code" align="center">
+												<textarea class="form-control" id="codeText_${tpl.id}">${tpl.code!}</textarea>
+											</@p.column><#t/>
+											<@p.column code="directive.user" align="center">${tpl.user.username}</@p.column><#t/>
+											<@p.column code="global.operate" align="center">
+												<a href="javascript:void(0)" class="btn default btn-xs yellow-stripe" id="view_${tpl.id}"><@s.m "directive.code.view"/></a> | <#rt/>
+												<a href="javascript:void(0)" class="btn default btn-xs blue-stripe" id="edit_${tpl.id}"><@s.m "global.edit"/></a> | <#rt/> 
+												<a href="javascript:void(0)" onclick="deleteSingle('directive/o_delete.do?ids=${tpl.id}&pageNo=${pageNo!}')" class="btn default btn-xs red-stripe"><@s.m "global.delete"/></a> <#rt/>
+											</@p.column><#t/>
+										</@p.table>
+										<div>
+										<input id="copy" class="btn btn-info" type="button" value="<@s.m "directive.code.copy"/>" />
+										<input class="btn btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/>
+										</div>
+										</form>
+                                        <!-- END FORM-->
+                                    </div>
+                                    <!-- codeDialog start -->
+                                     <div id="codeDialog" class="modal fade" tabindex="-1" aria-hidden="true">
+									 <div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+												<h4 class="modal-title"><@s.m 'directive.function'/> - <@s.m 'directive.code.view'/></h4>
+											</div>
+											<div class="modal-body">
+												<div class="scroller" style="height:345px" data-always-visible="1" data-rail-visible1="1">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+																<textarea style="width: 550px;height:335px" id="codeText"></textarea>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" data-dismiss="modal" class="btn btn-primary"><@s.m code='global.closeWindow'/></button>
+											</div>
+											</div>
+										</div>
+									 </div>
+									 <!-- codeDialog end -->
+                                    <!-- editDialog start -->
+                                     <div id="editDialog" class="modal fade" tabindex="-1" aria-hidden="true">
+									 <div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+												<h4 class="modal-title"><@s.m 'directive.function'/> - <@s.m 'global.edit'/></h4>
+											</div>
+											<div class="modal-body">
+												<div class="scroller" style="height:420px;" data-always-visible="1" data-rail-visible1="1">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+															<@p.form id="editForm" tableClass="table table-hover table-striped table-bordered vtable" action="directive/o_update.do" labelWidth="30">
+																<@p.text width="100" colspan="2" label="directive.name" id="name" name="name" class="form-control required"/><@p.tr/>
+																<@p.td width="100" colspan="2" label="directive.description">
+																<textarea style="width: 450px;height:50px" id="description" name="description">
+																</textarea>
+																</@p.td><@p.tr/>
+																<@p.td width="100" colspan="2" label="directive.code">
+																<textarea style="width: 450px;height:250px" id="codeEditText" name="code">
+																</textarea>
+																<@p.hidden name="id" id="id"/>
+																</@p.td>
+																<@p.tr/>
+															</@p.form>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" data-dismiss="modal" class="btn green-meadow" id="submitDirective"><@s.m code='global.submit'/></button>
+											</div>
+											</div>
+										</div>
+									 </div>
+									 <!-- editDialog end -->
+                                </div>
+                                <input type="hidden" id="codeHidden"/>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script src="${base}/res/zclip/jquery.zclip.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $('input[name=' + name + ']:checkbox').each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        }); 
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    submitForm("directive/o_delete.do", $("#tableForm"))
+}
+$(function() {
+	$('#submitDirective').click(function(){
+		submitFormMsg($("#editForm"));
+	});
+	$('#copy').zclip({
+		path:'${base}/res/zclip/ZeroClipboard.swf',
+		copy:function(){
+			var checkCount=checkedCount('ids');
+			if(checkCount<=0) {
+				Metronic.alert({
+		            place: "append", 
+		            type: "danger",  
+		            message: '<@s.m 'error.checkRecord'/>',  
+		            close: true, 
+		            reset: true, 
+		            focus: true, 
+		            closeInSeconds: 5, 
+		            icon: "warning"
+		        }); 
+				return;
+			}else if(checkCount>1) {
+				Metronic.alert({
+		            place: "append", 
+		            type: "danger",  
+		            message: '<@s.m 'error.checkOne'/>',  
+		            close: true, 
+		            reset: true, 
+		            focus: true, 
+		            closeInSeconds: 5, 
+		            icon: "warning"
+		        }); 
+				return;
+			}else{
+				var id=$("input[type=checkbox][name='ids']:checked").val();
+				return $('#codeText_'+id).val();
+			}
+		},
+		afterCopy:function(){
+			Metronic.alert({
+	            place: "append", 
+	            type: "success",  
+	            message: '<@s.m 'global.copy.success'/>',  
+	            close: true, 
+	            reset: true, 
+	            focus: true, 
+	            closeInSeconds: 5, 
+	            icon: "check"
+	        }); 
+			return;
+		}
+	});
+	$("a[id^='view_']").click(function() {
+		var codeId="codeText_"+$(this).attr("id").split("view_")[1];
+		$("#codeText").val($("#"+codeId).val());
+		$( "#codeDialog" ).modal();
+	});
+	$("a[id^='edit_']").click(function() {
+		getData($(this).attr("id").split("edit_")[1]);//获取json数据  
+		$( "#editDialog" ).modal();
+	});
+});
+function getData(id){
+    $.getJSON("directive/v_ajax_edit.do",{id:id},function(data){  
+        $("#name").val(data.name); 
+        $("#description").val(data.description); 
+        $("#codeEditText").val(data.code); 
+        $("#id").val(data.id);
+  });  
+}
+</script>

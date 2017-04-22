@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<!--
+当程序猿实属不易，当老程序猿更不容易，谢谢您的理解与支持，请勿二次销售模板
+主题名称: myAdminv7
+主题地址: http://www.jeecmstheme.com/2016/02/2042.html#rid
+主题描述: myAdmin主题（付费） 技术支持 
+官方站点: http://www.jeecmstheme.com
+版本: 1.0.0
+技术支持: QQ251904080/229811221（仅限付费用户）
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+<title>JEECMS | Administrator Control Dashboard </title>
+<#include "/jeecms_sys/head.html"/>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-quick-sidebar-over-content page-style-square"> 
+<!-- BEGIN HEADER -->
+<div class="page-header navbar navbar-fixed-top">
+	<!-- BEGIN HEADER INNER -->
+	<div class="page-header-inner">
+		<!-- BEGIN LOGO -->
+		<div class="page-logo">
+			<a target="_blank" id="current_siteURL">
+			<img src="${base}/assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>
+			</a>
+			<div class="menu-toggler sidebar-toggler hide">
+				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+			</div>
+		</div>
+		<!-- END LOGO -->
+		<!-- BEGIN HORIZANTAL MENU -->
+		<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
+			<ul class="nav navbar-nav">
+				<li class="classic-menu-dropdown active">
+					<a href="javascript:;" id="workBenchMenu"> <@s.m "cms.function.workbench"/></a>
+				</li>
+				<@cms_perm url="/frame/content_main.do">
+					<li class="classic-menu-dropdown">
+						<a href="javascript:;" id="contentMenu"> <@s.m "cms.function.content"/></a>
+					</li>
+				</@cms_perm>
+				<@cms_perm url="/frame/maintain_main.do">
+					<li class="classic-menu-dropdown ">
+						<a href="javascript:;" id="maintainMenu"> <@s.m "cms.function.maintain"/></a>
+					</li>
+				</@cms_perm>
+				<@cms_perm url="/frame/statistic_main.do">
+					<li class="classic-menu-dropdown">
+						<a href="javascript:;" id="dataMenu"> <@s.m "cms.function.data"/></a>
+					</li>
+				</@cms_perm>
+				<@cms_perm url="/frame/config_main.do">
+					<li class="classic-menu-dropdown">
+						<a href="javascript:;" id="configMenu"> <@s.m "cms.function.config"/></a>
+					</li>
+				</@cms_perm>
+				<@cms_perm url="/frame/user_main.do">
+					<li class="classic-menu-dropdown">
+						<a href="javascript:;" id="userMenu"> <@s.m "cms.function.user"/></a>
+					</li>
+				</@cms_perm>
+				<@cms_perm url="/frame/expand_main.do">
+					<li class="classic-menu-dropdown">
+						<a href="javascript:;" id="expandMenu"> <@s.m "cms.function.expand"/></a>
+					</li>
+				</@cms_perm>
+			</ul>
+		</div>
+		<!-- END HORIZANTAL MENU -->
+		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
+		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+		</a>
+		<!-- END RESPONSIVE MENU TOGGLER -->
+		<!-- BEGIN TOP NAVIGATION MENU -->
+		<div class="top-menu">
+			<ul class="nav navbar-nav pull-right">
+				<!-- BEGIN INBOX DROPDOWN -->
+				<li class="dropdown dropdown-extended dropdown-inbox">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<i class="icon-envelope-open"></i>
+					<span class="badge badge-default" id="header_inbox_bar"> 0 </span>
+					</a>
+					<ul class="dropdown-menu">
+						<li class="external">
+							<h3>您有 <span class="bold"  id="header_inbox_bar_2"> 0 </span> 条未读信息</h3>
+							<a href="message/v_list.do?&box=0" class="ajaxify">查看所有信息</a>
+						</li>
+					</ul>
+				</li>
+				<!-- END INBOX DROPDOWN -->
+				<!-- BEGIN TODO DROPDOWN -->
+				<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+				<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<i class="fa fa-sitemap"></i>
+					<span class="badge badge-default" id="site_size_tooltip"> 1 </span>
+					</a>
+					<ul class="dropdown-menu extended tasks">
+						<li class="external">
+							<h3>您有 <span class="bold" id="site_size"> 1 </span> 个站点 </h3>
+						</li>
+						<li>
+							<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283" id="all_site_list">
+								 
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<!-- END TODO DROPDOWN -->
+				<!-- BEGIN USER LOGIN DROPDOWN -->
+				<li class="dropdown dropdown-user">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<img alt="" class="img-circle" src="${base}/assets/admin/layout/img/avatar3_small.jpg"/>
+					<span class="username username-hide-on-mobile">
+					Admin </span>
+					<i class="fa fa-angle-down"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-default">
+						<li>
+							<a class="ajaxify" href="personal/v_profile.do"><i class="icon-user"></i> <@s.m "cmsPersonal.function"/> </a>
+						</li>
+						<li id="header_login_info_bar_open">
+							<a href="message/v_list.do?&box=0" class="ajaxify">
+							<i class="icon-envelope-open"></i> 收件箱 <span class="badge badge-danger" id="header_login_info_bar"> 0 </span>
+							</a>
+						</li>
+						<li class="divider">
+						</li>
+						<li>
+                        <a href="javascript:;" id="trigger_fullscreen">
+                            <i class="fa fa-arrows"></i> 全屏显示
+                        </a>
+                    	</li>
+						<li>
+							<a href="logout.do?returnUrl=index.do">
+							<i class="icon-key"></i> <@s.m "global.admin.logout"/> </a>
+						</li>
+					</ul>
+				</li>
+				<!-- END USER LOGIN DROPDOWN -->
+			</ul>
+		</div>
+		<!-- END TOP NAVIGATION MENU -->
+	</div>
+	<!-- END HEADER INNER -->
+</div>
+<!-- END HEADER -->
+<div class="clearfix">
+</div>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+	<!-- BEGIN SIDEBAR -->
+	<div class="page-sidebar-wrapper">
+		<div class="page-sidebar navbar-collapse collapse">
+			<!-- BEGIN SIDEBAR MENU -->
+			<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+				<li class="sidebar-toggler-wrapper">
+					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+					<div class="sidebar-toggler">
+					</div>
+					<!-- END SIDEBAR TOGGLER BUTTON -->
+				</li>
+				<li class="sidebar-search-wrapper">
+					<!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+					<form class="sidebar-search" action="${base}/search.jspx" target="_blank">
+						<a href="javascript:;" class="remove">
+						<i class="icon-close"></i>
+						</a>
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="搜索...">
+							<span class="input-group-btn">
+							<a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
+							</span>
+						</div>
+					</form>
+					<!-- END RESPONSIVE QUICK SEARCH FORM -->
+				</li>
+					<li class="start active open workBenchDiv">
+						<a href="javascript:;">
+						<i class="icon-home"></i>
+						<span class="title"><@s.m "cms.function.workbench"/></span>
+						<span class="selected"></span>
+						<span class="arrow open"></span>
+						</a>
+						<ul class="sub-menu" id="diyMenuList">
+							<li class="active">
+								<a href="right.do" class="ajaxify" id="right_index"><@s.m "global.admin.index"/></a>
+							</li>
+							<@cms_perm url="/menu/v_list.do">
+				            	<li><a href="menu/v_list.do" class="ajaxify"><span class="badge badge-roundless badge-danger">DIY</span><@s.m "cmsUser.menu.fuction"/></a></li>
+				      	 	</@cms_perm>
+						</ul>
+					</li>
+					<@cms_perm url="/frame/content_main.do">
+					<li class="heading contentDiv">
+						<h3 class="uppercase"><strong><@s.m "cms.function.content"/></strong></h3>
+					</li>
+					<li class="contentDiv">
+						<a href="javascript:;">
+						<i class="icon-list"></i>
+						<span class="title"><@s.m "cms.function.content"/>管理</span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<div id="left_channel_tree_4_content_list" class="tree_nav_block" role="tree" style=" overflow-x: auto; overflow-y: hidden; "></div>
+						</ul>
+					</li>
+					<@cms_perm url="/topic/v_list.do">
+					<li class="contentDiv">
+						<a href="javascript:;">
+						<i class="icon-eyeglasses"></i>
+						<span class="title"><@s.m "cmsTopic.function"/></span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<li><a href="topic/v_list.do" class="ajaxify"><@s.m "cmsTopic.function"/></a></li>
+						</ul>
+					</li>
+					</@cms_perm>
+					</@cms_perm>
+					<@cms_perm url="/frame/maintain_main.do">
+					<li class="heading maintainDiv">
+						<h3 class="uppercase"><strong><@s.m "cms.function.maintain"/></strong></h3>
+					</li>
+					<@cms_perm url="/frame/maintain_msg.do">
+					<li class="maintainDiv">
+						<a href="javascript:;">
+						<i class="icon-notebook"></i>
+						<span class="title">信息<@s.m "cms.function.maintain"/></span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<@cms_perm url="/lucene/v_index.do">
+							<li class="leftCurr"><a href="lucene/v_index.do" class="ajaxify"><@s.m "cmsLucene.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/task/v_list.do">
+								<li><a href="task/v_list.do" class="ajaxify"><@s.m "cms.task.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/friendlink_ctg/v_list.do">
+								<li><a href="friendlink_ctg/v_list.do" class="ajaxify"><@s.m "cmsFriendlinkCtg.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/friendlink/v_list.do">
+								<li><a href="friendlink/v_list.do" class="ajaxify"><@s.m "cmsFriendlink.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/advertising_space/v_list.do">
+								<li><a href="advertising_space/v_list.do" class="ajaxify"><@s.m "cmsAdvertisingSpace.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/advertising/v_list.do">
+								<li><a href="advertising/v_list.do" class="ajaxify"><@s.m "cmsAdvertising.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/file/v_list.do">
+								<li><a href="file/v_list.do" class="ajaxify"><@s.m "cms.function.attachment"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/content_cycle/v_list.do">
+								<li><a href="content_cycle/v_list.do" class="ajaxify"><@s.m "contentCycle.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/dictionary/v_list.do">
+								<li><a href="dictionary/v_list.do" class="ajaxify"><@s.m "cmsDictionary.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/scoregroup/v_list.do">
+								<li><a href="scoregroup/v_list.do" class="ajaxify"><@s.m "cmsScoreGroup.function"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/frame/maintain_stc.do">
+					<li class="maintainDiv">
+						<a href="javascript:;">
+						<i class="icon-chemistry"></i>
+						<span class="title"><@s.m 'cmsStatic.function'/></span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<@cms_perm url="/static/v_index.do">
+							<li><a href="static/v_index.do" class="ajaxify"><@s.m "cmsStatic.index"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/static/v_channel.do">
+							<li><a href="static/v_channel.do" class="ajaxify"><@s.m "cmsStatic.channel"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/static/v_content.do">
+							<li><a href="static/v_content.do" class="ajaxify"><@s.m "cmsStatic.content"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/static/v_reset_generate.do">
+							<li><a href="static/v_reset_generate.do" class="ajaxify"><@s.m "cmsContent.regenerate"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/frame/maintain_dcx.do">
+					<li class="maintainDiv">
+						<a href="javascript:;">
+						<i class="icon-book-open"></i>
+						<span class="title"><@s.m 'cmsWords.function'/></span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<@cms_perm url="/tag/v_list.do">
+							<li><a href="tag/v_list.do" class="ajaxify"><@s.m "contentTag.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/sensitivity/v_list.do">
+							<li><a href="sensitivity/v_list.do" class="ajaxify"><@s.m "cmsSensitivity.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/keyword/v_list.do">
+							<li><a href="keyword/v_list.do" class="ajaxify"><@s.m "cmsKeyword.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/origin/v_list.do">
+							<li><a href="origin/v_list.do" class="ajaxify"><@s.m "cmsOrigin.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/searchwords/v_list.do">
+							<li><a href="searchwords/v_list.do" class="ajaxify"><@s.m "cmsSearchWords.function"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/frame/maintain_dat.do">
+					<li class="maintainDiv">
+						<a href="javascript:;">
+						<i class="icon-cloud-download"></i>
+						<span class="title"><@s.m 'cmsData.function'/></span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<@cms_perm url="/data/v_list.do">
+							<li><a href="data/v_list.do" class="ajaxify" id="db_backup"><@s.m "db.backup"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/data/v_revert.do">
+							<li><a href="data/v_revert.do" class="ajaxify" id="db_revert"><@s.m "db.revert"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/data/v_listfiles.do">
+							<li><a href="data/v_listfiles.do" class="ajaxify" id="db_dir"><@s.m "db.dir"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/frame/maintain_cmt.do">
+					<li class="maintainDiv">
+						<a href="javascript:;">
+						<i class="icon-bubbles"></i>
+						<span class="title"><@s.m 'cmsInteractive.function'/></span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<@cms_perm url="/comment/v_list.do">
+							<li><a href="comment/v_list.do" class="ajaxify"><@s.m "cmsComment.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/vote_topic/v_list.do">
+							<li><a href="vote_topic/v_list.do" class="ajaxify"><@s.m "cmsVoteTopic.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/guestbook/v_list.do">
+							<li><a href="guestbook/v_list.do" class="ajaxify"><@s.m "cmsGuestbook.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/guestbook_ctg/v_list.do">
+							<li><a href="guestbook_ctg/v_list.do" class="ajaxify"><@s.m "cmsGuestbookCtg.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/jobapply/v_list.do">
+							<li><a href="jobapply/v_list.do" class="ajaxify"><@s.m "cmsJobApply.function"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/frame/maintain_acc.do">
+					<li class="maintainDiv">
+						<a href="javascript:;">
+						<i class="icon-docs"></i>
+						<span class="title"><@s.m 'cmsAcquisition.function'/></span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<@cms_perm url="/acquisition/v_list.do">
+							<li><a href="acquisition/v_list.do" class="ajaxify"><@s.m "cmsAcquisition.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/acquisition/v_history.do">
+							<li><a href="acquisition/v_history.do" class="ajaxify"><@s.m "cmsAcquisition.function.history"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/acquisition/v_progress.do">
+							<li><a href="acquisition/v_progress.do" class="ajaxify"><@s.m "cmsAcquisition.function.progress"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					</@cms_perm>
+					<@cms_perm url="/frame/statistic_main.do">
+					<li class="heading dataDiv">
+						<h3 class="uppercase"><strong><@s.m "cms.function.data"/></strong></h3>
+					</li>
+					
+					<@cms_perm url="/statistic/member/v_list.do">
+					<li class="dataDiv">
+						<a href="javascript:;"><i class="fa fa-users"></i><span class="title"><@s.m "statistic.function.member"/></span><span class="arrow "></span></a>
+						<ul class="sub-menu">
+							<li><a href="statistic/member/v_list.do" class="ajaxify"><@s.m "statistic.function.member"/></a></li>
+						</ul>
+					</li>
+					</@cms_perm>
+					
+					<@cms_perm url="/statistic/publish.do">
+					<li class="dataDiv">
+						<a href="javascript:;"><i class="icon-note"></i><span class="title"><@s.m 'cms.function.contentstatic'/></span><span class="arrow "></span></a>
+						<ul class="sub-menu">
+							<@cms_perm url="/statistic/content/v_list.do">
+							<li><a href="statistic/content/v_list.do" class="ajaxify"><@s.m "statistic.function.content"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/workloadstatistic/v_list.do">
+							<li><a href="workloadstatistic/v_list.do" class="ajaxify"><@s.m "cms.workload.statistic.function"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/statistic/interactive.do">
+					<li class="dataDiv">
+						<a href="javascript:;"><i class="fa fa-smile-o"></i><span class="title"><@s.m 'cms.function.interactive'/></span><span class="arrow "></span></a>
+						<ul class="sub-menu">
+							<@cms_perm url="/statistic/comment/v_list.do">
+							<li><a href="statistic/comment/v_list.do" class="ajaxify"><@s.m "statistic.function.comment"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/statistic/guestbook/v_list.do">
+							<li><a href="statistic/guestbook/v_list.do" class="ajaxify"><@s.m "statistic.function.guestbook"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/statistic/flow.do">
+					<li class="dataDiv">
+						<a href="javascript:;"><i class="icon-graph"></i><span class="title"><@s.m 'cms.function.flow'/></span><span class="arrow "></span></a>
+						<ul class="sub-menu">
+							<@cms_perm url="/statistic/channel/v_list.do">
+							<li><a href="statistic/channel/v_list.do" class="ajaxify"><@s.m "statistic.function.channel"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/flow/pv/v_list.do">
+							<li><a href="flow/pv/v_list.do" class="ajaxify more_flow_pv"><@s.m "statistic.function.trend"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/flow/source/v_list.do">
+							<li><a href="flow/source/v_list.do?type=source" class="ajaxify"><@s.m "statistic.function.source"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/flow/source/v_list.do">
+							<li><a href="flow/source/v_list.do?type=engine" class="ajaxify"><@s.m "cmsAccess.engine"/></a></li>
+							</@cms_perm>
+							 <@cms_perm url="/flow/source/v_list.do">
+							<li><a href="flow/source/v_list.do?type=keyword" class="ajaxify"><@s.m "cmsAccess.keyword"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/flow/source/v_list.do">
+							<li><a href="flow/source/v_list.do?type=link" class="ajaxify"><@s.m "cmsAccess.externallink"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/flow/area/v_list.do">
+							<li><a href="flow/area/v_list.do" class="ajaxify"><@s.m "cmsAccess.area"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/flow/visitor/v_list.do">
+							<li><a href="flow/visitor/v_list.do" class="ajaxify"><@s.m "cmsAccess.visitor"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/flow/pages/v_list.do">
+							<li><a href="flow/pages/v_list.do" class="ajaxify"><@s.m "cmsAccess.pages"/></a></li>
+							</@cms_perm>
+							 <@cms_perm url="/flow/enterpage/v_list.do">
+							<li><a href="flow/enterpage/v_list.do" class="ajaxify"><@s.m "cmsAccess.enterpages"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/statistic/rank.do">
+					<li class="dataDiv">
+						<a href="javascript:;"><i class="icon-rocket"></i><span class="title"><@s.m 'cms.content.rank'/></span><span class="arrow "></span></a>
+						<ul class="sub-menu">
+							<#list 6..21 as i>
+	                		<@cms_perm url="/content/rank_list.do">
+							<li><a href="content/rank_list.do?orderBy=${i}" class="ajaxify"><@s.m "content.orderBy.${i}"/></a></li>
+							</@cms_perm>
+	                		</#list>
+						</ul>
+					</li>
+					</@cms_perm>
+					</@cms_perm>
+					<@cms_perm url="/frame/config_main.do">
+					<li class="heading configDiv"><h3 class="uppercase"><strong><@s.m "cms.function.config"/></strong></h3></li>
+					<@cms_perm url="/config/g_edit.do">
+					<li class="configDiv">
+						<a href="javascript:;"><i class="icon-wrench"></i><span class="title"><@s.m "cmsConfig.function"/></span><span class="arrow "></span></a>
+						<ul class="sub-menu">
+							
+							<@cms_perm url="/config/v_system_edit.do">
+							<li><a href="config/v_system_edit.do" class="ajaxify"><@s.m "cmsConfig.function.system"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/config/v_login_edit.do">
+							<li><a href="config/v_login_edit.do" class="ajaxify"><@s.m "cmsConfig.function.login"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/config/v_member_edit.do">
+							<li><a href="config/v_member_edit.do" class="ajaxify"><@s.m "cmsConfig.function.member"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/config/register_item_list.do">
+							<li><a href="config/register_item_list.do" class="ajaxify"><@s.m "cmsConfig.function.member.register"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/config/v_mark_edit.do">
+							<li><a href="config/v_mark_edit.do" class="ajaxify"><@s.m "cmsConfig.function.mark"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/config/v_firewall.do">
+							<li><a href="config/v_firewall.do" class="ajaxify"><@s.m "cmsConfig.function.firewall"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/config/v_api_edit.do">
+							<li><a href="config/v_api_edit.do" class="ajaxify"><@s.m "cmsConfig.function.api"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/config/v_attr_edit.do">
+							<li><a href="config/v_attr_edit.do" class="ajaxify"><@s.m "cmsConfig.function.attrs"/></a></li>
+							</@cms_perm>
+							
+							<@cms_perm url="/site_config/v_base_edit.do">
+							<li><a href="site_config/v_base_edit.do" class="ajaxify"><@s.m "cmsSiteConfig.function"/></a></li>
+							</@cms_perm>
+							
+							<@cms_perm url="/model/v_list.do">
+							<li><a href="model/v_list.do" class="ajaxify"><@s.m "cmsModel.function"/></a></li>
+							</@cms_perm>
+							
+							<@cms_perm url="/type/v_list.do">
+							<li><a href="type/v_list.do" class="ajaxify"><@s.m "contentType.function"/></a></li>
+							</@cms_perm>
+							
+							<@cms_perm url="/directive/v_list.do">
+							<li><a href="directive/v_list.do" class="ajaxify"><@s.m "directive.function"/></a></li>
+							</@cms_perm>		
+							
+							<@cms_perm url="/ftp/v_list.do">
+							<li><a href="ftp/v_list.do" class="ajaxify"><@s.m "ftp.function"/></a></li>
+							</@cms_perm>
+							
+							<@cms_perm url="/site/v_list.do">
+							<li><a href="site/v_list.do" class="ajaxify"><@s.m "cmsSite.function"/></a></li>
+							</@cms_perm>
+							
+							<@cms_perm url="/site_config/v_company_edit.do">
+							<li><a href="site_config/v_company_edit.do" class="ajaxify"><@s.m "cmsSiteConfig.function.company"/></a></li>
+							</@cms_perm>
+							
+							<@cms_perm url="/template/template_main.do">
+							<li><a href="template/v_setting.do" class="ajaxify"><@s.m "cms.function.template"/><@s.m "template.setting"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					</@cms_perm>
+					<@cms_perm url="/channel/channel_main.do">
+					<li class="configDiv">
+						<a href="javascript:;"><i class="icon-equalizer"></i><span class="title"><@s.m "cms.function.channel"/></span><span class="arrow "></span></a>
+						<ul class="sub-menu">
+							<div id="tree_channel_list" class="tree_nav_block" role="tree" style=" overflow-x: auto; overflow-y: hidden; "></div>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/template/template_main.do">
+					<li class="configDiv">
+						<a href="javascript:;"><i class="icon-magic-wand"></i><span class="title"><@s.m "cms.function.template"/></span><span class="arrow "></span></a>
+						<ul class="sub-menu">
+							<div id="left_template_tree" class="tree_nav_block" role="tree" style=" overflow-x: auto; overflow-y: hidden; "></div>
+						</ul>
+					</li>
+					</@cms_perm>
+				   <@cms_perm url="/resource/resource_main.do">
+					<li class="configDiv">
+						<a href="javascript:;"><i class="icon-social-dropbox"></i><span class="title"><@s.m "cms.function.resource"/></span><span class="arrow "></span></a>
+						<ul class="sub-menu">
+							<div id="left_resource_tree" class="tree_nav_block" role="tree" style=" overflow-x: auto; overflow-y: hidden; "></div>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/frame/user_main.do">
+					<li class="heading userDiv">
+						<h3 class="uppercase"><strong><@s.m "cms.function.user"/></strong></h3>
+					</li>
+					<@cms_perm url="/frame/user_user.do">
+					<li class="userDiv">
+						<a href="javascript:;">
+						<i class="icon-user"></i>
+						<span class="title">用户管理</span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<@cms_perm url="/member/v_list.do">
+							<li><a href="member/v_list.do" class="ajaxify"><@s.m "cmsMember.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/group/v_list.do">
+							<li><a href="group/v_list.do" class="ajaxify"><@s.m "cmsGroup.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/admin_global/v_list.do">
+							<li><a href="admin_global/v_list.do" class="ajaxify"><@s.m "cmsAdminGlobal.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/admin_local/v_list.do">
+							<li><a href="admin_local/v_list.do" class="ajaxify"><@s.m "cmsAdminLocal.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/role/v_list.do">
+							<li><a href="role/v_list.do" class="ajaxify"><@s.m "cmsRole.function"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/account/v_list.do">
+							<li><a href="account/v_list.do" class="ajaxify"><@s.m "cms.account.function"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/log/log_list.do">
+					<li class="userDiv">
+						<a href="javascript:;">
+						<i class="icon-eye"></i>
+						<span class="title">日志管理</span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<@cms_perm url="/log/v_list_operating.do">
+							<li><a href="log/v_list_operating.do" class="ajaxify"><@s.m "cmsLog.function.operating"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/log/v_list_login_success.do">
+							<li><a href="log/v_list_login_success.do" class="ajaxify"><@s.m "cmsLog.function.loginSuccess"/></a></li>
+							</@cms_perm>
+							<@cms_perm url="/log/v_list_login_failure.do">
+							<li><a href="log/v_list_login_failure.do" class="ajaxify"><@s.m "cmsLog.function.loginFailure"/></a></li>
+							</@cms_perm>
+						</ul>
+					</li>
+					</@cms_perm>
+					<@cms_perm url="/message/v_list.do">
+					<li class="userDiv">
+						<a href="javascript:;">
+						<i class="icon-envelope"></i>
+						<span class="title"><@s.m "cmsMessage.function"/></span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<li><a href="message/v_add.do" class="ajaxify"><@s.m "cmsMessage.sendMessage"/></a></li>
+	                        <li><a href="message/v_list.do?&box=0" class="ajaxify" id="msg_inbox"><@s.m "cmsMessage.inbox"/></a></li>
+	                        <li><a href="message/v_list.do?&box=1" class="ajaxify"><@s.m "cmsMessage.sendbox"/></a></li>
+	                        <li><a href="message/v_list.do?&box=3" class="ajaxify" id="msg_trash_inbox"><@s.m "cmsMessage.trashbox"/></a></li>
+						</ul>
+					</li>
+					</@cms_perm>
+					</@cms_perm>
+					<@cms_perm url="/frame/expand_main.do">
+					<li class="heading expandDiv">
+						<h3 class="uppercase"><strong><@s.m "cms.function.expand"/></strong></h3>
+					</li>
+					<li class="last expandDiv">
+						<a href="javascript:;">
+						<i class="icon-puzzle"></i>
+						<span class="title"><@s.m "plug.function"/></span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<@cms_perm url="/plug/v_list.do">
+							<li><a href="plug/v_list.do" class="ajaxify"><@s.m "plug.function"/>
+							<span class="badge badge-roundless badge-warning">
+							DIY
+							</span></a>
+							</li>
+							</@cms_perm>
+							<li id="plug_menu"></li>
+						</ul>
+					</li>
+					</@cms_perm>
+			</ul>
+			<!-- END SIDEBAR MENU -->
+		</div>
+	</div>
+	<!-- END SIDEBAR -->
+	<!-- BEGIN CONTENT -->
+	<div class="page-content-wrapper">
+		<div class="page-content">
+			<!-- BEGIN STYLE CUSTOMIZER -->
+			<div class="theme-panel hidden-xs hidden-sm">
+				<div class="toggler">
+				</div>
+				<div class="toggler-close">
+				</div>
+				<div class="theme-options">
+					<div class="theme-option theme-colors clearfix">
+						<span>
+						主题色调 </span>
+						<ul>
+							<li class="color-default current tooltips" data-style="default" data-container="body" data-original-title="默认">
+							</li>
+							<li class="color-darkblue tooltips" data-style="darkblue" data-container="body" data-original-title="深蓝色">
+							</li>
+							<li class="color-blue tooltips" data-style="blue" data-container="body" data-original-title="蓝色">
+							</li>
+							<li class="color-grey tooltips" data-style="grey" data-container="body" data-original-title="灰色">
+							</li>
+							<li class="color-light tooltips" data-style="light" data-container="body" data-original-title="浅色">
+							</li>
+							<li class="color-light2 tooltips" data-style="light2" data-container="body" data-html="true" data-original-title="浅色 2">
+							</li>
+						</ul>
+					</div>
+					<div class="theme-option">
+						<span>
+						主题风格 </span>
+						<select class="layout-style-option form-control input-sm">
+							<option value="square" selected="selected">方角</option>
+							<option value="rounded">圆角</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>
+						布局 </span>
+						<select class="layout-option form-control input-sm">
+							<option value="fluid" selected="selected">动态</option>
+							<option value="boxed">盒式</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>
+						顶栏 </span>
+						<select class="page-header-option form-control input-sm">
+							<option value="fixed" selected="selected">固定</option>
+							<option value="default">默认</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>
+						顶栏菜单</span>
+						<select class="page-header-top-dropdown-style-option form-control input-sm">
+							<option value="light" selected="selected">浅色</option>
+							<option value="dark">深色</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>
+						导航栏</span>
+						<select class="sidebar-option form-control input-sm">
+							<option value="fixed">固定</option>
+							<option value="default" selected="selected">默认</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>
+						导航菜单 </span>
+						<select class="sidebar-menu-option form-control input-sm">
+							<option value="accordion" selected="selected">折叠</option>
+							<option value="hover">浮动</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>
+						导航栏风格 </span>
+						<select class="sidebar-style-option form-control input-sm">
+							<option value="default" selected="selected">默认</option>
+							<option value="light">浅色</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>
+						导航栏位置 </span>
+						<select class="sidebar-pos-option form-control input-sm">
+							<option value="left" selected="selected">左边</option>
+							<option value="right">右边</option>
+						</select>
+					</div>
+					<div class="theme-option">
+						<span>
+						底部 </span>
+						<select class="page-footer-option form-control input-sm">
+							<option value="fixed">固定</option>
+							<option value="default" selected="selected">默认</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<!-- END STYLE CUSTOMIZER -->
+			<div class="page-content-body">
+			</div>
+	</div>
+	<input type="hidden" id="dbTypeVal"/>
+	</div>
+	<!-- END CONTENT -->
+</div>
+<!-- END CONTAINER -->
+<!-- BEGIN FOOTER -->
+<div class="page-footer">
+	<div class="page-footer-inner">
+		 版权所有 2014-2018 &copy;  当前主题：<a href="http://www.jeecmstheme.com/2014/09/433.html" target="_blank">myAdminv7</a>.
+	</div>
+	<div class="scroll-to-top">
+		<i class="icon-arrow-up"></i>
+	</div>
+</div>
+<!-- END FOOTER -->
+<!-- BEGIN JAVASCRIPTS-->
+<#include "/jeecms_sys/foot.html"/>
+<script>
+jQuery(document).ready(function() {    
+   Metronic.init(); 
+   Layout.init(); 
+   CusLyt.init(); 
+   UITree.init();
+   ComponentsPickers.handleDatePickers();
+   ComponentsPickers.handleColorPicker();
+   $('#right_index').click();
+   $("#header_login_info_bar_open").click( function () {  $("#msg_inbox").click(); });
+   $("#header_inbox_bar_open").click( function () {  $("#msg_inbox").click(); });
+});
+</script>
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

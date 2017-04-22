@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	default-lazy-init="true">
+	<bean id="jautopostSvc" class="com.jeecmstheme.jautopost.service.impl.JautopostSvcImpl"/>
+	<bean id="upload2QiniuSvc" class="com.jeecmstheme.jautopost.service.impl.Upload2QiniuSvcImpl"/>
+	<bean id="cmsJautopostCfgMng" class="com.jeecmstheme.jautopost.manager.impl.CmsJautopostCfgMngImpl"/>
+	<bean id="cmsJautopostFilesMng" class="com.jeecmstheme.jautopost.manager.impl.CmsJautopostFilesMngImpl"/>
+	<bean id="cmsJautopostMng" class="com.jeecmstheme.jautopost.manager.impl.CmsJautopostMngImpl"/>
+	<bean id="cmsJautopostHistoryMng" class="com.jeecmstheme.jautopost.manager.impl.CmsJautopostHistoryMngImpl"/>
+	<bean id="cmsJautopostTempMng" class="com.jeecmstheme.jautopost.manager.impl.CmsJautopostTempMngImpl"/>
+	<bean id="cmsJautopostDao" class="com.jeecmstheme.jautopost.dao.impl.CmsJautopostDaoImpl"/>
+	<bean id="cmsJautopostCfgDao" class="com.jeecmstheme.jautopost.dao.impl.CmsJautopostCfgDaoImpl"/>
+	<bean id="cmsJautopostHistoryDao" class="com.jeecmstheme.jautopost.dao.impl.CmsJautopostHistoryDaoImpl"/>
+	<bean id="cmsJautopostTempDao" class="com.jeecmstheme.jautopost.dao.impl.CmsJautopostTempDaoImpl"/>
+	<bean id="cmsJautopostFilesDao" class="com.jeecmstheme.jautopost.dao.impl.CmsJautopostFilesDaoImpl"/>
+</beans>

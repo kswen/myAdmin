@@ -1,0 +1,79 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.data"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-graph"></i>
+								<a href="#"><@s.m 'cms.function.flow'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "cmsAccess.pages"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+		<div class="well">
+        <div class="row">
+                 <div class="form-group">
+					<div class="col-md-12">
+						<div class="radio-list">
+								<label class="radio-inline"><@s.m "cmsAccess.pages.order"/>: </label>
+								<label class="radio-inline"><input type="radio" name="orderBy" class="orderBy"  value="1"  <#if !orderBy?? || orderBy=1> checked="checked"</#if>/><@s.m "cmsAccess.pages.pv"/></label>
+								<label class="radio-inline"><input type="radio" name="orderBy"  class="orderBy" value="2"  <#if orderBy?? && orderBy==2> checked="checked"</#if>/><@s.m "cmsAccess.pages.visitors"/></label>
+								<label class="radio-inline"><input type="radio" name="orderBy" class="orderBy"  value="3"  <#if orderBy?? && orderBy==3> checked="checked"</#if>/><@s.m "cmsAccess.pages.second"/></label>
+						</div>
+						</div>
+					</div>
+         </div>
+         </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-graph"></i><@s.m "cmsAccess.pages"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body flip-scroll">
+                            <div class="table-responsive">
+                                <form id="tableForm" method="post">
+								<input type="hidden" name="pageNo" value="${pageNo!}"/>
+								<input type="hidden" name="orderBy" value="${orderBy!}"/>
+								<@p.table  class="table table-bordered table-striped table-condensed flip-content" listAction="flow/pages/v_list.do" value=pagination;array,i,has_next><#rt/>
+									<@p.column code="cmsAccess.pages">${array[0]!}</@p.column><#t/>
+									<@p.column code="cmsAccess.pages.pv">
+										${array[1]!}
+									</@p.column><#t/>
+									<@p.column code="cmsAccess.pages.visitors">${array[2]!}</@p.column><#t/>
+									<@p.column code="cmsAccess.pages.second">${array[3]!}</@p.column><#t/>
+								</@p.table>
+								</form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>            
+       jQuery(document).ready(function() {    
+	   Metronic.initAjax(); 
+	   $(".orderBy").click( function () {
+		   var orderBy = "flow/pages/v_list.do?orderBy="+$("input[name=orderBy]:checked").val();
+			sendGet(orderBy);
+	   });
+	});
+</script>

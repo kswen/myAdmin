@@ -1,0 +1,148 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.data"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-note"></i>
+								<a href="#"><@s.m 'cms.function.contentstatic'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> 
+									<@s.m "cms.workload.statistic.function"/>
+                                </a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="well"> 
+        	<div class="row">
+                <div class="col-md-12">
+                <form id="queryForm" action="workloadstatistic/v_list.do" method="post" class="form-horizontal">
+                <div class="form-body">
+				<input type="hidden" name="year"/>
+				<input type="hidden" name="month"/>
+				<input type="hidden" name="day"/>
+					<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label col-md-1">统计<@s.m "statistic.channel"/></label>
+						<div class="col-md-11">
+						<select id="channelId" name="channelId" class="form-control input-medium radio-inline">
+						<option value="" <#if !channelId??>selected="selected"</#if>><@s.m "global.pleaseSelect"/></option>
+						<#if channelList?size gt 0>
+						<#assign origDeep=channelList[0].deep+1/>
+						<#list channelList as c>
+							<#if c.hasContent || c.child?size gt 0>
+							<option <#if channelId??&&c.id==channelId>selected="selected"</#if> value="${c.id}"><#if c.deep gte origDeep><#list origDeep..c.deep as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+							</#if>
+						</#list>
+						</#if>
+						</select>
+						<select name="authorId" class="form-control input-medium radio-inline">
+							<option value="0"><@s.m "cms.workload.statistic.selectuser"/></option>
+							<#list users as user>
+							<option value="${user.id}" <#if authorId??><#if authorId==user.id>selected="selected"</#if></#if>>${user.username}</option>
+							</#list>
+						</select>
+						<select name="reviewerId" class="form-control input-medium radio-inline">
+							<option value="0"><@s.m "cms.workload.statistic.selectchecker"/></option>
+							<#list admins as admin>
+							<option value="${admin.id}" <#if reviewerId??><#if reviewerId==admin.id>selected="selected"</#if></#if>>${admin.username}</option>
+							</#list>
+						</select>
+						</div>	
+					</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-1"><@s.m "cms.statistic.date.begin"/></label>
+							<div class="col-md-3">
+							<div id="beginDateInput" class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+		                        <input type="text" <#if group=="year">value="${beginDate?string('yyyy')}"<#elseif group=="month">value="${beginDate?string('yyyy-MM')}"<#else>value="${beginDate?string('yyyy-MM-dd')}"</#if> name="beginDate" class="beginDate form-control">
+		                        <span class="input-group-btn">
+		                            <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+		                        </span>
+		                    </div>
+		                    </div>
+						<label class="control-label col-md-1"><@s.m "cms.statistic.date.end"/> </label>
+						<div class="col-md-7">
+						<div id="endDateInput" class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+	                        <input type="text" <#if group=="year">value="${endDate?string('yyyy')}"<#elseif group=="month">value="${endDate?string('yyyy-MM')}"<#else>value="${endDate?string('yyyy-MM-dd')}"</#if> name="endDate" class="endDate form-control">
+	                        <span class="input-group-btn">
+	                            <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+	                        </span>
+	                    </div>
+	                    </div>
+	                    </div>
+	                </div>    
+					<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label col-md-1">统计类型</label>
+						<div class="col-md-7">
+						<div class="radio-list">
+						<label class="radio-inline"> <input name="group" value="year" type="radio"  <#if group=="year">checked="checked"</#if> />年统计</label>
+						<label class="radio-inline"> <input name="group" value="month" type="radio" <#if group=="month">checked="checked"</#if> />月统计</label>
+						<label class="radio-inline"> <input name="group" value="day" type="radio"   <#if group=="day">checked="checked"</#if> />日统计</label>
+						</div>
+						</div>
+						<div class="col-md-4">
+						<input class="btn green-meadow" type="button" onclick="optQueryList()" value="<@s.m "global.query"/>"/>
+						</div>
+					</div>	
+					</div>	
+			  </div>
+		    </form>
+		    </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                               <@s.m "cms.workload.statistic.function"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body flip-scroll">
+                            <div class="table-responsive">
+                                <@p.table class="table table-bordered table-striped table-condensed flip-content" value=list;cmsStatistic,i,has_next><#rt/>
+									<@p.column code="cmsStatic.channel"><#if cmsStatistic.channel??>${cmsStatistic.channel.name}</#if></@p.column><#t/>
+									<@p.column code="statistic.content.contents">${cmsStatistic.count!}</@p.column><#t/>
+									<@p.column code="content.user"><#if cmsStatistic.author??>${cmsStatistic.author.username}</#if></@p.column><#t/>
+									<@p.column code="content.checker"><#if cmsStatistic.reviewer??>${cmsStatistic.reviewer.username}</#if></@p.column><#t/>
+									<@p.column code="cms.statistic.date">
+										<#if group=="year">${cmsStatistic.date?string("yyyy")}
+										<#elseif group=="month">${cmsStatistic.date?string("yyyy-MM")}
+										<#elseif group=="day">${cmsStatistic.date?string("yyyy-MM-dd")}
+										</#if>
+									</@p.column><#t/>
+								</@p.table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+	   Metronic.initAjax();
+});
+function optQueryList() {
+    var f = $("#queryForm");
+    var url = f.attr("action"); 
+    submitForm(url, f);
+}
+</script>

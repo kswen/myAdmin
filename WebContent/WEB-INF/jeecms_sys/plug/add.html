@@ -1,0 +1,104 @@
+            <!-- BEGIN PAGE HEADER-->
+           				<h3 class="page-title">
+	                   <@s.m "cms.function.expand"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-puzzle"></i>
+								<a href="plug/v_list.do" class="ajaxify"> <@s.m "plug.function"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.add"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+		            Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.mt code=message text=message/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <#include "plug_upload.html"/>
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.add"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="plug/o_save.do" id="jvForm"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "plug.name"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.text name="name" class="form-control required"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "plug.author"/></label>
+                                                    <div class="col-md-9">
+                                                          <@p.text name="author" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "plug.upload"/></label>
+                                                    <div class="col-md-9">
+                                                    	   <div>
+																<input type="text" id="plugPath" name="path" style="width:265px"  class="form-control"/>
+															</div>
+															<div>
+																<span id="mfc" style="position:relative;display:block;width:300px;*width:300px;">
+																<input type='text' id='plugFileText'/>  
+																<input class="browse" type='button' value='<@s.m "global.browse"/>'/>
+																<input onchange="$('#plugFileText').val(this.value)" size="19" type="file" name="plugFile" id="plugFile"  class="form-control" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:79px;top:2px;"/>
+																<input type="button" value="<@s.m "imageupload.upload"/>" onclick="uploadPlug();" class="btn btn-xs green"/>
+																</span> 
+															</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "plug.description"/></label>
+                                                    <div class="col-md-9">
+                                                    <div class="radio-list">
+                                                            <@p.textarea  class="form-control"  name="description" rows="5" maxlength="255"/>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   FormValidation.handleValidationCommon();
+});
+</script>

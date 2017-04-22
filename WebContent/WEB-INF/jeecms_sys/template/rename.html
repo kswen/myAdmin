@@ -1,0 +1,67 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-magic-wand"></i>
+								<a href="template/v_list.do" class="ajaxify"><@s.m "template.function"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "template.rename"/></a>
+							</li>
+						</ul>
+						</div>
+						<!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "template.rename"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="template/o_rename.do" id="jvForm"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "template.origName"/></label>
+                                                    <div class="col-md-9">
+                                                          <p class="form-control-static">${origName}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "template.newName"/></label>
+                                                    <div class="col-md-9">
+                                                          <@p.text name="distName" value=origName class="form-control" maxlength="100"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="origName" value="${origName}"/>
+                                            <input type="hidden" name="root" value="${root}"/>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   FormValidation.handleTemplateRename();
+});
+</script>

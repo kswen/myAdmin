@@ -1,0 +1,169 @@
+            <!-- BEGIN PAGE HEADER-->
+             <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-wrench"></i>
+								<a href="#"><@s.m "cmsConfig.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "cmsConfig.function.firewall"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.edit"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+		            Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.m "global.success"/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-madison">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.edit"/><@s.m "cmsConfig.function.firewall"/> 
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+										<!-- BEGIN FORM-->
+										<form action="config/o_firewall.do" id="form_o_firewall_edit" class="form-horizontal">
+											<div class="form-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cms.firewall.isopen"/></label>
+															<div class="col-md-9">
+															<div class="radio-list">
+																<@p.radio class="form-control radio-inline" name="open" list={"1":"cms.firewall.open","0":"cms.firewall.close"} value=open />
+															</div>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cms.firewall.password"/></label>
+															<div class="col-md-9">
+																<@p.password class="form-control" id="password" name="password"/>
+																<span class="help-block">
+																	 <@s.m "cmsUser.password.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsUser.pwdAgain"/></label>
+															<div class="col-md-9">
+																<@p.password class="form-control" equalTo="#password"/>
+																<span class="help-block">
+																	 <@s.m "cmsUser.password.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cms.firewall.domain"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="domain" value=domain/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cms.firewall.ips"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="ips" value=ips/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-10">
+														<div class="form-group">
+															<label class="control-label col-md-2"><@s.m "cms.firewall.hour"/></label>
+															<div class="col-md-7">
+															<div class="checkbox-list">
+																<#list 0..23  as hour>
+															 	    <label class="checkbox-inline"><input class="form-control" type="checkbox" value="${hour}" name="hour" <#if hours?seq_contains(hour)>checked="checked"</#if>>${hour}<@s.m "cms.firewall.hourofday"/></input></label>
+															    </#list>
+															</div>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-10">
+														<div class="form-group">
+															<label class="control-label col-md-2"><@s.m "cms.firewall.week"/></label>
+															<div class="col-md-7">
+															<div class="checkbox-list">
+																<#list 2..7  as week>
+															 	    <label class="checkbox-inline"><input class="form-control" type="checkbox" value="${week}" name="week" <#if weeks?seq_contains(week)>checked="checked"</#if>><@s.m "cms.firewall.dayweek${week}"/></input></label>
+															    </#list>
+															</div>    
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+											</div>
+											<div class="form-actions fluid">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="col-md-offset-3 col-md-9">
+															<button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+															<button type="reset" class="btn default"><@s.m "global.reset"/></button>
+														</div>
+													</div>
+													<div class="col-md-6">
+													</div>
+												</div>
+											</div>
+										</form>
+										<!-- END FORM-->
+									</div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   Metronic.initAjax();
+   FormValidation.handleValidationFWEdit();
+});
+</script>

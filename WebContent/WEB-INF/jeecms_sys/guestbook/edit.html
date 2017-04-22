@@ -1,0 +1,139 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-bubbles"></i>
+								<a href="#"><@s.m 'cmsInteractive.function'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="guestbook/v_list.do" class="ajaxify"><@s.m "cmsGuestbook.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.edit"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+		            Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.mt code=message text=message/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.edit"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="guestbook/o_update.do" id="jvForm"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsGuestbook.ctg"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.select name="ctgId" list=ctgList listKey="id" value=cmsGuestbook.ctg listValue="name" class="form-control required"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsGuestbook.title"/></label>
+                                                    <div class="col-md-9">
+                                                          <@p.text name="title" value=cmsGuestbook.title  class="form-control" maxlength="255"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsGuestbook.content"/></label>
+                                                    <div class="col-md-9">
+                                                    	  <@p.textarea  class="form-control" value=cmsGuestbook.content name="content" rows="5" maxlength="255"/>                                                  
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsGuestbook.reply"/></label>
+                                                    <div class="col-md-9">
+                                                    <div class="radio-list">
+                                                            <@p.textarea  class="form-control" value=cmsGuestbook.reply name="reply" rows="5" maxlength="255"/>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsGuestbook.email"/></label>
+                                                    <div class="col-md-9">
+                                                    <div class="radio-list">
+                                                            <@p.text class="form-control" value=cmsGuestbook.email name="email" maxlength="100"/>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsGuestbook.phone"/></label>
+                                                    <div class="col-md-9">
+                                                           <@p.text class="form-control" value=cmsGuestbook.phone name="phone" maxlength="100"/>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsGuestbook.qq"/></label>
+                                                    <div class="col-md-9">
+                                                          <@p.text class="form-control" name="qq" value=cmsGuestbook.qq maxlength="50"/>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsGuestbook.checked"/></label>
+                                                    <div class="col-md-9">
+                                                         <div class="radio-list">
+                                                            <label class="radio-inline">
+                                                            <@p.radio class="form-control" name="checked" value=cmsGuestbook.checked list={"true":"global.true","false":"global.false"}/>
+                                                   			</label>
+                                                   		</div>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group last">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsGuestbook.recommend"/></label>
+                                                    <div class="col-md-9">
+                                                    	<div class="radio-list">
+                                                          <label class="radio-inline">
+                                                          <@p.radio class="form-control" name="recommend" value=cmsGuestbook.recommend list={"true":"global.true","false":"global.false"}/>
+                                                  		  </label>
+                                                   		</div>
+                                                   </div>
+                                                </div>
+                                            </div>
+                                            <@p.hidden name="id" value=cmsGuestbook.id/>
+											<@p.hidden name="oldreply" value=cmsGuestbook.reply/>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   FormValidation.handleValidationCommon();
+});
+</script>

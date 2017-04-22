@@ -1,0 +1,395 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-bubbles"></i>
+								<a href="#"><@s.m 'cmsInteractive.function'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="vote_topic/v_list.do" class="ajaxify"><@s.m "cmsVoteTopic.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.edit"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.mt code=message text=message/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.edit"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="vote_topic/o_update.do" id="jvForm"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.title"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.text name="title" id="voteTitle"  value=cmsVoteTopic.title class="form-control required" maxlength="255"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.description"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.textarea name="description" value=cmsVoteTopic.description  class="form-control" rows="3" maxlength="255"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                       <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.startTime"/></label>
+                                                       <div class="col-md-9">
+                                                            <div class="input-group input-medium date form_datetime" data-date-format="yyyy-mm-dd  hh:mm:ss">
+                                                              <input type="text" name="startTime" value="${cmsVoteTopic.startTime!}"  class="form-control datetimepicker">
+                                                              <span class="input-group-btn">
+                                                                  <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                              </span>
+                                                           </div>
+                                                           <span class="help-block"><@s.m "cmsVoteTopic.time.help"/></span>
+                                                       </div>
+                                                   </div>
+                                                 <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.endTime"/></label>
+                                                    <div class="col-md-9">
+                                                         <div class="input-group input-medium date form_datetime" data-date-format="yyyy-mm-dd hh:mm:ss">
+                                                        <input type="text" name="endTime" value="${cmsVoteTopic.endTime!}" class="form-control datetimepicker">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                        </span>
+                                                     </div>
+                                                     <span class="help-block"><@s.m "cmsVoteTopic.time.help"/></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.repeateHour"/></label>
+                                                    <div class="col-md-9">
+                                                             <@p.text name="repeateHour" value=cmsVoteTopic.repeateHour class="form-control input-medium" maxlength="10"/>
+                                                             <span class="help-block"><@s.m "cmsVoteTopic.repeateHour.help"/></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.restrictMember"/></label>
+                                                    <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                             <@p.radio name="restrictMember" value=cmsVoteTopic.restrictMember list={"true":"global.true","false":"global.false"}/>
+                                                             <span class="help-block"><@s.m "cmsVoteTopic.restrictMember.help"/></span>
+                                                             </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.restrictIp"/></label>
+                                                    <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                             <@p.radio name="restrictIp" value=cmsVoteTopic.restrictIp list={"true":"global.true","false":"global.false"}/>
+                                                             </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.restrictCookie"/></label>
+                                                    <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                             <@p.radio name="restrictCookie" value=cmsVoteTopic.restrictCookie list={"true":"global.true","false":"global.false"}/>
+                                                             <span class="help-block"><@s.m "cmsVoteTopic.restrictCookie.help"/></span>
+                                                             </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.multiSelect"/></label>
+                                                    <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                             <input type="text" name="multiSelect" value=${cmsVoteTopic.multiSelect} class="required form-control" style="width:100px;float:left;"/>
+                                                             <p class="form-control-static">
+                                                            <label style="padding-left:20px;float:left;"><input type="checkbox" onclick="$('#def').val(this.checked);" <#if cmsVoteTopic.def> checked="checked"</#if>/><@s.m "cmsVoteTopic.def"/><input type="hidden" id="def" name="def" value="${cmsVoteTopic.def?string}"/></label>
+                                                            <label style="padding-left:10px;float:left;"><input type="checkbox" onclick="$('#disabled').val(this.checked);" <#if cmsVoteTopic.disabled> checked="checked"</#if>/><@s.m "cmsVoteTopic.disabled"/><input type="hidden" id="disabled" name="disabled" value="${cmsVoteTopic.disabled?string}"/></label>
+                                                            </p>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsVoteTopic.subTopics"/></label>
+                                                    <div class="col-md-9">
+                                                             <div class="col-md-12">
+                                                                    <button type="button" class="btn btn-primary" onclick="addSubTopic();"><i class="fa  fa-plus"></i> <@s.m "cmsVoteTopic.addSubTopic"/></button>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                        <#assign total="${cmsVoteTopic.subtopics?size}"/>
+																	    <#list cmsVoteTopic.subtopics as subTopic>
+																	        <div class="items" id="subTopic${subTopic_index}">
+																	        <div class="well">
+																	        <@s.m "cmsVoteItem.title"/>: <input type="text" name="subtitle" id="subtitle${subTopic_index}" value="${subTopic.title!}" style="width:300px;height: 30px;"/>
+																	        &nbsp; <@s.m "cmsVoteItem.priority"/>: <input type="text" id="subPriority${subTopic_index}" name="subPriority" value="${subTopic.priority!}" style="width:30px;height: 30px;text-align: center;"/>
+																	        <@s.m "cmsVoteTopic.type"/>:<input type="radio" name="typeId${subTopic_index}" value="1" class="remove-me" <#if subTopic.type==1>checked="checked"</#if>/><@s.m "cmsVoteTopic.type.single"/>
+																	        <input type="radio" name="typeId${subTopic_index}" value="2" class="remove-me"  <#if subTopic.type==2>checked="checked"</#if>/><@s.m "cmsVoteTopic.type.mul"/>
+																	        <input type="radio" name="typeId${subTopic_index}" value="3" class="remove-me" <#if subTopic.type==3>checked="checked"</#if>/><@s.m "cmsVoteTopic.type.text"/>
+																	        <input type="hidden" name="subTopicId" value="${subTopic.id}"/>
+																	        &nbsp; <input class="btn btn-sm red" type="button" value="<@s.m "global.delete"/>" onclick="$(this).parent().remove();"/>
+																	        <span id="voteItemMsg${subTopic_index}" style="color: red;"></span>
+																	        <span><@s.m "cmsVoteTopic.items"/>&nbsp; <input id="addItem${subTopic_index}" type="button" class="btn btn-sm blue" <#if subTopic.isText>disabled="disabled"</#if> value="<@s.m "cmsVoteItem.addLines"/>" onclick="addLines(${subTopic_index});"/></span>
+																	        <input class="btn btn-sm yellow" type="button" id="upButton${subTopic_index}"  <#if subTopic_index==0>disabled="disabled"</#if> value="<@s.m 'cmsVote.item.up'/>"></input>
+																	        <input type="button" class="btn btn-sm dark" id="downButton${subTopic_index}"  <#if !subTopic_has_next>disabled="disabled"</#if> value="<@s.m 'cmsVote.item.down'/>"></input>
+																	            <input type="hidden" name="itemTitle" value="<@s.m "cmsVoteItem.splitchar"/>"/>
+																	            <#list subTopic.voteItems as vote>
+																	                <div class="items">
+																	                <div class="alert alert-success" style="margin-left: 32px;">
+																	                    <@s.m "cmsVoteItem.title"/>: <input type="text" id="${subTopic_index}_${vote_index}" name="itemTitle" value="${vote.title!}" style="width:300px;height: 30px;"/>
+																	                    &nbsp; <@s.m "cmsVoteItem.voteCount"/>: <input type="text" name="itemVoteCount" value="${vote.voteCount!}"  style="width:50px;height: 30px;text-align: center;"/>
+																	                    &nbsp; <@s.m "cmsVoteItem.priority"/>: <input type="text" name="itemPriority" value="${vote.priority!}" style="width:30px;height: 30px;text-align: center;"/>
+																	                    &nbsp; <input class="btn btn-xs red" type="button" value="<@s.m "global.delete"/>" onclick="$(this).parent().remove();"/>
+																	                    </div>
+																	                    </div>
+																	            </#list>
+																	            <div id="itemsContainer${subTopic_index}"></div>
+																	            <input type="hidden" name="itemTitle" value="<@s.m "cmsVoteItem.splitchar"/>"/>
+																	        </div>
+																	        </div>
+																	    </#list>
+																	    <div id="subTopicContainer"></div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <@p.hidden name="id" value=cmsVoteTopic.id/>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="button" class="btn blue" onclick="addVote();"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <textarea id="subTopicTpl" style="display:none;">
+                                            <div class="well">
+                                            <div class=items>
+                                            <@s.m "cmsVoteItem.title"/>: <input type="text" name="subtitle" id="subtitle{0}" style="width:300px;height: 30px;"/>
+                                            &nbsp; <@s.m "cmsVoteItem.priority"/>: <input type="text" name="subPriority" value="{0}" style="width:30px;height: 30px;text-align: center;"/>
+                                            <@s.m "cmsVoteTopic.type"/>: <input type="radio" name="typeId{0}"  value="1" checked="checked"><@s.m "cmsVoteTopic.type.single"/></input>
+                                            <input type="radio" name="typeId{0}" value="2"><@s.m "cmsVoteTopic.type.mul"/></input>
+                                            <input type="radio" name="typeId{0}" value="3"><@s.m "cmsVoteTopic.type.text"/></input>
+                                            <input type="hidden" name="subTopicId" value=""/>
+                                            &nbsp; <input class="btn btn-sm red" type="button" value="<@s.m "global.delete"/>" onclick="$(this).parent().remove();"/>
+                                            <span id="voteItemMsg{0}" style="color: red;"></span>
+                                            <span><@s.m "cmsVoteTopic.items"/>&nbsp; <input id="addItem{0}" type="button" class="btn btn-sm blue" value="<@s.m "cmsVoteItem.addLines"/>" onclick="addLines({0});"/></span>
+                                            <input type="hidden" name="itemTitle" value="<@s.m "cmsVoteItem.splitchar"/>"/>
+                                            <div id="itemsContainer{0}"></div>
+                                            <input type="hidden" name="itemTitle" value="<@s.m "cmsVoteItem.splitchar"/>"/>
+                                            </div>
+                                            </div>
+                                            </textarea>
+                                            
+                                            <textarea id="itemTpl" style="display:none;">
+                                            <div class="items">
+                                            <div class="alert alert-success" style="margin-left: 32px;">
+                                            <@s.m "cmsVoteItem.title"/>: <input type="text" id="{0}_{1}" name="itemTitle" style="width:300px;height: 30px;"/>
+                                            &nbsp; <@s.m "cmsVoteItem.voteCount"/>: <input type="text" name="itemVoteCount" value="0" style="width:50px;height: 30px;text-align: center;"/>
+                                            &nbsp; <@s.m "cmsVoteItem.priority"/>: <input type="text" name="itemPriority" value="{1}" style="width:30px;height: 30px;text-align: center;"/>
+                                            &nbsp; <input class="btn btn-xs btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="$(this).parent().remove();"/>
+                                            </div>
+                                            </div>
+                                            </textarea>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+var tpl = $.validator.format($("#itemTpl").val());
+var index = ${cmsVoteTopic.items?size}+1;
+function addLines(ind) {
+    $("#itemsContainer"+ind).append(tpl(ind,index++));
+}
+var subtpl = $.validator.format($("#subTopicTpl").val());
+var subindex = ${cmsVoteTopic.subtopics?size}+1;
+function addSubTopic() {
+    $("#subTopicContainer").append(subtpl(subindex++));
+}
+function changeAddItemButton(index,value){
+    if(value==3){
+            $("#addItem"+index).attr("disabled","disabled");
+            $("#itemsContainer"+index).html("");
+            $("#voteItemMsg"+index).html("");
+        }else{
+            $("#addItem"+index).removeAttr("disabled","");
+            }
+}
+function checkVoteItem(){
+    var subIndexId,subTypeName,subTypeObject,flag=true,voteItemMsgId;
+    if( $("input[name='subtitle']").length <= 0){
+        flag = false;
+    }
+    $("input[name='subtitle']").each(function(){
+            subIndexId=$(this).attr("id").split("subtitle")[1];
+            subTypeName="typeId"+subIndexId;
+            $("input[name='"+subTypeName+"']").each(function(i){
+                subTypeObject=$(this);
+                if(subTypeObject.attr("checked")&&subTypeObject.val()!=3){
+                    var i=0;
+                    $("input[id^='"+subIndexId+"']").each(function(){
+                            i++;
+                        });
+                    if(i==0){
+                            $("#voteItemMsg"+subIndexId).html("<@s.m 'cmsVoteItem.hasNoOne'/>");
+                            flag= false;
+                        }
+                }
+            });
+        });
+    return flag;
+}
+function addVote(){
+    var form = $("#jvForm");
+    var url = $(form).attr("action"); 
+    if(!checkVoteItem()||$("#voteTitle").val()==""){
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '下面的信息填写有误，请仔细检查',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        });
+        return;
+    }else{
+        submitForm(url, form);
+    }
+}
+jQuery(document).ready(function() {
+   $("input[type=radio]").uniform();
+   FormValidation.handleValidationCommon();
+   $(".datetimepicker").datetimepicker({
+       autoclose: true,
+       format: "yyyy-mm-dd  hh:mm:ss",
+       language:"zh-CN"
+   });
+   processButton();
+   $(".remove-me").parent().unwrap();
+});
+var subTopicSize=${cmsVoteTopic.subtopics?size};
+function up(subTopicId){
+    if(subTopicId!=0){
+        var subTopicHtml=$("#subTopic"+subTopicId).html().replace("up('"+subTopicId+"')","up('"+(subTopicId-1)+"')");
+        var subBeforeTopicHtml=$("#subTopic"+(subTopicId-1)).html().replace("up('"+(subTopicId-1)+"')","up('"+subTopicId+"')");
+    //  subTopicHtml=subTopicHtml.replaceAll("typeId"+subTopicId,"typeId"+(subTopicId-1));
+    //  subBeforeTopicHtml=subBeforeTopicHtml.replaceAll("typeId"+(subTopicId-1),"typeId"+subTopicId);
+        
+        $("#subTopic"+subTopicId).html(subBeforeTopicHtml);
+        $("#subTopic"+(subTopicId-1)).html(subTopicHtml);
+        //交换排序
+        $("input[name='subPriority']").each(function(i){
+            $(this).val(i*1+1);
+        });
+        $("input[name^='subtitle']").each(function(i){
+            $(this).attr("id","subtitle"+i);
+        });
+        $("input[name='typeId"+subTopicId+"']").attr("name","typeId-1");
+        $("input[name='typeId"+(subTopicId-1)+"']").attr("name","typeId"+subTopicId);
+        $("input[name='typeId-1']").attr("name","typeId"+(subTopicId-1));
+        $("input[name='typeId"+subTopicId+"']").bind('click', function() {
+            changeAddItemButton(subTopicId,this.value);
+        });
+        $("input[name='typeId"+(subTopicId-1)+"']").bind('click', function() {
+            changeAddItemButton(subTopicId-1,this.value);
+        });
+        $("span[id^='voteItemMsg']").each(function(i){
+            $(this).attr("id","voteItemMsg"+i);
+        });
+        processButton();
+    }
+}    
+function down(subTopicId){
+    if(subTopicId!=(subTopicSize-1)){
+        var subTopicHtml=$("#subTopic"+subTopicId).html().replace("down('"+subTopicId+"')","down('"+(subTopicId*1+1)+"')");
+        var subAfterTopicHtml=$("#subTopic"+(subTopicId*1+1)).html().replace("down('"+(subTopicId*1+1)+"')","down('"+subTopicId+"')");
+        //subTopicHtml=subTopicHtml.replace("typeId"+subTopicId,"typeId"+(subTopicId*1+1));
+        //subAfterTopicHtml=subAfterTopicHtml.replace("typeId"+(subTopicId*1+1),"typeId"+subTopicId);
+        $("#subTopic"+subTopicId).html(subAfterTopicHtml);
+        $("#subTopic"+(subTopicId*1+1)).html(subTopicHtml);
+        
+        //交换排序
+        $("input[name='subPriority']").each(function(i){
+            $(this).val(i*1+1);
+        });
+        $("input[name^='subtitle']").each(function(i){
+            $(this).attr("id","subtitle"+i);
+        });
+        $("input[name='typeId"+subTopicId+"']").attr("name","typeId+1");
+        $("input[name='typeId"+(subTopicId*1+1)+"']").attr("name","typeId"+subTopicId);
+        $("input[name='typeId+1']").attr("name","typeId"+(subTopicId*1+1));
+        $("input[name='typeId"+subTopicId+"']").bind('click', function() {
+            changeAddItemButton(subTopicId,this.value);
+        });
+        $("input[name='typeId"+(subTopicId*1+1)+"']").bind('click', function() {
+            changeAddItemButton(subTopicId*1+1,this.value);
+        });
+        $("span[id^='voteItemMsg']").each(function(i){
+            $(this).attr("id","voteItemMsg"+i);
+        });
+        processButton();
+    }
+}
+function processButton(){
+    $("input[id^='upButton']").each(function(i){
+        $(this).removeAttr("disabled");
+        $(this).attr("class","btn btn-sm green");
+        if(i==0){
+            $(this).attr("disabled","disabled");
+            $(this).attr("class","btn btn-sm green disabled");
+        }
+        $(this).unbind();
+        $(this).bind('click', function() {
+              up(i);
+        });     
+    });
+    $("input[id^='downButton']").each(function(i){
+        $(this).removeAttr("disabled");
+        $(this).attr("class","btn btn-sm yellow");
+        if(i==subTopicSize-1){
+            $(this).attr("disabled","disabled");
+            $(this).attr("class","btn btn-sm yellow disabled");
+        }
+        $(this).unbind();
+        $(this).bind('click', function() {
+              down(i);
+        }); 
+    });
+    $("input[name^='typeId']").bind('click', function() {
+        changeAddItemButton($(this).parent().parent().parent().attr("id").split("subTopic")[1],this.value);
+    });
+    $("input[name^='itemTitle']").each(function(i){
+    	if($(this).parent().parent().parent().parent().attr("id")){
+    		 $(this).attr("id",$(this).parent().parent().parent().parent().attr("id").split("subTopic")[1]+"_"+i);
+    	}else if($(this).parent().parent().parent().attr("id")){
+             $(this).attr("id",$(this).parent().parent().parent().attr("id").split("subTopic")[1]+"_"+i);
+        }else{
+    		 $(this).attr("id",$(this).parent().parent().attr("id").split("subTopic")[1]+"_"+i);
+    	}
+    });
+}
+</script>

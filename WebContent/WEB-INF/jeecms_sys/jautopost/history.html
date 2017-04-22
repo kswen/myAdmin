@@ -1,0 +1,201 @@
+            <!-- BEGIN PAGE HEADER-->
+                       <h3 class="page-title">
+	                     <@s.m "cms.function.expand"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+						<li>
+							<i class="icon-puzzle"></i>
+							<a href="#"><@s.m "plug.function"/></a>
+							<i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+							<a href="jautopost/v_list.do" class="ajaxify"><@s.m "cms.jautopost.function"/></a>
+							<i class="fa fa-angle-right"></i>
+						</li>
+					<li>
+						<a href="#"> <@s.m "cmsJautopostHistory.function"/></a>
+					</li>
+					</ul>
+				</div>
+			 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i> <@s.m "cmsJautopostHistory.function"/><@s.m "global.list"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body flip-scroll">
+                                        <!-- BEGIN FORM-->
+                                            <form id="tableForm" method="post">
+											<input type="hidden" name="pageNo" value="${pageNo!}"/>
+											<@p.table class="table table-bordered table-striped table-condensed flip-content"  value=pagination listAction="jautopost/v_history.do";history,i,has_next><#rt/>
+											    <@p.column title="<input type='checkbox' onclick='checkAll(\"ids\",this.checked)'/>">
+											        <label class="class4ids"><input type='checkbox' name='ids' value='${history.id}'/></label><#t/>
+											    </@p.column><#t/>
+											    <@p.column title="ID">${history.id}</@p.column><#t/>
+											    <@p.column code="cmsJautopostHistory.title"><#if history.title??>${history.title}<#else><@s.m "cmsJautopostHistory.ruleError"/></#if></@p.column><#t/>
+											    <@p.column code="cmsJautopostHistory.name">${history.jautopost.name}</@p.column><#t/>
+											    <@p.column code="cmsJautopostHistory.channel">${history.jautopost.channel.name}</@p.column><#t/>
+											    <@p.column code="cmsJautopostHistory.contentType">${history.jautopost.type.name}</@p.column><#t/>
+											    <@p.column code="cmsJautopostHistory.url"><a href="${history.channelUrl!}" ref="nofollow"  target="_blank" title="${history.channelUrl!}"><@s.m "cmsJautopostHistory.clickToBrowse"/></a></@p.column><#t/>
+											    <@p.column code="cmsJautopostHistory.contentUrl"><a href="${history.contentUrl!}"  ref="nofollow"  target="_blank" title="${history.contentUrl!}"><@s.m "cmsJautopostHistory.clickToBrowse"/></a></@p.column><#t/>
+											    <@p.column code="cmsJautopostHistory.status"><#if history.description=="SUCCESS"><span style="color:green"><@s.m "cmsJautopostHistory.success"/></span><#else><span style="color:red"><@s.m "cmsJautopostHistory.failure"/></span></#if></@p.column><#t/>
+											    <@p.column code="cmsJautopostHistory.description">
+											    <#switch history.description>
+											        <#case "SUCCESS">
+										   			<span class="text-success"><@s.m "cmsJautopost.success"/></span>
+										    	<#break>
+										 		<#case "TITLESTARTNOTFOUND">
+										   			<span class="text-danger"><@s.m "cmsJautopost.errorCause.titleStartNotFound"/></span>
+										    	<#break>
+										  		<#case "TITLENOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.titleNotFound"/></span>
+										   		<#break>
+										  		<#case "TITLEENDNOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.titleEndNotFound"/></span>
+										   		<#break>
+										   		<#case "CONTENTSTARTNOTFOUND">
+										   			<span class="text-danger"><@s.m "cmsJautopost.errorCause.contentStartNotFound"/></span>
+										    	<#break>
+										     	<#case "CONTENTENDNOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.contentEndNotFound"/></span>
+										    	<#break>
+										     	<#case "CONTENTNOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.contentNotFound"/></span>
+										    	<#break>
+										    	
+										    	<#case "AUTHORSTARTNOTFOUND">
+										   			<span class="text-danger"><@s.m "cmsJautopost.errorCause.authorStartNotFound"/></span>
+										    	<#break>
+										  		<#case "AUTHORENDNOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.authorEndNotFound"/></span>
+										   		<#break>
+										   		<#case "VIEWSTARTNOTFOUND">
+										   			<span class="text-danger"><@s.m "cmsJautopost.errorCause.viewStartNotFound"/></span>
+										    	<#break>
+										  		<#case "VIEWENDNOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.viewEndNotFound"/></span>
+										   		<#break>
+										   		<#case "ORIGINSTARTNOTFOUND">
+										   			<span class="text-danger"><@s.m "cmsJautopost.errorCause.originStartNotFound"/></span>
+										    	<#break>
+										  		<#case "ORIGINENDNOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.originEndNotFound"/></span>
+										   		<#break>
+										   		<#case "DESCRISTARTNOTFOUND">
+										   			<span class="text-danger"><@s.m "cmsJautopost.errorCause.originStartNotFound"/></span>
+										    	<#break>
+										  		<#case "DESCRIENDNOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.originEndNotFound"/></span>
+										   		<#break>
+										   		<#case "RELEASESTARTNOTFOUND">
+										   			<span class="text-danger"><@s.m "cmsJautopost.errorCause.releaseTimeStartNotFound"/></span>
+										    	<#break>
+										  		<#case "RELEASEENDNOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.releaseTimeEndNotFound"/></span>
+										   		<#break>
+										   		
+										   		<#case "VIEWIDSTARTNOTFOUND">
+										   			<span class="text-danger"><@s.m "cmsJautopost.errorCause.viewIdStartNotFound"/></span>
+										    	<#break>
+										  		<#case "VIEWIDENDNOTFOUND">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.viewIdEndNotFound"/></span>
+										   		<#break>
+										    	<#case "TITLEEXIST">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.titleExistNotFound"/></span>
+										    	<#break>
+										    	<#case "FILTERCSSERROR">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.filterContentCSSError"/></span>
+										    	<#break>
+										        <#case "HOSTCONNECTIMEOUT">
+										    		<span class="text-danger"><@s.m "cmsJautopost.errorCause.hostconnect.timeout"/></span>
+										    	<#break>
+										  		<#default>
+										    		<span class="text-warning"><@s.m "cmsJautopost.errorCause.unknow"/></span>
+												</#switch>
+											    </@p.column><#t/>
+											    <@p.column code="global.operate" align="center">
+											        <a href="javascript:void(0)" class="btn default btn-xs red-stripe" onclick="deleteSingle('jautopost/o_delete_history.do?ids=${history.id}&pageNo=${pageNo!}')"><@s.m "global.delete"/></a><#t/>
+											    </@p.column><#t/>
+											</@p.table>
+											<div style="margin-top:15px;"><input  class="btn btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/></div>
+											</form>
+                                        <!-- END FORM-->
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $('input[name=' + name + ']:checkbox').each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        }); 
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    var f = $("#tableForm");
+    submitForm("jautopost/o_delete_history.do",f)
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+</script>

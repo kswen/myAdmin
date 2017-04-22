@@ -1,0 +1,133 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.data"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-graph"></i>
+								<a href="#"><@s.m 'cms.function.flow'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "cmsAccess.visitor"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+		<div class="well">
+        <div class="row">
+                 <div class="form-group">
+					<div class="col-md-12">
+								<form id="tableForm" action="flow/visitor/v_list.do" method="post" style="padding-top:5px;">
+								<label class="radio-inline"><@s.m "statistic.function.year"/>:</label>
+                                <input class="form-control form-control-inline input-small year-picker radio-inline"  name="year"  size="4"  type="text" value="${year!}">
+								<label class="radio-inline"><@s.m "statistic.function.days"/>:</label>
+                                <input class="form-control form-control-inline input-medium date-picker radio-inline"  name="begin" data-date-format="yyyy-mm-dd" size="16"  type="text" value="${begin!?string('yyyy-MM-dd')}">
+                                <input class="form-control form-control-inline input-medium date-picker radio-inline"  name="end" data-date-format="yyyy-mm-dd" size="16"  type="text" value="${end!?string('yyyy-MM-dd')}">
+								<input id="flag" name="flag" type="hidden" value="1"/>
+								<input id="type" name="type" type="hidden" value="${type!}"/>
+								<input class="btn blue-steel" type="button" onclick="statisticYear()" value="<@s.m 'statistic.function.year'/>"/>
+								<input class="btn blue-madison" type="button" onclick="statisticDays()" value="<@s.m 'statistic.function.days'/>"/>
+								<input class="btn bg-green-jungle" type="button" onclick="statisticDay()" value="<@s.m 'statistic.function.day'/>"/>
+								</form>
+						</div>
+					</div>
+         </div>
+         </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-graph"></i><@s.m "cmsAccess.visitor"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="table-responsive">
+                            	<#if result?size  gt 0>
+										<div id="container">
+										</div>
+									<#else>
+										<@s.m "statistic.noresult"/>
+									</#if>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script type="text/javascript">
+jQuery(document).ready(function() {    
+	   Metronic.initAjax(); 
+	   ComponentsPickers.handleYearPickers();
+	   ComponentsPickers.handleDatePickers();
+});
+function statisticYear(){
+	$("#flag").val(2);
+	submitFormMsg($("#tableForm"));
+}
+function statisticDays(){
+	$("#flag").val(1);
+	submitFormMsg($("#tableForm"));
+}
+function statisticDay(){
+	$("#flag").val(0);
+	submitFormMsg($("#tableForm"));
+}
+var xdata=[],ydata=[];
+<#if result??>
+<#list result as s>
+xdata.push('${s[1]}');
+ydata.push(['${s[1]}', ${s[0]}]);
+</#list>
+</#if>
+$('#container').highcharts({
+    chart: {
+        type: 'column'
+    },
+    credits: {
+		href: 'http://www.jeecmstheme.com',
+		text: 'jeecms主题站'
+	},
+    title: {
+        text: '<@s.m "cmsAccess.visitor.pages"/>'
+    },
+    xAxis: {
+        categories: xdata
+    },
+    yAxis: {
+        min: 0,
+        title: null
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">页面：{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: '用户',
+        data: ydata
+    }]
+});
+</script>

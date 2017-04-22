@@ -1,0 +1,7 @@
+[{
+    "username":"${user.realname!}",
+    "siteURL":"${site.url}",
+    "siteSize":"${siteList?size}",
+    "siteTitle":"<#list siteList as s><#if s.id==site.id>${s.name}</#if></#list>",
+    "siteList":"<#list siteList as s><li> <a href='index.do?${siteParam}=${s.id}' target='_top' <#if s.id==site.id>style='color:red' title='当前站点'</#if> >${s.name} </a> </li></#list>"
+}]

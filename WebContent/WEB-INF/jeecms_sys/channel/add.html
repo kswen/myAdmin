@@ -1,0 +1,318 @@
+            <!-- BEGIN PAGE HEADER-->
+             <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-equalizer"></i>
+								<a href="channel/v_list.do"  class="ajaxify"><@s.m "channel.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.add"/></a>
+							</li>
+						</ul>
+						</div>
+						<!-- END PAGE TITLE & BREADCRUMB-->
+            <#include "/common/image_upload.html"/>
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                <div class="portlet box blue-hoki">
+                          <div class="portlet-title">
+                              <div class="caption">
+                                  <i class="fa fa-reorder"></i><@s.m "global.add"/>
+                              </div>
+                              <div class="tools">
+								<a href="#" class="collapse" data-original-title="" title="">
+								</a>
+								<a href="#" class="fullscreen" data-original-title="" title="">
+								</a>
+								<a href="#" class="remove" data-original-title="" title="">
+								</a>
+							</div>
+                     </div>
+                     <div class="portlet-body form">
+                     <div class="form-body">
+                	<input type="hidden" id="cid_check" value=""/>
+					<@p.form id="jvForm" tableClass="table table-hover table-striped table-bordered" action="channel/o_save.do" labelWidth="10">
+					<@p.td colspan="1" width="50" label="channel.parent"><#if parent??>${parent.name}<#else><@s.m "channel.top"/></#if></@p.td>
+					<@p.td colspan="1" width="50" label="channel.model">${model.name}</@p.td><@p.tr/>
+					<#assign count=0/>
+					<#list itemList as item>
+					<#if !item.single><#assign count=count+1/></#if>
+					<#if !item.custom>
+					
+					<#if item.field=="name">
+					<@p.text value="${item.defValue!}" class="form-control" required="true" maxlength="100" size="${item.size!}" help=item.help helpPosition="${item.helpPosition!2}" label=item.label  name=item.field  colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
+					<#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="path">
+					<@p.text value="${item.defValue!}" class="form-control" required="true" maxlength="30" size="${item.size!}" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="title">
+					<@p.text value="${item.defValue!}" class="form-control" maxlength="255" size="${item.size!35}" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="keywords">
+					<@p.text value="${item.defValue!}" class="form-control" maxlength="255" size="${item.size!35}" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="description">
+					<@p.textarea value="${item.defValue!}" maxlength="255" style="width:100%;" rows="${item.rows!3}" cols="${item.cols!70}" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="tplChannel">
+					<@p.select value="${item.defValue!}" class="form-control" headerKey="" headerValue="global.default" list=channelTplList help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="tplContent">
+					<@p.td label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
+					<a href="#modelTplDialog" role="button" class="btn btn-sm green" data-toggle="modal"> ${item.label!} <i class="fa fa-search"></i></a>
+					<@s.m "channel.modelTpl.help"/>
+					</@p.td><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="channelStatic">
+					<@p.td label=item.label colspan="2" width="100">
+					<div class="radio-list">
+					<label class="radio-inline"><input type="checkbox" class="radio-inline" onclick="$('#staticChannel').val(this.checked)"/><@s.m "channel.staticOn"/><input type="hidden" id="staticChannel" name="staticChannel" value="false"/></label>
+					<input type="text" name="channelRule" class="form-control input-xsmall radio-inline"/>
+					<label class="radio-inline"><input type="checkbox" class="radio-inline" onclick="$('#accessByDir').val(this.checked)"/><@s.m "channel.accessByDir"/><input type="hidden" id="accessByDir" name="accessByDir" value="false"/></label>
+					<label class="radio-inline"><input type="checkbox" class="radio-inline" onclick="$('#listChild').val(this.checked)"/><@s.m "channel.listChild"/><input type="hidden" id="listChild" name="listChild" value="false"/></label>
+					<span class="label label-info"><@s.m "channel.pageSize"/></span>:<input type="text" name="pageSize" class="form-control input-xsmall radio-inline" value="20" style="width:40px" class="digits" maxlength="5"/>
+					</div>
+					</@p.td><@p.tr/>
+					
+					<#elseif item.field=="contentStatic">
+					<@p.td label=item.label colspan="2" width="100">
+					<div class="radio-list">
+					<label class="radio-inline"><input type="checkbox" class="radio-inline" onclick="$('#staticContent').val(this.checked)"/><@s.m "channel.staticOn"/><input type="hidden" id="staticContent" name="staticContent" value="false"/></label>
+					<input type="text" name="contentRule" class="form-control input-xsmall radio-inline"/>
+					</div>
+					</@p.td><@p.tr/>
+					
+					<#elseif item.field=="priority">
+					<@p.text value="${item.defValue!10}" required="true" class="form-control input-xsmall" maxlength="255" size="${item.size!10}" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="display">
+					<@p.td required="true" help=item.help helpPosition="${item.helpPosition!2}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
+					<@p.radio value="true" list={"true":"global.true","false":"global.false"}  name=item.field />
+					<label class="radio-inline"><input type="checkbox" onclick="$('#blank').val(this.checked);"/><@s.m "channel.blank"/></label><input type="hidden" id="blank" name="blank" value="false"/>
+					</@p.td><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="docImg">
+					<@p.td label="channel.docTitleImg" colspan="1" width="50">
+					<div class="radio-list">
+					<label class="radio-inline"><input type="checkbox" class="radio-inline" onclick="$('#hasTitleImg').val(this.checked);$('#ti').toggle(this.checked);"/><@s.m "global.have"/></label>
+					<input type="hidden" id="hasTitleImg" name="hasTitleImg" value="false"/>
+					<span id="ti" style="display:none">
+						<@s.m "global.width"/>: <input type="text" class="form-control input-xsmall radio-inline" name="titleImgWidth" value="139" class="required digits" style="width:50px"/>
+						<@s.m "global.height"/>: <input type="text" class="form-control input-xsmall radio-inline" name="titleImgHeight" value="139" class="required digits" style="width:50px"/>
+					</span>
+					</div>
+					</@p.td>
+					<@p.td label="channel.docContentImg" colspan="1" width="50">
+					<div class="radio-list">
+					<label class="radio-inline"><input type="checkbox" class="radio-inline" onclick="$('#hasContentImg').val(this.checked);$('#ci').toggle(this.checked);"/><@s.m "global.have"/></label>
+					<input type="hidden" id="hasContentImg" name="hasContentImg" value="false"/>
+					<span id="ci" style="display:none">
+						<@s.m "global.width"/>: <input type="text" class="form-control input-xsmall radio-inline" name="contentImgWidth" value="310" class="required digits" style="width:50px"/>
+						<@s.m "global.height"/>: <input type="text" class="form-control input-xsmall radio-inline" name="contentImgHeight" value="310" class="required digits" style="width:50px"/>
+					</span>
+					</div>
+					</@p.td><@p.tr/>
+					
+					<#elseif item.field=="finalStep">
+					<#assign h><#if item.help??>${item.help}<#else><@s.m "channel."+item.field+".help"/></#if></#assign>
+					<div class="radio-list">
+					<@p.text value=item.defValue maxlength="5"  class="form-control input-xsmall radio-inline" size="${item.size!12}" help="${h}" helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
+					<#if count%2==0><@p.tr/></div></#if>
+					
+					<#elseif item.field=="afterCheck">
+					<@p.select value=item.defValue headerKey=""  class="form-control input-large" headerValue="global.default" list={"1":"cmsSite.afterCheck.1","2":"cmsSite.afterCheck.2","3":"cmsSite.afterCheck.3"} help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="commentControl">
+					<@p.radio value="0" list={"0":"channel.commentControl.0","1":"channel.commentControl.1","2":"channel.commentControl.2"} help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="allowUpdown">
+					<@p.radio value="true" list={"true":"global.allow","false":"global.notAllow"} help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="allowShare">
+					<@p.radio value="false" list={"true":"global.allow","false":"global.notAllow"} help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="allowScore">
+					<@p.radio value="false" list={"true":"global.allow","false":"global.notAllow"} help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="viewGroupIds">
+					<@p.checkboxlist valueList=viewGroupIds list=viewGroups listKey="id" listValue="name" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="contriGroupIds">
+					<@p.checkboxlist valueList=contriGroupIds list=contriGroups listKey="id" listValue="name" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/><#if count%2==0><@p.tr/></#if>
+					
+					<#elseif item.field=="userIds" && users?size gt 0>
+					<@p.checkboxlist valueList=userIds list=users listKey="id" listValue="username" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
+					<#if count%2==0><@p.tr/></div></#if>
+					
+					<#elseif item.field=="link">
+					<#assign h><#if item.help??>${item.help}<#else><@s.m "content."+item.field+".help"/></#if></#assign>
+					<div class="radio-list">
+					<@p.text value=item.defValue  class="form-control input-xlarge radio-inline" maxlength="255" size="${item.size!35}" help="${h}" helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
+					<#if count%2==0><@p.tr/></div></#if>
+					
+					<#elseif item.field=="titleImg">
+					<@p.td label=item.label colspan="1" width="50" noHeight="true">
+					<div class="form-group">
+					<@p.text id="uploadImgPath1" name="titleImg" class="form-control input-large radio-inline" onchange="previewImg(1);"/> 
+					<button type="button" class="btn btn-primary btn-sm radio-inline" onclick="previewImg(1);" ><i class="fa fa-camera-retro"></i><@s.m "imageupload.preview"/></button>
+					<span id="ufc1" style="position:relative">
+					<input id='uploadFileText1'  class="form-control input-large radio-inline" type="hidden"/>  
+					<input onchange="$('#uploadFileText1').val(this.value)" size="14" type="file" id="uploadFile1" />
+					</span>
+					</div>
+					<div class="form-group">
+					<label><input type="checkbox" class="radio-inline" onclick="$('#mark1').val(this.checked);"/><@s.m "imageupload.mark"/></label>
+					<input type="hidden" id="mark1" value="false"/> <button type="button" class="btn yellow btn-sm radio-inline"  onclick="upload(1);" class="upload-button"><i class="fa fa-upload"></i><@s.m "imageupload.upload"/></button>
+					</div>
+					<div class="form-group">
+					<@s.m "global.width"/>: <input type="text" id="zoomWidth1" value="${model.titleImgWidth}"  class="form-control input-xsmall radio-inline"/> 
+					<@s.m "global.height"/>: <input type="text" id="zoomHeight1" value="${model.titleImgHeight}" class="form-control input-xsmall radio-inline"/> 
+					<button type="button"  onclick="imgCut(1);" class="btn btn-sm purple"><i class="fa fa-cut"></i><@s.m "imageupload.cut"/></button> 
+					</div>
+					
+					</@p.td><@p.td colspan="1" width="50">
+					<img id="preImg1" alt="<@s.m "imageupload.preview"/>" class="preview_img_size"/>
+					</@p.td><@p.tr/>
+					
+					<#elseif item.field=="contentImg">
+					<@p.td label=item.label colspan="1" width="50" noHeight="true">
+					<div class="form-group">
+					<@p.text id="uploadImgPath2" name="contentImg" class="form-control input-large radio-inline" onchange="previewImg(2);"/> 
+					<button type="button" class="btn btn-primary btn-sm radio-inline" onclick="previewImg(2);" ><i class="fa fa-camera-retro"></i><@s.m "imageupload.preview"/></button>
+					<span id="ufc2" style="position:relative">
+					<input id='uploadFileText2' type="hidden"/>  
+					<input onchange="$('#uploadFileText2').val(this.value)" size="14" type="file" id="uploadFile2" class="file-button"/>
+					</span>
+					</div>
+					<div class="form-group">
+					<label><input type="checkbox" onclick="$('#mark2').val(this.checked);"/><@s.m "imageupload.mark"/></label><input type="hidden" id="mark2" value="false"/> 
+					<button type="button" class="btn yellow btn-sm radio-inline"  onclick="upload(2);" class="upload-button"><i class="fa fa-upload"></i><@s.m "imageupload.upload"/></button>
+					</div>
+					<div class="form-group">
+					<@s.m "global.width"/>: <input type="text" id="zoomWidth2" value="${model.contentImgWidth}" class="form-control input-xsmall radio-inline"/> 
+					<@s.m "global.height"/>: <input type="text" id="zoomHeight2" value="${model.contentImgWidth}" class="form-control input-xsmall radio-inline"/> 
+					<button type="button"  onclick="imgCut(2);" class="btn btn-sm purple"><i class="fa fa-cut"></i><@s.m "imageupload.cut"/></button>
+					</div>
+					</@p.td><@p.td colspan="1" width="50">
+					<img id="preImg2" alt="<@s.m "imageupload.preview"/>" class="preview_img_size"/>
+					</@p.td><@p.tr/>
+					
+					<#elseif item.field=="txt">
+					<@p.editor value=item.defValue colspan="2" help=item.help helpPosition="${item.helpPosition!1}" label=item.label name=item.field/><@p.tr/>
+					
+					<#elseif item.field=="txt1">
+					<@p.editor value=item.defValue colspan="2" help=item.help helpPosition="${item.helpPosition!1}" label=item.label name=item.field/><@p.tr/>
+					
+					<#elseif item.field=="txt2">
+					<@p.editor value=item.defValue colspan="2" help=item.help helpPosition="${item.helpPosition!1}" label=item.label name=item.field/><@p.tr/>
+					
+					<#elseif item.field=="txt3">
+					<@p.editor value=item.defValue colspan="2" help=item.help helpPosition="${item.helpPosition!1}" label=item.label name=item.field/><@p.tr/>
+					</#if>
+					
+					<#else>
+					<@p.selfDefineWidget name="attr_${item.field}" value=item.defValue size="${item.size!}" list="${item.optValue!}" help=item.help helpPosition="${item.helpPosition!2}" rows="${item.rows!}" cols="${item.cols!}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}" type="${item.dataType}"/><#if count%2==0><@p.tr/></#if>
+					</#if>
+					
+					</#list>
+					<div id="modelsContainer"></div>
+					<@p.td colspan="2">
+						<input type="hidden" name="root" value="${root!}"/>
+						<input type="hidden" name="modelId" value="${model.id}"/>
+						<@p.submit code="global.submit" class="btn blue"/> &nbsp; <@p.reset code="global.reset" class="btn default"/>
+					</@p.td>	
+					</@p.form>								
+				<!-- END FORM-->
+            	</div>
+            </div>
+            </div>
+		</div>
+		</div>
+      <!-- END PORTLET-->
+            	<div id="modelTplDialog" class="modal fade" tabindex="-1" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+							<h4 class="modal-title"><@s.m "channel.selectModelTpl"/></h4>
+						</div>
+						<div class="modal-body">
+							<div class="scroller" style="height:345px" data-always-visible="1" data-rail-visible1="1">
+								<div class="row">
+									<div class="col-md-12 form-horizontal">
+										<#list models as m>
+										<div class="form-group"> 
+											<label class="col-md-2 control-label"><input  type="checkbox" value="${m.id}" id="model${m.id}" />${m.name}</label>
+											<div class="col-md-10"> 
+												<select name="tpls" id="select${m.id}" class="form-control">
+												<option value=""><@s.m "global.default"/></option>
+												<#list modelTplMap[m.id?string] as tpl>
+												<option value="${tpl}">${tpl}</option>
+												</#list>
+												</select>
+											</div> 
+										</div>
+										</#list>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" data-dismiss="modal" class="btn green" id="chooseTPL">OK</button>
+						</div>
+						</div>
+					</div>
+				</div>
+            <!-- END PAGE CONTENT-->
+<script type="text/javascript">
+jQuery(document).ready(function() {    
+   FormValidation.handleValidationChannel();
+});
+$(function() {
+	$('#chooseTPL').click(function(){
+		//先清空
+		$("#modelsContainer").html("");
+		$("#modelTplDialog input[id^='model']:checked").each(function(){
+			var modelCheckId=$(this).attr("id").split("model")[1];
+			var selectId="select"+modelCheckId;
+			appendModelTpl($(this).val(),$("#"+selectId).val());
+		});
+    });
+});
+function appendModelTpl(modelId,tpl){
+	var hasContain = false;
+	$("input[name=modelIds]").each(function() {
+		if($(this).val()==modelId) {
+			hasContain = true;
+		}
+	});
+	if(hasContain) {
+		return;
+	}
+	var html="<input name='modelIds' value='"+modelId+"' type='hidden'/>";
+	html+="<input name='tpls' value='"+tpl+"' type='hidden'/>";
+	$("#modelsContainer").append(html);
+}
+</script>

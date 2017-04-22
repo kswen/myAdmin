@@ -1,0 +1,157 @@
+            <!-- BEGIN PAGE HEADER-->
+             <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-wrench"></i>
+								<a href="#"><@s.m "cmsConfig.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="config/register_item_list.do" class="ajaxify"><@s.m "cmsConfig.function.member.register"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						<@cms_perm url="/config/register_item_add.do">
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "global.add"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+								 	<li><a href="config/register_item_add.do" class="ajaxify"> <@s.m "global.add"/></a></li>
+								</ul>
+							</div>
+						</div>
+						</@cms_perm>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.list"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body flip-scroll">
+                                        <!-- BEGIN FORM-->
+                                            <form id="tableForm" method="post">
+											<table class="table table-bordered table-striped table-condensed flip-content" >
+											<thead class="pn-lthead">
+											<tr>
+												<th width="25" align="center"><input type='checkbox' onclick="checkAll('ids',this.checked)"/></th>
+												<th><@s.m "cmsModelItem.field"/></th>
+												<th><@s.m "cmsModelItem.dataType"/></th>
+												<th><@s.m "cmsModelItem.label"/></th>
+												<th><@s.m "cmsModelItem.priority"/></th>
+												<th><@s.m "global.operate"/></th>
+											</tr>
+											</thead>
+											<tbody class="pn-ltbody">
+											<#list registerItems as item>
+											<tr>
+												<td align="center"><label class="class4ids"><input type="checkbox" name="ids" value="${item.id}"/></label></td>
+												<td align="center">${item.field}</td>
+												<td align="center"><@s.m "cmsModelItem.type${item.dataType}"/></td>
+												<td align="center"><input type="text" name="label" value="${item.label}" class="form-control input-small"/></td>
+												<td align="center">
+													<input type="text" name="priority" value="${item.priority}" class="form-control input-small"/>
+													<input type="hidden" name="wids" value="${item.id}"/>
+												</td>
+												<td align="center">
+													<a href="config/register_item_edit.do?id=${item.id}" class="ajaxify btn default btn-xs blue-stripe"><@s.m "global.edit"/></a> |
+													<a href="javascript:void(0)" class="btn default btn-xs red-stripe" onclick="deleteSingle('config/register_item_delete.do?ids=${item.id}')"><@s.m "global.delete"/></a>
+											 	</td>
+											</tr>
+											</#list>
+											</tbody>
+											</table>
+											
+											<input type="button" class="btn btn-danger" value="<@s.m "global.delete"/>" onclick="optDelete();"/>
+											&nbsp; <input class="btn green-meadow"  type="button" value="<@s.m "cmsModelItem.saveContent"/>" onclick="optSaveOrder();"/>
+											</div>
+											</form>
+                                        <!-- END FORM-->
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $('input[name=' + name + ']:checkbox').each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        }); 
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    var f = $("#tableForm");
+    submitForm("config/register_item_delete.do",$("#tableForm"))
+}
+function optSaveOrder() {
+    submitForm("config/register_item_priority.do",$("#tableForm"))
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+</script>

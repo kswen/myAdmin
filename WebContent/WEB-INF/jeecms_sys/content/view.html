@@ -1,0 +1,135 @@
+            <!-- BEGIN PAGE HEADER-->
+                    	<h3 class="page-title">
+	                    <@s.m "cms.function.content"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-list"></i>
+								<a class="ajaxify" href="content/v_list.do?pageNo=${pageNo!}&cid=${cid!}<#list .data_model?keys as pkey><#if pkey?starts_with('query')>&${pkey}=${(.data_model[pkey])!?string}</#if></#list>">
+                                <@s.m "content.function"/>
+                           		 </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "content.opt.view"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.mt code=message text=message/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="well">
+            <div class="row">
+                <div class="col-md-12">
+                       <div class="col-md-12">
+                                <div class="form-group">
+                                <form id="jvForm" method="post" style="padding-top:5px">
+								    <@p.hidden name="id" value=content.id/>
+								    <@p.hidden name="ids" value=content.id/>
+								    <input type="hidden" name="pageNo" value="${pageNo!}"/>
+								    <input type="hidden" name="cid" value="${cid!}"/>
+								    <#list .data_model?keys as pkey>
+								    <#if pkey?starts_with('query')><input type="hidden" name="${pkey}" value="${(.data_model[pkey])!?string}"/></#if><#t/>
+								    </#list>    
+								    <input type="hidden" name="rejectStep"/>
+								    <input type="hidden" name="rejectOpinion"/>
+								    <a href="#" class="btn green-meadow btn-lg" onclick="checkPass()"> <@s.m "content.opt.check"/> <i class="fa fa-check"></i> </a>
+								    <a href="#rejectDialog" class="btn red-sunglo btn-lg" data-toggle="modal"> <@s.m "content.opt.reject"/> <i class="fa fa-level-down"></i> </a>
+								    <a href="content/v_edit.do?id=${content.id}&ids=${content.id}" class="btn blue-madison btn-lg ajaxify"> <@s.m "global.edit"/> <i class="fa fa-edit"></i> </a>
+								    <a href="${content.urlDynamic}" target="_blank" class="btn purple-plum btn-lg"> <@s.m "content.opt.viewInFront"/> <i class="fa fa-link"></i> </a>
+								</form>
+                                </div>
+                        </div>
+                 </div>
+            </div>
+            </div>
+            <div id="rejectDialog" class="modal fade" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title"><@s.m "content.rejectOpinion"/></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="scroller" style="height:125px" data-always-visible="1" data-rail-visible1="1">
+                            <div class="row">
+                                <div class="col-md-12 form-horizontal">
+                                        <p><@s.m "content.rejectOpinion"/>: <input type="text" id="rejectOpinion" class="form-control" onkeypress="if(event.keyCode==13){rejectSubmit();return false;}"/></p>
+										<p><@s.m "content.rejectStep"/>:
+										    <select id="rejectStep" class="form-control">
+										        <option value=""><@s.m "content.rejectBack"/></option>
+										        <#list currStep-1..0 as i><option value="${i}">${i}</option></#list>
+										    </select>
+										</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn green" onclick="rejectSubmit()"><@s.m "content.opt.reject"/></button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box grey-cascade">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "content.opt.view"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                         <div class="form-body">
+                                                <h1>${content.title?html}</h1>
+											    <p class="info">
+											        <@s.m "content.user"/>: ${content.user.username}
+											        <#if content.author??>&nbsp; <@s.m "content.author"/>: ${content.author}</#if>
+											        <#if content.origin??>&nbsp; <@s.m "content.origin"/>: ${content.origin}</#if>
+											        &nbsp; <@s.m "content.views"/>: ${content.views}
+											        &nbsp; <@s.m "content.releaseDate"/>: ${content.releaseDate}        
+											    </p>
+											    <div>
+											    ${content.txt!}
+											    </div>
+										</div>	    
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+function checkPass(){
+	var f = $("#jvForm");
+    var u ="content/o_check.do";
+    submitForm(u, f);
+}
+function rejectSubmit() {
+    $("input[name=rejectOpinion]").val($("#rejectOpinion").val());
+    $("input[name=rejectStep]").val($("#rejectStep").val());
+    var f = $("#jvForm");
+    var u ="content/o_reject.do";
+    submitForm(u, f);
+    $(".modal-backdrop").remove();
+}
+</script>

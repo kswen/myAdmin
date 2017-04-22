@@ -1,0 +1,132 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-chemistry"></i>
+								<a href="#"><@s.m "cmsStatic.function"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#">  <@s.m "cmsStatic.channel"/> </a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "cmsStatic.channel"/> 
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+										<!-- BEGIN FORM-->
+										<form action="static/o_channel.do" id="form_static_channel" class="form-horizontal">
+											<div class="form-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="col-md-3 control-label"><@s.m "cmsStatic.channel"/></label>
+															<div class="col-md-7">
+																<div class="radio-list">
+																	<@p.select class="form-control radio-inline" name="channelId" list=channelList listKey="id" listValue="name" listDeep="deep" headerKey="" headerValue="cmsStatic.allChannel"/>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="col-md-3 control-label"><@s.m "cmsStatic.containChild"/></label>
+															<div class="col-md-7">
+																<div class="radio-list">
+																	<@p.radio class="form-control radio-inline" name="containChild" value="true" list={"true":"global.true","false":"global.false"}/>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+											</div>
+											<div class="form-actions fluid">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="col-md-offset-3 col-md-9">
+															<button type="submit" class="btn green-meadow"><@s.m "cmsStatic.channelStatic"/> </button>
+														</div>
+													</div>
+													<div class="col-md-6">
+													</div>
+												</div>
+											</div>
+										</form>
+										<!-- END FORM-->
+									</div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   Metronic.initAjax();
+   var form1 = $('#form_static_channel');
+   form1.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block', // default input error message class
+		focusInvalid: false, // do not focus the last invalid input
+		ignore: "",
+		submitHandler: function (form) {
+			var url = $(form).attr("action"); 
+			var postData = $(form).serialize();
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: url,
+				data: postData,
+				beforeSend: function(){
+					Metronic.startPageLoading();
+				},
+				success: function(data){
+					if(data.success){
+						Metronic.alert({
+			                place: "append", 
+			                type: "success",  
+			                message: '<@s.m "global.success"/>  '+'  数量: '+data.count,  
+			                close: true, 
+			                reset: true, 
+			                focus: true, 
+			                closeInSeconds: 5, 
+			                icon: "check"
+			            });
+					}else{
+						Metronic.alert({
+			                place: "append", 
+			                type: "danger",  
+			                message: data.msg,  
+			                close: true, 
+			                reset: true, 
+			                focus: true, 
+			                closeInSeconds: 5, 
+			                icon: "warning"
+			            });
+					}
+				},
+				complete : function (){
+					Metronic.stopPageLoading();
+	            }
+			});
+			return false; 
+		}
+	});
+});
+</script>

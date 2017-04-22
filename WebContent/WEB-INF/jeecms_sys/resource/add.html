@@ -1,0 +1,179 @@
+            <!-- BEGIN PAGE HEADER-->
+             <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-social-dropbox"></i>
+								<a href="#"><@s.m "cms.function.resource"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="resource/v_list.do"  class="ajaxify"><@s.m "resource.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.add"/></a>
+							</li>
+						</ul>
+						</div>
+						<!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.add"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="resource/o_save.do" id="jvForm"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-1 control-label"><@s.m "resource.filename"/></label>
+                                                    <div class="col-md-5">
+                                                         <@p.text name="filename" class="form-control required" maxlength="100" id="filename" onchange="setMode()"/>
+                                                    </div>
+                                                    <label class="col-md-1 control-label">编辑器</label>
+                                                    <div class="col-md-5">
+                                                         <select onchange="changeTheme(this.value)" class="form-control input-medium" size="1"> 
+                                                         <optgroup label="Bright">
+	                                                         <option value="ace/theme/chrome">Chrome</option>
+	                                                         <option value="ace/theme/clouds">Clouds</option>
+	                                                         <option value="ace/theme/crimson_editor">Crimson Editor</option>
+	                                                         <option value="ace/theme/dawn">Dawn</option>
+	                                                         <option value="ace/theme/dreamweaver">Dreamweaver</option>
+	                                                         <option value="ace/theme/eclipse">Eclipse</option>
+	                                                         <option value="ace/theme/github">GitHub</option>
+	                                                         <option value="ace/theme/solarized_light">Solarized Light</option>
+	                                                         <option value="ace/theme/textmate">TextMate</option>
+	                                                         <option value="ace/theme/tomorrow">Tomorrow</option>
+	                                                         <option value="ace/theme/xcode">XCode</option>
+	                                                         <option value="ace/theme/kuroir">Kuroir</option>
+	                                                         <option value="ace/theme/katzenmilch">KatzenMilch</option>
+                                                         </optgroup>
+                                                         <optgroup label="Dark">
+	                                                         <option value="ace/theme/ambiance">Ambiance</option>
+	                                                         <option value="ace/theme/chaos">Chaos</option>
+	                                                         <option value="ace/theme/clouds_midnight">Clouds Midnight</option>
+	                                                         <option value="ace/theme/cobalt">Cobalt</option>
+	                                                         <option value="ace/theme/idle_fingers">idle Fingers</option>
+	                                                         <option value="ace/theme/kr_theme">krTheme</option>
+	                                                         <option value="ace/theme/merbivore">Merbivore</option>
+	                                                         <option value="ace/theme/merbivore_soft">Merbivore Soft</option>
+	                                                         <option value="ace/theme/mono_industrial">Mono Industrial</option>
+	                                                         <option value="ace/theme/monokai">Monokai</option>
+	                                                         <option value="ace/theme/pastel_on_dark">Pastel on dark</option>
+	                                                         <option value="ace/theme/solarized_dark">Solarized Dark</option>
+	                                                         <option value="ace/theme/terminal">Terminal</option>
+	                                                         <option value="ace/theme/tomorrow_night">Tomorrow Night</option>
+	                                                         <option value="ace/theme/tomorrow_night_blue">Tomorrow Night Blue</option>
+	                                                         <option value="ace/theme/tomorrow_night_bright">Tomorrow Night Bright</option>
+	                                                         <option value="ace/theme/tomorrow_night_eighties">Tomorrow Night 80s</option>
+	                                                         <option value="ace/theme/twilight">Twilight</option>
+	                                                         <option value="ace/theme/vibrant_ink">Vibrant Ink</option>
+                                                         </optgroup>
+                                                         </select>
+                                                    </div>
+                                                </div>
+                                               <span  style="display:none;" >
+                                               <textarea  name="source" id="tsource" maxlength="1232896"></textarea>
+                                               </span>
+                                                <div class="form-group">
+                                                    <label class="col-md-1 control-label">内容</label>
+											         <style type="text/css" media="screen">
+												    #source_editor { 
+												        position: absolute;
+												        top:  1px;
+												        right: 5px;
+												        bottom: 0px;
+												        left: 5px;
+												        height:100%;
+												        min-height:500px;
+												    }
+												    </style>
+												    <script>
+												    var editor = ace.edit("source_editor");
+												    editor.setTheme("ace/theme/chrome");
+												    editor.getSession().setMode("ace/mode/html");
+												    </script>
+                                                    <div class="col-md-11" style="height:100%; min-height:750px;margin-bottom: 2px;">
+                                                          <div id="source_editor"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="root" value="${root}"/>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="button" class="btn green-meadow" onclick="addFile();"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+function changeTheme(value){
+	editor.setTheme(value);
+}
+function setMode(){
+    var fileName = $("#filename").val();
+    var fileExt = fileName.substr(fileName.lastIndexOf(".") +1);
+    if(fileExt=="js"){
+    	editor.getSession().setMode("ace/mode/javascript");
+    }else if(fileExt=="htm"){
+    	editor.getSession().setMode("ace/mode/html");
+    }else{
+    	editor.getSession().setMode("ace/mode/"+fileExt);
+    }
+}
+function addFile(){
+	$("#tsource").val(editor.getValue());
+	 var fileName = $("#filename").val();
+    if(fileName=="") {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '请输入文件名称',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        });
+        return;
+    }
+    submitThisForm("#jvForm");
+}
+function submitThisForm(form){
+    var url = $(form).attr("action"); 
+    var postData = $(form).serialize();
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: postData,
+           success: function(data)
+           {
+               var pageContentBody = $('.page-content .page-content-body');
+               pageContentBody.html(data);
+               UITree.ajaxLeftResourceTree();
+               $("#left_resource_tree").jstree("refresh");
+           },
+			  error: function(XMLHttpRequest, textStatus, errorThrown) { 
+					var pageContentBody = $('.page-content .page-content-body');
+					pageContentBody.html(XMLHttpRequest.responseText);
+		          }
+         });
+}
+</script>

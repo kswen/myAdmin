@@ -1,0 +1,295 @@
+            <!-- BEGIN PAGE HEADER-->
+            			<h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-notebook"></i>
+								<a href="#">信息<@s.m "cms.function.maintain"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="task/v_list.do" class="ajaxify"><@s.m "cms.task.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.add"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.mt code=message text=message/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.add"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="task/o_save.do" id="jvForm"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cms.task.type"/></label>
+                                                    <div class="col-md-4">
+                                                                <@p.select id="type" onchange="selectTaskType()" list={"1":"cms.task.type.1","2":"cms.task.type.2","3":"cms.task.type.3","4":"cms.task.type.4","5":"cms.task.type.5"}  name="type" class="form-control input-medium radio-inline"/>
+																<span id="acqu" style="display: none;">
+																<label class="control-label"><@s.m "cms.task.param.acqu.source"/></label>
+																<select name="attr_acqu_id" id="attr_acqu_id" disabled="disabled" class="form-control input-medium radio-inline">
+																<#list acquList as acqu>
+																<option value="${acqu.id}">${acqu.name}</option>
+																</#list>
+																</select>
+																</span>
+																<span id="ftp" style="display: none;">
+																<label class="control-label"><@s.m "cms.task.distribute.ftp"/></label>
+																<select name="attr_ftp_id" id="attr_ftp_id" disabled="disabled" class="form-control input-medium radio-inline">
+																<#list ftpList as ftp>
+																<option value="${ftp.id}">${ftp.name}</option>
+																</#list>
+																</select>
+																<button onclick="addFloderLine()"  class="btn btn-success" type="button"><i class="fa fa-plus"></i><@s.m'cms.task.floder.add'/></button>
+																</span>
+																<table id="floderTable" border="0" style="display:none">
+																<tr>
+																    <td align="center"></td>
+																    <td align="center"><@s.m "cms.task.floder"/>&nbsp;&nbsp;<@s.m "cms.task.floder.help"/></td>
+																</tr>
+																</table>
+																<textarea id="floderTr" style="display:none">
+																<tr id="floderTr{0}">
+																    <td align="center"><button onclick="$('#floderTr{0}').remove();"  class="btn btn-danger" type="button"><i class="fa fa-times"></i><@s.m "cms.task.floder.delete"/></button></td>
+																    <td align="center"><input type="text" id="floder_{0}" name="attr_floder_{0}" class="form-control"/></td>
+																</tr>
+																</textarea>
+																<script type="text/javascript">
+																var floderIndex = 1;
+																var floderTpl = $.validator.format($("#floderTr").val());
+																function addFloderLine() {
+																    $('#floderTable').append(floderTpl(floderIndex++));
+																}
+																</script>
+																<span id="channel" style="display: none;">
+																<label class="control-label"><@s.m "cmsStatic.channel"/></label>
+																<select id="attr_channel_id" name="attr_channel_id" class="form-control input-medium radio-inline">
+																    <option value="0"><@s.m "cmsStatic.allChannel"/></option>
+																    <#if channelList?size gt 0>
+																    <#assign origDeep=channelList[0].deep+1/>
+																    <#list channelList as c>
+																        <option value="${c.id}"><#if c.deep gte origDeep><#list origDeep..c.deep as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+																    </#list>
+																    </#if>
+																</select>
+																</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cms.task.name"/><span class="required">*</span></label>
+                                                    <div class="col-md-4">
+                                                            <@p.text  name="name" class="form-control required" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cms.task.execycle"/></label>
+                                                    <div class="col-md-4">
+                                                     <div class="radio-list">
+                                                            <label class="radio-inline"><input name="execycle"  type="radio" value="1" class="form-control" onclick="execycleSelect()" checked="checked"/></label>
+													       	<@p.select name="intervalUnit" class="form-control input-xsmall radio-inline" onchange="selectUnit()" id="intervalUnit" list={"1":"cms.task.interval.unit.1","2":"cms.task.interval.unit.2","3":"cms.task.interval.unit.3","4":"cms.task.interval.unit.4","5":"cms.task.interval.unit.5"}/>
+														    <span id="dayOfMonthSpan"><input name="dayOfMonth" class="form-control input-xsmall radio-inline"  id="dayOfMonthInput" vld="{range:[1,31]}"/><label class="control-label"><@s.m "cms.task.dayOfMonth"/></label></span>
+														    <span id="dayOfWeekSpan"><input name="dayOfWeek" class="form-control input-xsmall radio-inline"  id="dayOfWeekInput" vld="{range:[1,7]}"/><label class="control-label"><@s.m "cms.task.dayOfWeek"/></label></span>
+														    <span id="hourSpan"><input name="hour" id="hourInput" class="form-control input-xsmall radio-inline"  vld="{range:[0,23]}"/><label class="control-label"><@s.m "cms.task.hour"/></label></span>
+														    <span id="minuteSpan"><input name="minute" id="minuteInput" class="form-control input-xsmall radio-inline"  vld="{range:[0,59]}"/><label class="control-label"><@s.m "cms.task.minute"/></label></span>
+														    <span id="intervalHourSpan"><label class="control-label"><@s.m "cms.task.interval"/></label><input name="intervalHour" class="form-control input-xsmall radio-inline"  vld="{digits:true,range:[0,23]}" id="intervalHourInput"/><label class="control-label"><@s.m "cms.task.interval.Hour"/></label></span>
+														    <span id="intervalMinuteSpan"><label class="control-label"><@s.m "cms.task.interval"/></label><input name="intervalMinute" class="form-control input-xsmall radio-inline"  vld="{digits:true,range:[0,59]}" id="intervalMinuteInput"/><label class="control-label"><@s.m "cms.task.interval.Minute"/></label></span>                                                       
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cms.task.cronExpression"/></label>
+                                                    <div class="col-md-4">
+                                                            <div class="radio-list">
+                                                            <label class="radio-inline"><input name="execycle"  type="radio" class="form-control radio-inline" value="2" onclick="execycleSelect()"/></label>
+                                                            <input type="text" name="cronExpression" id="cronExpression" class="form-control input-large radio-inline"/>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cms.task.status"/></label>
+                                                    <div class="col-md-4">
+                                                            <div class="radio-list">
+                                                            <@p.radio name="enable" class="form-control" value="true" list={"true":"cms.task.enable","false":"cms.task.disable"} required="true"/>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group last">
+                                                    <label class="col-md-3 control-label"><@s.m "cms.task.remark"/></label>
+                                                    <div class="col-md-4">
+                                                            <div class="radio-list">
+                                                           <@p.text  name="remark" class="form-control" />
+                                                           </div>
+                                                   </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="jobClass" name="jobClass" value="com.jeecms.cms.task.job.IndexStaticJob"/>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+	Metronic.initAjax();
+   FormValidation.handleValidationTask();
+});
+$.extend($.validator.messages, {
+    required : "该项为必填项",
+    remote : "请修正该字段",
+    email : "请输入正确格式的电子邮件",
+    url : "请输入合法的网址",
+    date : "请输入合法的日期",
+    dateISO : "请输入合法的日期 ",
+    number : "请输入合法的数字",
+    digits : "只能输入整数",
+    creditcard : "请输入合法的信用卡号",
+    equalTo : "请再次输入相同的值",
+    accept : "请输入拥有合法后缀名的字符串",
+    maxlength : $.validator.format("请输入一个长度最多是 {0} 的字符串"),
+    minlength : $.validator.format("请输入一个长度最少是 {0} 的字符串"),
+    rangelength : $.validator.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+    range : $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+    max : $.validator.format("该项不能大于 {0}"),
+    min : $.validator.format("该项不能小于 {0}")
+});
+$(function() {
+    $("span[id$='Span']").each(function(){
+        $(this).hide();
+    });
+    $("#attr_channel_id").parent().hide();
+    $("#attr_channel_id").attr("disabled","disabled");
+    controlInput(1);
+});
+function selectTaskType(){
+    var type=$("#type").val();
+    $("#acqu").hide();
+    $("#attr_acqu_id").attr("disabled","disabled");
+    $("#floderTable").hide();
+    $("#ftp").hide();
+    $("#attr_ftp_id").attr("disabled","disabled");
+    $("#attr_channel_id").parent().hide();
+    $("#attr_channel_id").attr("disabled","disabled");
+    if(type==1){
+        $("#jobClass").val("com.jeecms.cms.task.job.IndexStaticJob");
+    }else if(type==2){
+        $("#jobClass").val("com.jeecms.cms.task.job.ChannelStaticJob");
+        $("#attr_channel_id").parent().show();
+        $("#attr_channel_id").removeAttr("disabled");
+    }else if(type==3){
+        $("#jobClass").val("com.jeecms.cms.task.job.ContentStaticJob");
+        $("#attr_channel_id").parent().show();
+        $("#attr_channel_id").removeAttr("disabled");
+    }else if(type==4){
+        $("#jobClass").val("com.jeecms.cms.task.job.AcquisiteJob");
+        $("#acqu").show();
+        $("#attr_acqu_id").removeAttr("disabled");
+    }else if(type==5){
+        $("#jobClass").val("com.jeecms.cms.task.job.DistributeJob");
+        $("#floderTable").show();
+        $("#ftp").show();
+        $("#attr_ftp_id").removeAttr("disabled");
+    }
+}
+function execycleSelect(){
+    var execycleValue=1;
+    $("input[name='execycle']").each(function(){
+        if($(this).attr("checked")){
+            execycleValue=$(this).val();
+        }
+    });
+    if(execycleValue==1){
+        $("#dayOfMonthInput").removeAttr("disabled");
+        $("#dayOfWeekInput").removeAttr("disabled");
+        $("#hourInput").removeAttr("disabled");
+        $("#minuteInput").removeAttr("disabled");
+        $("#intervalHourInput").removeAttr("disabled");
+        $("#intervalMinuteInput").removeAttr("disabled");
+        $("#intervalUnit").removeAttr("disabled");
+        $("#cronExpression").attr("disabled","disabled");
+    }else{
+        $("#dayOfMonthInput").attr("disabled","disabled");
+        $("#dayOfWeekInput").attr("disabled","disabled");
+        $("#hourInput").attr("disabled","disabled");
+        $("#minuteInput").attr("disabled","disabled");
+        $("#intervalHourInput").attr("disabled","disabled");
+        $("#intervalMinuteInput").attr("disabled","disabled");
+        $("#intervalUnit").attr("disabled","disabled");
+        $("#cronExpression").removeAttr("disabled");
+    }
+}
+function selectUnit(){
+    var intervalUnitValue=$("#intervalUnit").val();
+    controlInput(intervalUnitValue);
+}
+function controlInput(intervalUnitValue){
+    $("span[id$='Span']").each(function(){
+        $(this).hide();
+    });
+    $("input[id$='Input']").each(function(){
+        $(this).attr("disabled","disabled");
+    });
+    if(intervalUnitValue==1){
+        $("#intervalMinuteSpan").show();
+        $("#intervalMinuteInput").removeAttr("disabled");
+    }else if(intervalUnitValue==2){
+        $("#intervalHourSpan").show();
+        $("#intervalHourInput").removeAttr("disabled");
+    }else if(intervalUnitValue==3){
+        $("#hourSpan").show();
+        $("#minuteSpan").show();
+        $("#hourInput").removeAttr("disabled");
+        $("#minuteInput").removeAttr("disabled");
+    }else if(intervalUnitValue==4){
+        $("#dayOfWeekSpan").show();
+        $("#hourSpan").show();
+        $("#minuteSpan").show();
+        $("#dayOfWeekInput").removeAttr("disabled");
+        $("#hourInput").removeAttr("disabled");
+        $("#minuteInput").removeAttr("disabled");
+    }else if(intervalUnitValue==5){
+        $("#dayOfMonthSpan").show();
+        $("#hourSpan").show();
+        $("#minuteSpan").show();
+        $("#dayOfMonthInput").removeAttr("disabled");
+        $("#hourInput").removeAttr("disabled");
+        $("#minuteInput").removeAttr("disabled");
+    }
+}
+</script>

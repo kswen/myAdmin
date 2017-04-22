@@ -1,0 +1,138 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-wrench"></i>
+								<a href="#"><@s.m "cmsConfig.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="type/v_list.do" class="ajaxify"><@s.m "contentType.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						<@cms_perm url="/type/v_add.do">
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "global.add"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+								 	<li><a href="type/v_add.do" class="ajaxify"> <@s.m "global.add"/> </a></li>
+								</ul>
+							</div>
+						</div>
+						</@cms_perm>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i> <@s.m "contentType.function"/><@s.m "global.list"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body flip-scroll">
+                                        <!-- BEGIN FORM-->
+	                                        <form id="tableForm" method="post">
+												<input type="hidden" name="pageNo" value="${pageNo!}"/>
+												<@p.table class="table table-bordered table-striped table-condensed flip-content" value=list;contentType,i,has_next><#rt/>
+													<@p.column title="<input type='checkbox' onclick='checkAll(\"ids\",this.checked)'/>">
+														<label class="class4ids"><input type='checkbox' name='ids' value='${contentType.id}'/><#t/></label>
+													</@p.column><#t/>
+													<@p.column title="ID">${contentType.id}</@p.column><#t/>
+													<@p.column code="contentType.name">${contentType.name}</@p.column><#t/>
+													<@p.column code="contentType.imgWidth">${contentType.imgWidth}</@p.column><#t/>
+													<@p.column code="contentType.imgHeight">${contentType.imgHeight}</@p.column><#t/>
+													<@p.column code="contentType.hasImage"><#if contentType.hasImage><@s.m "global.true"/><#else><@s.m "global.false"/></#if></@p.column><#t/>
+													<@p.column code="contentType.disabled"><#if contentType.disabled><@s.m "global.true"/><#else><@s.m "global.false"/></#if></@p.column><#t/>
+													<@p.column code="global.operate" align="center">
+														<a href="type/v_edit.do?id=${contentType.id}&pageNo=${pageNo!}" class="ajaxify btn default btn-xs blue-stripe"><@s.m "global.edit"/></a> | <#rt/>
+														<a href="javascript:void(0)" class="btn default btn-xs red-stripe" onclick="deleteSingle('type/o_delete.do?ids=${contentType.id}&pageNo=${pageNo!}')"><@s.m "global.delete"/></a><#t/>
+													</@p.column><#t/>
+												</@p.table>
+												<div style="margin-top:15px;"><input class="btn btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/></div>
+											</form>
+                                        <!-- END FORM-->
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+	Metronic.initAjax();
+});
+var checkedAll = false;
+function checkAll(name, checked) {
+	if(checkedAll){
+	    $('input[name=' + name + ']:checkbox').each(function() {
+	        $(this).removeAttr("checked");
+	        $(".class4ids .checker span").removeAttr("class");
+	    });
+	    checkedAll = false;
+	}else{
+      $("[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+	}
+}
+function optDelete() {
+	if(checkedCount('ids')<=0) {
+		Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: '<@s.m "error.checkRecord"/>',  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        }); 
+        return;
+	}
+	if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+		return;
+	}
+	var f = $("#tableForm");
+	submitForm("type/o_delete.do",f)
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+</script>

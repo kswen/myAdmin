@@ -1,0 +1,79 @@
+            <!-- BEGIN PAGE HEADER-->
+            <h3 class="page-title">
+	                    <@s.m "cms.function.data"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-graph"></i>
+								<a href="#"><@s.m 'cms.function.flow'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "statistic.function.channel"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+		<div class="well">
+        <div class="row">
+                 <div class="form-group">
+					<div class="col-md-12">
+							<form class="ropt" action="statistic/channel/v_list.do" method="post" id="queryTable">
+								<@p.radio name="channelLevel" list={"1":"channel.top","-1":"channel.bottom"} value="${channelLevel}" onclick="query()"/>
+								<@p.radio name="view" value="${view}" list={"view","channel.view","viewDay":"channel.viewsDay","viewMonth":"channel.viewsMonth","viewWeek":"channel.viewsWeek"} onclick="query()"/>
+							</form>
+						</div>
+					</div>
+         </div>
+         </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-graph"></i><@s.m "statistic.function.channel"/>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body flip-scroll">
+                            <div class="table-responsive">
+								<@p.table  class="table table-bordered table-striped table-condensed flip-content" value=list;channel,i,has_next><#rt/>
+									<@p.column title="ID">${channel.id}</@p.column><#t/>
+									<@p.column code="channel.name">${channel.name}</@p.column><#t/>
+									<#if view??>
+										<#if view=="view">
+											<@p.column code="channel.view">${channel.viewTotal!}</@p.column><#t/>
+										<#elseif view="viewDay">
+											<@p.column code="channel.viewsDay">${channel.viewsDayTotal!}</@p.column><#t/>
+										<#elseif view="viewMonth">
+											<@p.column code="channel.viewsMonth">${channel.viewsMonthTotal!}</@p.column><#t/>
+										<#elseif view="viewWeek">
+											<@p.column code="channel.viewsWeek">${channel.viewsWeekTotal!}</@p.column><#t/>
+										</#if>
+									</#if>
+								</@p.table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>            
+jQuery(document).ready(function() {    
+	   Metronic.initAjax(); 
+});
+function query(){
+	submitFormMsg($("#queryTable"));
+}      
+</script>

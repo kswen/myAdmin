@@ -1,0 +1,138 @@
+            <!-- BEGIN PAGE HEADER-->
+            			<h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-notebook"></i>
+								<a href="#">信息<@s.m "cms.function.maintain"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<i class="icon-notebook"></i>
+								<a href="dictionary/v_list.do" class="ajaxify"><@s.m "cmsDictionary.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.add"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+		            Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.m "global.success"/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.add"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+										<!-- BEGIN FORM-->
+										<form action="dictionary/o_save.do" id="form_dictionary" class="form-horizontal" onsubmit="return checkValue()">
+											<div class="form-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsDictionary.type"/></label>
+															<div class="col-md-9">
+																<@p.text name="type" class="form-control required" id="type"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsDictionary.name"/></label>
+															<div class="col-md-9">
+																<@p.text name="name" class="form-control"  id="name"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsDictionary.value"/></label>
+															<div class="col-md-9">
+																<@p.text  name="value" id="value" class="form-control" onblur="checkValue()"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+											</div>
+											<div class="form-actions fluid">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="col-md-offset-3 col-md-9">
+															<button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+															<button type="reset" class="btn default"><@s.m "global.reset"/></button>
+														</div>
+													</div>
+													<div class="col-md-6">
+													</div>
+												</div>
+											</div>
+										</form>
+										<!-- END FORM-->
+									</div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+function checkValue() {
+    if($("#value").val()!=""){
+        $.post("dictionary/v_check_value.do",
+                {
+                    value:$("#value").val(),
+                    type:$("#type").val()
+                },
+                function(data) {
+                    if(data.pass!="false"){
+                        Metronic.alert({
+                            place: "append", 
+                            type: "danger",  
+                            message: '<@s.m "cmsDictionary.value.repeat"/>',  
+                            close: true, 
+                            reset: true, 
+                            focus: true, 
+                            closeInSeconds: 5, 
+                            icon: "warning"
+                        });
+                        return false;
+                    }
+                }, "json");
+        return false;
+    }
+    return true;
+}
+jQuery(document).ready(function() {    
+   Metronic.initAjax();
+   FormValidation.handleValidationDictionary();
+});
+</script>

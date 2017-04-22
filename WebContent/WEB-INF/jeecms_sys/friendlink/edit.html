@@ -1,0 +1,148 @@
+            <!-- BEGIN PAGE HEADER-->
+            			<h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+						<li>
+								<i class="icon-notebook"></i>
+								<a href="#">信息<@s.m "cms.function.maintain"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<i class="icon-notebook"></i>
+								<a href="friendlink/v_list.do" class="ajaxify"><@s.m "cmsFriendlink.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.edit"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+		            Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.mt code=message text=message/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <#include "/common/image_upload.html"/>
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.edit"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="friendlink/o_update.do" id="jvForm"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsFriendlink.name"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.text name="name" value=cmsFriendlink.name class="form-control required" maxlength="150"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsFriendlink.domain"/></label>
+                                                    <div class="col-md-9">
+                                                          <@p.text class="form-control required" value=cmsFriendlink.domain name="domain" maxlength="255"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsFriendlink.category"/></label>
+                                                    <div class="col-md-9">
+                                                    	  <@p.select name="ctgId" list=ctgList listKey="id" value=cmsFriendlink.category.id listValue="name" class="form-control"/>                                               
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsFriendlink.email"/></label>
+                                                    <div class="col-md-9">
+                                                            <@p.text class="form-control" name="email" value=cmsFriendlink.email maxlength="100"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsFriendlink.logo"/></label>
+                                                    <div class="col-md-9" id="linkLogo">
+                                                            <div class="col-md-9">
+                                                            	<@p.text id="uploadImgPath0" name="logo" class="form-control input-medium" value=cmsFriendlink.logo/> <input class="preview-button" type="button" value="<@s.m "imageupload.preview"/>" onclick="previewImg(0);"/>
+			                                                    <span id="ufc0" style="position:relative">
+			                                                    <input type='hidden' id='uploadFileText0'/>  
+			                                                	<input type="file" onchange="$('#uploadFileText0').val(this.value)"  id="uploadFile0" class="file radio-inline" style="float:left;"/>
+			                                                	<input class="btn blue btn-sm" type="button" value="<@s.m "imageupload.upload"/>" onclick="upload(0);"/>
+			                                                	<input type="hidden" id="mark0" value="false"/>
+			                                                	</span>
+			                                                </div>
+			                                                <div class="col-md-3">
+			                                                	<img id="preImg0" alt="<@s.m "imageupload.preview"/>" style="width:100px;height:70px;background-color:#ccc;border:1px solid #333"/>
+			                                                </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsFriendlink.description"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.textarea class="form-control" name="description" value=cmsFriendlink.description rows="3" maxlength="255"/>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsFriendlink.priority"/></label>
+                                                    <div class="col-md-9">
+                                                          <@p.text class="form-control" name="priority" value=cmsFriendlink.priority required="true" maxlength="11"/>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsFriendlink.views"/></label>
+                                                    <div class="col-md-9">
+                                                         <div class="radio-list">
+                                                            <@p.text class="form-control" name="views" value=cmsFriendlink.views maxlength="11" />
+                                                   		</div>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group last">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsFriendlink.enabled"/></label>
+                                                    <div class="col-md-9">
+                                                    	<div class="radio-list">
+                                                          <label class="radio-inline">
+                                                          <@p.radio class="form-control" name="enabled" value=cmsFriendlink.enabled list={"true":"global.true","false","global.false"}/>
+                                                  		  </label>
+                                                   		</div>
+                                                   </div>
+                                                </div>
+                                            </div>
+                                            <@p.hidden name="id" value=cmsFriendlink.id/>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   FormValidation.handleValidationCommon();
+	<#if cmsFriendlink.logo??>
+	$("#preImg0").css("width","auto").css("height","auto").attr("src","${cmsFriendlink.logo}?d="+new Date()*1);
+	</#if>
+});
+</script>

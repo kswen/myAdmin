@@ -1,0 +1,176 @@
+            <!-- BEGIN PAGE HEADER-->
+            			<h3 class="page-title">
+	                     <@s.m "cms.function.content"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-eyeglasses"></i>
+								<a href="topic/v_list.do?pageNo=${pageNo!}" class="ajaxify"><@s.m "cmsTopic.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.edit"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+		            Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.mt code=message text=message/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+<div class="row">            
+<#include "/common/image_upload.html"/>
+</div>
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-madison">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.edit"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+										<form action="topic/o_update.do" id="jvForm"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsTopic.name"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.text name="name" value=cmsTopic.name class="form-control required" maxlength="100"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsTopic.channel"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.select name="channelId" value=(cmsTopic.channel.id)! class="form-control" list=channelList listKey="id" listValue="name" listDeep="deep" headerKey="" headerValue="cmsTopic.channel.allChannel"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsTopic.shortName"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.text class="form-control" value=cmsTopic.shortName name="shortName" maxlength="150"/>
+                                                         <span class="help-block">
+                                                         	<@s.m "cmsTopic.shortName.help"/>
+                                                         </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsTopic.keywords"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.text class="form-control" value=cmsTopic.keywords name="keywords" maxlength="255"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsTopic.description"/></label>
+                                                    <div class="col-md-9">
+                                                         <@p.textarea class="form-control" value=cmsTopic.description name="description" rows="3" maxlength="255"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsTopic.recommend"/></label>
+                                                    <div class="col-md-9">
+                                                    <div class="radio-list">
+                                                         <@p.radio name="recommend" value=cmsTopic.recommend list={"true":"global.true","false":"global.false"}/>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsTopic.priority"/></label>
+                                                    <div class="col-md-9">
+                                                          <@p.text class="form-control" name="priority" value=cmsTopic.priority maxlength="5"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsTopic.tplContent"/></label>
+                                                    <div class="col-md-9">
+                                                          <@p.select class="form-control" name="tplContent" list=tplList headerKey="" value=cmsTopic.tplContent headerValue="global.default"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                	<label class="col-md-3 control-label"><@s.m "cmsTopic.titleImg"/></label>
+                                                	<div class="col-md-9">
+														<div class="col-md-7">
+		                                                	<div class="col-md-12">
+			                                                	<@p.text id="uploadImgPath1" name="titleImg" value=cmsTopic.titleImg class="form-control input-medium radio-inline"/> 
+			                                                	<input class="btn btn-sm blue" type="button" value="<@s.m "imageupload.preview"/>" onclick="previewImg(1);"/>
+		                                                	</div>
+															<div class="col-md-12">
+																<span id="ufc1" style="position:relative">
+																<input type='hidden' id='uploadFileText1' />  
+																<input onchange="$('#uploadFileText1').val(this.value)" type="file" id="uploadFile1"  style="margin-top:5px;margin-bottom:5px;" class="radio-inline"/>
+																</span>
+																<label><input type="checkbox" onclick="$('#mark1').val(this.checked);"/><@s.m "imageupload.mark"/></label><input type="hidden" id="mark1" value="false"/> <input class="btn btn-sm green" type="button" value="<@s.m "imageupload.upload"/>" onclick="upload(1);"/>
+																<@s.m "global.width"/>: <input type="text" id="zoomWidth1" value="139" class="form-control input-xsmall radio-inline"/> <@s.m "global.height"/>: <input type="text" id="zoomHeight1" value="139" class="form-control input-xsmall radio-inline"/> <input class="btn btn-sm yellow" type="button" value="<@s.m "imageupload.cut"/>" onclick="imgCut(1);"/> 
+		                                                	</div>
+	                                                	</div>
+	                                                	<div class="col-md-5">
+	                                                		<input name="oldTitleImg" value="${cmsTopic.titleImg!}" type="hidden"/>
+															<img id="preImg1" alt="<@s.m "imageupload.preview"/>" style="width:100px;height:70px;background-color:#CCCCCC;border:1px solid #333"/>
+	                                                	</div>
+                                                	</div>
+												</div>
+                                                <div class="form-group">
+                                                	<label class="col-md-3 control-label"><@s.m "cmsTopic.contentImg"/></label>
+                                                	<div class="col-md-9">
+														<div class="col-md-7">
+		                                                	<div class="col-md-12">
+			                                                	<@p.text id="uploadImgPath2" name="titleImg" value=cmsTopic.contentImg class="form-control input-medium radio-inline"/> 
+			                                                	<input class="btn btn-sm blue" type="button" value="<@s.m "imageupload.preview"/>" onclick="previewImg(2);"/>
+		                                                	</div>
+															<div class="col-md-12">
+																<span id="ufc1" style="position:relative">
+																<input type='hidden' id='uploadFileText2' />  
+																<input onchange="$('#uploadFileText2').val(this.value)" type="file" id="uploadFile2"  style="margin-top:5px;margin-bottom:5px;" class="radio-inline"/>
+																</span>
+																<label><input type="checkbox" onclick="$('#mark2').val(this.checked);"/><@s.m "imageupload.mark"/></label><input type="hidden" id="mark2" value="false"/> <input class="btn btn-sm green" type="button" value="<@s.m "imageupload.upload"/>" onclick="upload(2);"/>
+																<@s.m "global.width"/>: <input type="text" id="zoomWidth2" value="139" class="form-control input-xsmall radio-inline"/> <@s.m "global.height"/>: <input type="text" id="zoomHeight2" value="139" class="form-control input-xsmall radio-inline"/> <input class="btn btn-sm yellow" type="button" value="<@s.m "imageupload.cut"/>" onclick="imgCut(2);"/> 
+		                                                	</div>
+	                                                	</div>
+	                                                	<div class="col-md-5">
+	                                                		<input name="oldContentImg" value="${cmsTopic.contentImg!}" type="hidden"/>
+															<img id="preImg2" alt="<@s.m "imageupload.preview"/>" style="width:100px;height:70px;background-color:#CCCCCC;border:1px solid #333"/>
+	                                                	</div>
+                                                	</div>
+											  </div>
+                                            </div>
+                                            <@p.hidden name="id" value=cmsTopic.id/>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   FormValidation.handleValidationCommon();
+   <#if cmsTopic.titleImg??>
+		$("#preImg1").css("max-width","200px").css("height","auto").attr("src","${cmsTopic.titleImg}?d="+new Date()*1);
+	</#if>
+	<#if cmsTopic.contentImg??>
+		$("#preImg2").css("max-width","200px").css("height","auto").attr("src","${cmsTopic.contentImg}?d="+new Date()*1);
+	</#if>
+});
+</script>

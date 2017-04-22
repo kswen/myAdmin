@@ -1,0 +1,216 @@
+            <!-- BEGIN PAGE HEADER-->
+             <h3 class="page-title">
+	                    <@s.m "cms.function.config"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-wrench"></i>
+								<a href="#"><@s.m "cmsConfig.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m "cmsConfig.function.login"/> </a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.edit"/></a>
+							</li>
+						</ul>
+						</div>
+						 <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+		            Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.m "global.success"/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-madison">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.edit"/><@s.m "cmsConfig.function.login"/> 
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+										<!-- BEGIN FORM-->
+										<form action="config/o_login_update.do" id="form_site_login" class="form-horizontal">
+											<div class="form-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.configLogin.errorTimes"/></label>
+															<div class="col-md-9">
+																<@p.text name="errorTimes" value=configLogin.errorTimes class="form-control"/>
+																<span class="help-block">
+																	 <@s.m "cmsConfig.configLogin.errorTimes.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.configLogin.errorInterval"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="errorInterval" value=configLogin.errorInterval/>
+																<span class="help-block">
+																	 <@s.m "cmsConfig.configLogin.errorInterval.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.emailSender.host"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="host" value=(emailSender.host)!/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.emailSender.port"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="port" value=(emailSender.port)!/>
+																<span class="help-block">
+																	 <@s.m "cmsConfig.emailSender.port.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.emailSender.username"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="username" value=(emailSender.username)!/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.emailSender.password"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="password"/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.emailSender.encoding"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="encoding" value=(emailSender.encoding)!/>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.emailSender.personal"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="personal" value=(emailSender.personal)!/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.messageTemplate.register.text"/></label>
+															<div class="col-md-9">
+																<@p.textarea class="form-control" rows="5" name="registerText" value=(registerTemplate.registerText)!/>
+																<span class="help-block">
+																	 <@s.m "cmsConfig.messageTemplate.register.text.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.messageTemplate.forgotpassword.text"/></label>
+															<div class="col-md-9">
+																<@p.textarea class="form-control" rows="5" name="forgotPasswordText" value=(forgotPasswordTemplate.forgotPasswordText)!/>
+																<span class="help-block">
+																	 <@s.m "cmsConfig.messageTemplate.forgotpassword.text.help"/>
+																</span>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.messageTemplate.register.subject"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="registerSubject" value=(registerTemplate.registerSubject)!/>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="control-label col-md-3"><@s.m "cmsConfig.messageTemplate.forgotpassword.subject"/></label>
+															<div class="col-md-9">
+																<@p.text class="form-control" name="forgotPasswordSubject" value=(forgotPasswordTemplate.forgotPasswordSubject)!/>
+															</div>
+														</div>
+													</div>
+													<!--/span-->
+												</div>
+												<!--/row-->
+											</div>
+											<div class="form-actions fluid">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="col-md-offset-3 col-md-9">
+															<button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+															<button type="reset" class="btn default"><@s.m "global.reset"/></button>
+														</div>
+													</div>
+													<div class="col-md-6">
+													</div>
+												</div>
+											</div>
+										</form>
+										<!-- END FORM-->
+									</div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   Metronic.initAjax();
+   FormValidation.handleValidationLoginEdit();
+});
+</script>

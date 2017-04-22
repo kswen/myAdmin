@@ -1,0 +1,120 @@
+            <!-- BEGIN PAGE HEADER-->
+                       <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-docs"></i>
+								<a href="#"><@s.m "cmsAcquisition.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="acquisition/v_list.do" class="ajaxify"><@s.m "cmsAcquisition.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "cmsAcquisition.progress"/></a>
+							</li>
+						</ul>
+						<@cms_perm url="/acquisition/v_add.do">
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "global.add"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+								 	<li><a href="acquisition/v_add.do" class="ajaxify"> <@s.m "global.add"/>采集 </a></li>
+								</ul>
+							</div>
+						</div>
+						</@cms_perm>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "cmsAcquisition.progress"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body flip-scroll">
+                                        <div id="progressContainer"></div>
+                                    </div>
+                     </div>
+                    <!-- END PORTLET-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+    Metronic.initAjax();
+});
+var messageBox;
+var percent;
+function getTableForm() {
+    return document.getElementById('tableForm');
+}
+
+function checkComplete(){
+	if($("#acquisition_status").length>0||$("#tableForm").length>0){
+        return;
+    }else{
+	    $.post("acquisition/v_check_complete.do",{},function(data){
+	        if(!data.completed){
+	            createProgress();
+	        }
+	    },"json");
+    }
+}
+
+function setBar(percent,messageBox, message) {
+    $("#percent").attr('style',"width:"+percent +"%");
+    $("#percentageBox").html(""+percent +"%");
+    messageBox.html(message);
+}
+
+function createProgress() {
+	//this is very trick spot, don`t remove
+	if($("#acquisition_status").length>0||$("#tableForm").length>0){
+		return;
+	}else{
+		$.post("acquisition/v_progress_data.do",{},function(data){
+	        $("#progressContainer").html(data);
+	        messageBox = $("#messageBox");
+	        if (percent >= 100){
+	            setBar(percent,messageBox, "<@s.m 'cmsAcquisition.complete'/>");
+	            checkComplete();
+	        }
+	        else {
+	        setBar(percent,messageBox, "<@s.m 'cmsAcquisition.acquiting'/>");
+	        setTimeout(createProgress, 1000);
+	        }
+	    });
+	}
+}
+$(function() {
+	if(!$("#acquisition_status").length>0){
+		createProgress();
+	}
+});
+</script>

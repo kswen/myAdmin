@@ -1,0 +1,115 @@
+            <!-- BEGIN PAGE HEADER-->
+              <h3 class="page-title">
+	                    个人资料<small>显示个人信息及修改密码</small>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-rocket"></i>
+								<a href="#"> <@s.m "global.admin.home"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> 
+									<@s.m "cmsPersonal.function"/>
+                                </a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                Metronic.alert({
+		                place: "append", 
+		                type: "success",  
+		                message: '<@s.mt code=message text=message/>',  
+		                close: true, 
+		                reset: true, 
+		                focus: true, 
+		                closeInSeconds: 5, 
+		                icon: "check"
+		            });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "cmsPersonal.function"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="personal/o_profile.do" id="form_personal_info_edit"  class="form-horizontal form-bordered form-label-stripped" novalidate="novalidate">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsUser.username"/></label>
+                                                    <div class="col-md-4">
+                                                                <input type="text" class="form-control" placeholder="<@s.m 'cmsUser.username'/>" disabled value=" ${user.username!?html}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsUser.origPwd"/>
+                                                    <span class="required">
+                                                         *
+                                                    </span>
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                            <input type="password" maxlength="32" class="form-control" name="origPwd" placeholder="<@s.m 'cmsUser.origPwd'/>">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsUser.newPwd"/></label>
+                                                    <div class="col-md-4">
+                                                            <input type="password" class="form-control" id="newPwd" name="newPwd" placeholder="<@s.m 'cmsUser.newPwd'/>">
+	                                                         <span class="label label-info">
+	                                                             <@s.m "cmsUser.password.help"/>
+	                                                        </span>                                                           
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsUser.pwdAgain"/></label>
+                                                    <div class="col-md-4">
+                                                            <input type="password" class="form-control"  equalTo="#newPwd" name="repeatePwd" placeholder="<@s.m 'cmsUser.pwdAgain'/>">
+                                                            <span class="label label-info">
+                                                                <@s.m "cmsUser.password.help"/>
+                                                            </span> 
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsUser.realname"/></label>
+                                                    <div class="col-md-4">
+                                                            <input type="text" name="realname" value="${user.realname!}" class="form-control" placeholder="<@s.m 'cmsUser.realname'/>">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group last">
+                                                    <label class="col-md-3 control-label"><@s.m "cmsUser.email"/></label>
+                                                    <div class="col-md-4">
+                                                            <input type="email" name="email" value="${user.email!}" class="form-control" placeholder="<@s.m 'cmsUser.email'/>">
+                                                   </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                    <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+   FormValidation.handleValidationPersonalInfo();
+});
+</script>

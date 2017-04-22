@@ -1,0 +1,364 @@
+            <!-- BEGIN PAGE HEADER-->
+           <h3 class="page-title">
+	                    <@s.m "cms.function.user"/>
+	                    </h3>
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-user"></i>
+								<a href="#" >用户管理</a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="admin_global/v_list.do" class="ajaxify"><@s.m "cmsAdminGlobal.function"/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.edit"/></a>
+							</li>
+						</ul>
+						</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+            <#if message??>
+                <script>
+                    Metronic.alert({
+                        place: "append", 
+                        type: "success",  
+                        message: '<@s.m "global.success"/>',  
+                        close: true, 
+                        reset: true, 
+                        focus: true, 
+                        closeInSeconds: 5, 
+                        icon: "check"
+                    });
+            </script>
+            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet box blue-hoki">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-reorder"></i><@s.m "global.edit"/>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                        <!-- BEGIN FORM-->
+                                        <form action="admin_global/o_update.do" class="form-horizontal" id="jvForm" >
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.username"/></label>
+                                                            <div class="col-md-9">
+                                                                <p class="form-control-static">
+                                                                ${cmsAdmin.username}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.email"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.text name="email" value=cmsAdmin.email class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.password"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.password name="password" id="password" class="form-control"/>
+                                                                <span class="help-block">
+                                                                <@s.m "cmsUser.password.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.pwdAgain"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.password name="pwdAgain" equalTo="#password" class="form-control" />
+                                                                <span class="help-block">
+                                                                <@s.m "cmsUser.password.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.group"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.select name="groupId" list=groupList value=cmsAdmin.group.id  listKey="id" listValue="name" class=" form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.rank"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.text name="rank" value=cmsAdmin.rank class="required form-control" max=currRank/>
+                                                                <span class="help-block">
+                                                                <@s.m "cmsUser.rank.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.realname"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.text name="realname" value=cmsAdmin.realname class="form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.gender"/></label>
+                                                            <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                                <@p.radio name="gender" value=cmsAdmin.gender class=" form-control radio-inline" list={"true":"cmsUser.male","false":"cmsUser.female","":"cmsUser.secrecy"}/>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.selfAdmin"/></label>
+                                                            <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                                <@p.radio name="selfAdmin" value=cmsAdmin.selfAdmin list={"true":"global.true","false":"global.false"} class=" form-control radio-inline"/>
+                                                                </div>
+                                                                <span class="help-block">
+                                                                <@s.m "cmsUser.selfAdmin.help"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.role"/></label>
+                                                            <div class="col-md-9">
+                                                                <@p.checkboxlist name="roleIds" list=roleList listKey="id" valueList=roleIds listValue="name" class="form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.site"/></label>
+                                                            <div class="col-md-9">
+                                                                <#list siteList as site>
+                                                                <#assign us=cmsAdmin.getUserSite(site.id)!/>
+                                                                <div style="float:left;padding-right:3px">
+                                                                <label><input type="checkbox" name="siteIds" value="${site.id}" <#if siteIds?seq_contains(site.id)> checked="checked"</#if> onclick="disSite(this.checked,${site_index})"/>${site.shortName}</label>
+                                                                <input id="step${site_index}" type="text" name="steps" value="${(us.checkStep)!1}" min="1" max="127" class="form-control radio-inline input-xsmall required" <#if !siteIds?seq_contains(site.id)> disabled="disabled"</#if>/>
+                                                                <a role="button" class="data-modal${site_index} btn btn-sm blue radio-inline" data-toggle="modal" <#if !siteIds?seq_contains(site.id)> disabled="disabled"</#if>> <@s.m "cmsUser.channels"/> <i class="fa fa-search"></i></a>
+                                                                <input type="hidden" id="allChannel${site_index}" name="allChannels" value="${((us.allChannel)!true)?string}"<#if !siteIds?seq_contains(site.id)> disabled="disabled"</#if>/>
+                                                                <span id="channelIdsContainer${site_index}"><#list cmsAdmin.getChannelIds(site.id) as cid><input type="hidden" name="channelIds" value="${cid}"/></#list></span>
+                                                                <div id="modal_chl${site_index}" class="modal fade" tabindex="-1" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                                                <h4 class="modal-title"><@s.m "cmsUser.channels"/></h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="scroller" style="height:345px" data-always-visible="1" data-rail-visible1="1">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12 form-horizontal">
+                                                                                            <div class="form-group"> 
+                                                                                            <label class="col-md-12 control-label"><input type="checkbox" onclick="disChannels(this.checked,${site_index})"<#if (us.allChannel)!true> checked="checked"</#if>/><@s.m "cmsUser.channels.allChannel"/></label>
+                                                                                            <div class="col-md-12"> 
+                                                                                            <select id="channels${site_index}"  <#if (us.allChannel)!true> disabled="disabled" class="disabled"</#if> multiple="multiple" size="15" style="width:100%;"></select>
+                                                                                            </div> 
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" data-dismiss="modal" class="btn green-meadow" id="chooseChl${site_index}">OK</button>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </#list>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.disabled"/></label>
+                                                            <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                                <@p.radio name="disabled" value=cmsAdmin.disabled list={"true":"global.true","false":"global.false"} class="required form-control radio-inline"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.loginCount"/></label>
+                                                            <div class="col-md-9">
+                                                            <p class="form-control-static">
+                                                            ${cmsAdmin.loginCount}
+                                                            </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.register"/></label>
+                                                            <div class="col-md-9">
+                                                            <p class="form-control-static">
+                                                            ${cmsAdmin.registerTime?string('yyyy-MM-dd HH:mm:ss')} &nbsp; ${cmsAdmin.registerIp}
+                                                            </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3"><@s.m "cmsUser.lastLogin"/></label>
+                                                            <div class="col-md-9">
+                                                            <p class="form-control-static">
+                                                            ${cmsAdmin.lastLoginTime?string('yyyy-MM-dd HH:mm:ss')} &nbsp; ${cmsAdmin.lastLoginIp}
+                                                            </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                            </div>
+                                            <@p.hidden name="id" value=cmsAdmin.id/>
+                                            <div class="form-actions fluid">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="col-md-offset-3 col-md-9">
+                                                            <button type="submit" class="btn green-meadow"><@s.m "global.submit"/></button>
+                                                            <button type="reset" class="btn default"><@s.m "global.reset"/></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                    <!-- END PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+jQuery(document).ready(function() {    
+       FormValidation.handleValidationAdminGlobal();
+    });
+
+$(function() {
+    <#list siteList as site>
+    var channels_opened_${site_index} = false;    
+    $('#chooseChl${site_index}').click(function(){
+        //将列表框中已选中的项复制到隐藏表单中
+        var s="";
+        $("#channels${site_index}").children().each(function(){
+            if($(this).attr("selected")) {
+                s += "<input type='hidden' name='channelIds' value='" +$(this).val()+ "'/>";
+            }
+        });
+        $("#channelIdsContainer${site_index}").empty().append(s);
+    });
+    
+    $('.data-modal${site_index}').click(function(){
+        if(!channels_opened_${site_index}) {
+            $.ajax({
+                type: "POST",
+                url: "admin_global/v_channels_edit.do?siteId=${site.id}&userId=${cmsAdmin.id}",
+                success: function(data)
+                {
+                    if(data){
+                         $(data.responseText).appendTo("#channels${site_index}");
+                    }
+                    $("#modal_chl${site_index}").modal();
+                },
+                error:function(data, exception)
+                {
+                    if(data){
+                        $(data.responseText).appendTo("#channels${site_index}");
+                    }
+                    $("#modal_chl${site_index}").modal();
+                }
+            });
+            channels_opened_${site_index} = true;
+        }else{
+            $("#modal_chl${site_index}").modal();
+        }
+      });
+    </#list>
+}); 
+function disSite(chk,i) {
+    if(chk) {
+        $("#step"+i).removeAttr("disabled");
+        $("#channel"+i).removeAttr("disabled");
+        $(".data-modal"+i).removeAttr("disabled");
+        $("#allChannel"+i).removeAttr("disabled");
+        $("#channelIdsContainer"+i).children().each(function(){$(this).removeAttr("disabled");});
+    } else {
+        $("#step"+i).attr("disabled","disabled");
+        $("#channel"+i).attr("disabled","disabled");
+        $(".data-modal"+i).attr("disabled","disabled");     
+        $("#allChannel"+i).attr("disabled","disabled");     
+        $("#channelIdsContainer"+i).children().each(function(){$(this).attr("disabled","disabled");});
+    }
+}
+function disChannels(chk,i) {
+    $("#allChannel"+i).val(chk);
+    if(chk) {
+        $("#channels"+i).addClass("disabled").attr("disabled","disabled").children().each(function(){$(this).removeAttr("selected")});
+        $("#channelIdsContainer"+i).empty();
+    } else {
+        $("#channels"+i).removeAttr("disabled").removeClass("disabled");
+    }
+}
+</script>

@@ -1,0 +1,233 @@
+	            <!-- BEGIN PAGE HEADER-->
+	                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	                    <h3 class="page-title">
+	                    <@s.m "cms.function.maintain"/>
+	                    </h3>
+	                    <div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li>
+								<i class="icon-book-open"></i>
+								<a href="@"> <@s.m 'cmsWords.function'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"><@s.m 'cmsSearchWords.function'/></a>
+								<i class="fa fa-angle-right"></i>
+							</li>
+							<li>
+								<a href="#"> <@s.m "global.list"/></a>
+							</li>
+						</ul>
+						<div class="page-toolbar">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-fit-height btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+								<@s.m "global.add"/> <i class="fa fa-pencil"></i>
+								</button>
+								<ul class="dropdown-menu pull-right" role="menu">
+	                                <li><a href="javascript:void();" id="add_searchwords"><@s.m "global.add"/></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+                    <#if message??>
+		            <script>
+		               Metronic.alert({
+		                   place: "append", 
+		                   type: "success",  
+		                   message: '<@s.m 'global.prompt'/>","<@s.mt code=message text=message/>',  
+		                   close: true, 
+		                   reset: true, 
+		                   focus: true, 
+		                   closeInSeconds: 5, 
+		                   icon: "check"
+		               });
+		            </script>
+		            </#if>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-hoki">
+                        <div class="portlet-title">
+							<div class="caption">
+								<i class="fa  fa-list"></i><@s.m "global.list"/>
+							</div>
+							<div class="tools">
+								<a href="#" class="collapse" data-original-title="" title="">
+								</a>
+								<a href="#" class="fullscreen" data-original-title="" title="">
+								</a>
+								<a href="#" class="remove" data-original-title="" title="">
+								</a>
+							</div>
+						</div>
+                        <div style="display:none;">
+                        <form id="batchForm">
+                        </form>
+                        </div>
+                        <div class="portlet-body  flip-scroll">
+                            <div class="table-responsive">
+                            <form id="tableForm" method="post">
+							<input type="hidden" name="pageNo" value="${pageNo!}"/>
+							<@p.table class="table table-bordered table-striped table-condensed flip-content table-hover"  listAction="searchwords/v_list.do" value=pagination;word,i,has_next><#rt/>
+								<@p.column title="<input type='checkbox' onclick='checkAll(\"ids\",this.checked)'/>" width="20">
+									<label class="class4ids"><input type='checkbox' name='ids' value='${word.id}'/></label><#t/>
+								</@p.column><#t/>
+								<@p.column title="ID" align="center">${word.id}</@p.column><#t/>
+								<@p.column code="cmsSearchWords.name" align="center">${word.name}</@p.column><#t/>
+								<@p.column code="cmsSearchWords.hitCount" align="center">${word.hitCount}</@p.column><#t/>
+								<@p.column code="cmsSearchWords.priority" align="center">${word.priority}</@p.column><#t/>
+								<@p.column code="global.operate" align="center">
+									<a href="#" class="btn default btn-xs blue-stripe" id="edit_${word.id}"><@s.m "global.edit"/></a> | <#rt/> 
+									<a href="javascript:void(0)" onclick="deleteSingle('searchwords/o_delete.do?ids=${word.id}&pageNo=${pageNo!}')"  class="btn default btn-xs red-stripe"><@s.m "global.delete"/></a><#t/>
+								</@p.column><#t/>
+							</@p.table>
+							<div><input  class="btn btn-danger" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/></div>
+							</form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <div id="addDialog" class="modal fade" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title"><@s.m 'cmsSearchWords.function'/> - <@s.m 'global.add'/></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="scroller" style="height:345px" data-always-visible="1" data-rail-visible1="1">
+                            <div class="row">
+                                <div class="col-md-12 form-horizontal">
+                                    <@p.form id="addForm" tableClass="table table-hover table-striped table-bordered vtable" action="searchwords/o_save.do">
+										<@p.text label="cmsSearchWords.name" name="name"  id="m_a_name" class="form-control"/>
+										<@p.text label="cmsSearchWords.priority" name="priority"  id="m_a_priority" class="form-control digits"/>
+									</@p.form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn green" id="addsearchwords"><@s.m 'global.add'/></button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div id="editDialog" class="modal fade" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title"><@s.m 'cmsSearchWords.function'/> - <@s.m 'global.edit'/></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="scroller" style="height:345px" data-always-visible="1" data-rail-visible1="1">
+                            <div class="row">
+                                <div class="col-md-12 form-horizontal">
+                                    	<@p.form id="editForm" tableClass="table table-hover table-striped table-bordered vtable" action="searchwords/o_update.do">
+											<@p.text label="cmsSearchWords.name" name="name" id="name"  class="form-control"/>
+											<@p.text label="cmsSearchWords.priority" name="priority" id="priority"  class="form-control digits"/>
+											<@p.hidden name="id" id="id"/>
+										</@p.form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn green" id="editsearchwords"><@s.m 'global.edit'/></button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+<script>
+function getTableForm() {
+    return document.getElementById('tableForm');
+}
+jQuery(document).ready(function() {    
+	Metronic.initAjax();
+	$("a[id^='edit_']").click(function() {
+		getData($(this).attr("id").split("edit_")[1]);
+		 $("#editDialog").modal();
+	});
+    $('#add_searchwords').click(function(){
+        $('#addDialog').modal();
+        return false;
+    }); 
+    $('#addsearchwords').click(function(){
+	        if($("#m_a_name").val()==""||$("#m_a_priority").val()==""){
+	           	alert("信息未填完整，请检查");
+	           	return;
+	        }else{
+	            submitForm("searchwords/o_save.do", $("#addForm"));
+	        }
+    });
+    $('#editsearchwords').click(function(){
+    	 if($("#name").val()==""||$("#priority").val()==""){
+	           	alert("信息未填完整，请检查");
+	           	return;
+	        }else{
+	            submitForm("searchwords/o_update.do", $("#editForm"));
+	        }
+    });
+});
+function optDelete() {
+    if(checkedCount('ids')<=0) {
+        Metronic.alert({
+            place: "append", 
+            type: "danger",  
+            message: "<@s.m 'error.checkRecord'/>",  
+            close: true, 
+            reset: true, 
+            focus: true, 
+            closeInSeconds: 5, 
+            icon: "warning"
+        }); 
+        return;
+    }
+    if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+        return;
+    }
+    var f = getTableForm();
+    var url ="searchwords/o_delete.do";
+    submitForm(url, f);
+}
+function checkedCount(name) {
+    var batchChecks = document.getElementsByName(name);
+    var count = 0;
+    for (var i = 0;i < batchChecks.length; i++) {
+        if (batchChecks[i].checked) {
+            count++;
+        }
+    }
+    return count;
+}
+
+var checkedAll = false;
+function checkAll(name, checked) {
+    if(checkedAll){
+        $("input[name=" + name + "]:checkbox").each(function() {
+            $(this).removeAttr("checked");
+            $(".class4ids .checker span").removeAttr("class");
+        });
+        checkedAll = false;
+    }else{
+      $("input[name=" + name + "]").each(function() {
+            $(this).attr("checked", checked);
+            $(".class4ids .checker span").attr("class", "checked");
+        });
+      checkedAll = true;
+    }
+}
+function getData(id){
+    $.getJSON("searchwords/v_ajax_edit.do",{id:id},function(data){  
+    	 $("#name").val(data.name); 
+         $("#priority").val(data.priority); 
+         $("#id").val(data.id);
+  });  
+}
+</script>
